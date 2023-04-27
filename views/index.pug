@@ -7,9 +7,10 @@ body
             each option in ['Olivers Bil', 'Bil 2', 'Bil 3']
                 option(value=option)= option
     
-    div
+    div.varebokse
         p Dette er et varenavn
         p På lager: 5
-        button(type='button') +
-        button(type='button') -
+        div.knapper
+            button(type='button') +
+            button(type='button') -
 

@@ -1,6 +1,5 @@
 include includes/head
 
-style.
   body {
     font-family: 'Open Sans', sans-serif;
     background-color: #f2f2f2;
@@ -21,7 +20,7 @@ style.
     box-shadow: 0 0 5px #ccc;
   }
 
-  div {
+  .varebokse {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -30,6 +29,11 @@ style.
     box-shadow: 0 0 5px #ccc;
     border-radius: 5px;
     margin-top: 20px;
+  }
+
+  .knapper{
+    display: flex;
+    flex-direction: column;
   }
 
   p {
@@ -46,21 +50,11 @@ style.
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease;  
+    margin: 2px;
+    
   }
 
   button:hover {
     background-color: #555;
   }
-
-body
-    h1 Bil:
-        select(name='my-dropdown')
-            each option in ['Olivers Bil', 'Bil 2', 'Bil 3']
-                option(value=option)= option
-    
-    div
-        p Dette er et varenavn
-        p På lager: 5
-        button(type='button') +
-        button(type='button') -
