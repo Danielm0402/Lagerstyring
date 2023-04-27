@@ -7,10 +7,11 @@ body
             each option in ['Olivers Bil', 'Bil 2', 'Bil 3']
                 option(value=option)= option
     
-    div.varebokse
-        p Dette er et varenavn
-        p På lager: 5
-        div.knapper
-            button(type='button') +
-            button(type='button') -
+    each vare in varer
+        div.varebokse
+                p #{vare.varenavn}
+                p På lager: 5
+                div.knapper
+                    button(type='button') +
+                    button(type='button') -
 
