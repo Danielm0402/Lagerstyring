@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.static("assets"))
+
 // 1. templating
 app.set("view engine", "pug");
 
