@@ -1,3 +1,4 @@
+// import { getDataFromFirestore } from "./Firestore.js";
 
 document.getElementById('addButton')
 
