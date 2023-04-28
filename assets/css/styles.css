@@ -37,6 +37,14 @@ include includes/head
     flex-direction: column;
   }
 
+  .plusminus{
+    margin: 2px;
+  }
+
+  .addProduct{ 
+    margin-top: 10px
+  }
+
   p {
     font-size: 18px;
     color: #333;
@@ -52,8 +60,11 @@ include includes/head
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;  
-    margin: 2px;
-    
+  }
+
+  button a {
+    color: #fff;
+    text-decoration: none;
   }
 
   button:hover {

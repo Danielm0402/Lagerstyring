@@ -8,10 +8,14 @@ body
     
     each vare in varer
         div.varebokse
-                p #{vare.varenavn}
+                p #{vare.Varenavn}
                 p På lager: 5
                 div.knapper
-                    button(type='button') +
-                    button(type='button') -
+                    button.plusminus(type='button') +
+                    button.plusminus(type='button') -
 
-    button#addButton Tilføj ny vare
+    button.addProduct
+        a(href="/form") Tilføj ny vare
+
+
+
