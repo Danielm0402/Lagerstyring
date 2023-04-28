@@ -20,6 +20,8 @@
   "homepage": "https://github.com/Danielm0402/Lagerstyring#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "ionicons": "^7.1.0",
+    "nodemon": "^2.0.22",
     "firebase": "^9.20.0",
     "pug": "^3.0.2"
   }

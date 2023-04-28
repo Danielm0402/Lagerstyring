@@ -32,6 +32,18 @@ include includes/head
     margin-top: 20px;
   }
 
+  .varebokse-valgt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #ced5da;
+    box-shadow: 0 0 5px #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+
+  }
+
   .knapper{
     display: flex;
     flex-direction: column;
@@ -70,3 +82,4 @@ include includes/head
   button:hover {
     background-color: #555;
   }
+
