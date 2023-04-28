@@ -9,5 +9,4 @@ class Product {
         this.amount = amount
         this.unit = unit
     }
-
 }
