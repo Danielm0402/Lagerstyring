@@ -7,7 +7,6 @@ function x() {
   addButton.addEventListener("click", () => {
     console.log("Hej");
   })
-
 }
 
 const deleteButtonElements = document.getElementsByClassName('delete-button')
@@ -18,7 +17,6 @@ for (const e of deleteButtonElements) {
     vareboksediv.remove()
   })
 }
-
 
 // const varebilerElements = document.getElementsByClassName('varebokse')
 

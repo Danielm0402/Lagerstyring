@@ -43,5 +43,17 @@ app.post("/productCreated", (req, res) => {
   res.redirect("/createProduct")
 })
 
+app.get("/admin", (req, res) => {
+  res.render("admin");
+});
+
+app.get("/createVan", (req, res) => {
+  res.render("createVan");
+});
+
+app.get("/createElectrician", (req, res) => {
+  res.render("createElectrician");
+});
+
 app.listen(4000);
 console.log("listening on port 4000");
