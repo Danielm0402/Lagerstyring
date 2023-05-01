@@ -26,14 +26,12 @@ const db = getFirestore(firebase_app);
 let productCollection = collection(db, "Varer");
 
 export async function getDataFromFirestore() {
-  // console.log("asdgsdgs");
-  let varerQueryDocs = await getDocs(productCollection);
+  let varerQueryDocs = await getDocs(vareCollection);
   let varer = varerQueryDocs.docs.map((doc) => {
     let data = doc.data();
     data.docID = doc.id;
     return data;
   });
-  // console.log("hej2", varer);
   return varer;
 }
 
