@@ -6,6 +6,9 @@ import {
   query,
   where,
   getDocs,
+  getDoc,
+  doc,
+  updateDoc
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -20,19 +23,42 @@ const firebaseConfig = {
 const firebase_app = initializeApp(firebaseConfig);
 const db = getFirestore(firebase_app);
 
-let vareCollection = collection(db, "Varer");
+let productCollection = collection(db, "Varer");
 
 export async function getDataFromFirestore() {
-  console.log("asdgsdgs");
-  let varerQueryDocs = await getDocs(vareCollection);
+  let varerQueryDocs = await getDocs(productCollection);
   let varer = varerQueryDocs.docs.map((doc) => {
     let data = doc.data();
-    data.DocID = doc.id;
+    data.docID = doc.id;
     return data;
   });
-  console.log("hej2", varer);
   return varer;
 }
+
+export async function getProduct(productId) {
+  const firestoreData = await getDataFromFirestore()
+
+  const product = firestoreData.filter((product) => product.docID === productId)
+  return product[0]
+}
+
+export async function addAmountToProduct(amount, productId) {
+  const docRef = doc(db, 'Varer', productId)
+  const productDoc = await getDoc(docRef);
+  const productData = productDoc.data()
+  const newAmount = productData.amount + amount
+  await updateDoc(docRef, {amount: newAmount})
+}
+
+async function test() {
+  console.log(await getProduct("QnZZpRrwYWUCUoatQfQ5"))
+
+  await addAmountToProduct(10, "QnZZpRrwYWUCUoatQfQ5")
+
+  console.log(await getProduct("QnZZpRrwYWUCUoatQfQ5"))
+}
+
+test();
 
 //   const q = query(
 //     registrationsCollection,
