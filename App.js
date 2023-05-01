@@ -23,10 +23,11 @@ app.get("/createProduct", (req, res) => {
 });
 
 app.post("/productCreated", (req, res) => {
-  const productName = req.body.inputName;
-  const productID = req.body.inputProductID;
-  const amount = req.body.inputAmount;
-  const unit = req.body.dropdownUnit;
+  console.log(req.body)
+  const productName = req.body["input-name"];
+  const productID = req.body["input-product-id"];
+  const amount = req.body["input-amount"];
+  const unit = req.body["dropdown-unit"];
 
   console.log(productName);
   console.log(productID);

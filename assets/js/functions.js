@@ -19,7 +19,7 @@ for (const e of deleteButtonElements) {
 }
 
 //  ------- create product ----------
-const createProductElement = document.getElementByClassName("create-product");
+//const createProductElement = document.getElementByClassName("create-product");
 // få knappen til at printe
 
 // const productCarsElements = document.getElementsByClassName('product-container')
