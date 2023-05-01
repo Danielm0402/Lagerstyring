@@ -19,8 +19,8 @@ body
                 div.knapper
                     button.delete-button(type='button')
                         ion-icon(src="icons/trash-outline.svg")
-                    button.plusminus(type='button') +
-                    button.plusminus(type='button') -
+                     button.plusminus(type='button', data-vareid=vare.id, on-click='justerAntal(this, "op")') +
+      button.plusminus(type='button', data-vareid=vare.id, on-click='justerAntal(this, "ned")') -
 
     button.addProduct
         a(href="/form") Tilføj ny vare
