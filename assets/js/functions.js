@@ -17,7 +17,6 @@ for (const e of deleteButtonElements) {
     const vareboksediv = e.parentElement.parentElement 
     vareboksediv.remove()
   })
-
 }
 
 
