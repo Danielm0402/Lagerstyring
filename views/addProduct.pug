@@ -1,7 +1,22 @@
 include includes/head
 
 body
-    h1 Tilføj ny vare 
+    form(action="/form", method='POST')
 
-    form(action="POST")
-        
+        div#div-createProduct
+        div
+            h2 Opret produkt
+        div
+            label(for="input-name") Produkt navn:
+            input.inputtag(type="text" name="input-name")
+            br
+            label(for="input-produkt-id") vareid: 
+            input.inputtag(type="text" name="input-produkt-id")
+            br
+            label(for="input-amount") mængde: 
+            input.inputtag(type="text" name="input-amount")
+            br
+            label(for="dropdown-unit") enhed: 
+            select(name="dropdown-unit")
+                each option in ['stk', 'm', 'cm', 'mm', 'kg', 'g']
+                    option(value = option)= option
