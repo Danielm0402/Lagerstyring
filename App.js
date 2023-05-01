@@ -12,17 +12,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "pug");
 
 app.get("/", async (req, res) => {
-  // let varer = [
-  //   { varenavn: "Stikkontakt 'A'" },
-  //   { varenavn: "Stikkontakt 'B'" },
-  //   { varenavn: "Stikkontakt 'C'" },
-  //   { varenavn: "Stikkontakt 'D'" },
-  // ];
+  let products = await getDataFromFirestore();
+  console.log(products);
 
-  let varer = await getDataFromFirestore();
-  console.log(varer);
-
-  res.render("index", { varer: varer });
+  res.render("index", { products: products });
 });
 
 app.get("/createProduct", (req, res) => {

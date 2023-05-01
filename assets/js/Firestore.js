@@ -23,16 +23,16 @@ const firebaseConfig = {
 const firebase_app = initializeApp(firebaseConfig);
 const db = getFirestore(firebase_app);
 
-let productCollection = collection(db, "Varer");
+let productCollection = collection(db, "Products");
 
 export async function getDataFromFirestore() {
-  let varerQueryDocs = await getDocs(productCollection);
-  let varer = varerQueryDocs.docs.map((doc) => {
+  let productsQueryDocs = await getDocs(productCollection);
+  let products = productsQueryDocs.docs.map((doc) => {
     let data = doc.data();
     data.docID = doc.id;
     return data;
   });
-  return varer;
+  return products;
 }
 
 export async function getProduct(productId) {
@@ -43,7 +43,7 @@ export async function getProduct(productId) {
 }
 
 export async function addAmountToProduct(amount, productId) {
-  const docRef = doc(db, 'Varer', productId)
+  const docRef = doc(db, 'Products', productId)
   const productDoc = await getDoc(docRef);
   const productData = productDoc.data()
   const newAmount = productData.amount + amount
