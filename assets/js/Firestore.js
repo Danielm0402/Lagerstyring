@@ -26,7 +26,7 @@ const db = getFirestore(firebase_app);
 let productCollection = collection(db, "Varer");
 
 export async function getDataFromFirestore() {
-  let varerQueryDocs = await getDocs(vareCollection);
+  let varerQueryDocs = await getDocs(productCollection);
   let varer = varerQueryDocs.docs.map((doc) => {
     let data = doc.data();
     data.docID = doc.id;
