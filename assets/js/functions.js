@@ -18,6 +18,8 @@ for (const e of deleteButtonElements) {
   })
 }
 
+
+
 // const productCarsElements = document.getElementsByClassName('product-container')
 
 // for(const productCarsElement of productCarsElements){

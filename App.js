@@ -22,6 +22,11 @@ app.get("/createProduct", (req, res) => {
   res.render("addProduct");
 });
 
+app.update('/updateamount', (req, res) => {
+  const amount
+  res.send({})
+})
+
 app.post("/productCreated", (req, res) => {
   const productName = req.body.inputName
   const productID = req.body.inputProductID
