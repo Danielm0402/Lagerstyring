@@ -6,6 +6,12 @@ body
             each option in ['Olivers Bil', 'Bil 2', 'Bil 3']
                 option(value=option)= option
     
+
+
+    button.admin 
+        a(href="/admin") Admin
+    
+
     each vare in varer
         div.varebokse
                 p #{vare.Varenavn}
@@ -18,7 +24,6 @@ body
 
     button.addProduct
         a(href="/form") Tilføj ny vare
-
 
 
     include includes/createProduct
