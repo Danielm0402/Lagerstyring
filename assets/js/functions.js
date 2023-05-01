@@ -13,25 +13,25 @@ const deleteButtonElements = document.getElementsByClassName('delete-button')
 
 for (const e of deleteButtonElements) {
   e.addEventListener("click", () => {
-    const vareboksediv = e.parentElement.parentElement 
-    vareboksediv.remove()
+    const productboksediv = e.parentElement.parentElement 
+    productboksediv.remove()
   })
 }
 
-// const varebilerElements = document.getElementsByClassName('varebokse')
+// const productCarsElements = document.getElementsByClassName('product-container')
 
-// for(const varebilerElement of varebilerElements){
-//     varebilerElement.addEventListener("click", () => {
-//       const valgteBilerElements = document.getElementsByClassName('varebokse-valgt')
+// for(const productCarsElement of productCarsElements){
+//     productCarsElement.addEventListener("click", () => {
+//       const valgteBilerElements = document.getElementsByClassName('product-container-selected')
 
 //       for(const valgteBilerElement of valgteBilerElements){
-//         valgteBilerElement.className = 'varebokse'
+//         valgteBilerElement.className = 'product-container'
 //       }
 
-//       if("varebokse" === varebilerElement.className){
-//       varebilerElement.className = "varebokse-valgt"
+//       if("product-container" === productCarsElement.className){
+//       productCarsElement.className = "product-container-selected"
 //     } else {
-//       varebilerElement.className = "varebokse"
+//       productCarsElement.className = "product-container"
 //     }
 //     })
 

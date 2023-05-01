@@ -21,7 +21,7 @@ include includes/head
     margin-left: 10px;
   }
 
-  .varebokse {
+  .product-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -32,7 +32,7 @@ include includes/head
     margin-top: 20px;
   }
 
-  .varebokse-valgt {
+  .product-container-selected {
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -1,6 +1,6 @@
 
 /*
-    vare 0..* <-- 1 lagerbil
+    product 0..* <-- 1 lagerbil
 */
 
 class Product {
