@@ -3,7 +3,7 @@
 */
 
 /*
-    vare 0..* <-- 1 lagerbil
+    product 0..* <-- 1 lagerbil
 */
 
 export class Van {
