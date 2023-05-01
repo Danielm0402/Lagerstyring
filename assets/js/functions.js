@@ -1,4 +1,3 @@
-// import { getDataFromFirestore } from "./Firestore.js";
 
 document.getElementById("addButton");
 
@@ -8,7 +7,7 @@ function x() {
     console.log("Hej");
   });
 }
-
+// ----------- DELETE PRODUCT ---------------------------------------------------------------------------------------------------
 const deleteButtonElements = document.getElementsByClassName("delete-button");
 
 for (const e of deleteButtonElements) {
@@ -18,38 +17,64 @@ for (const e of deleteButtonElements) {
   });
 }
 
-const increaseButtonElements = document.getElementsByClassName('button-increase');
-const decreaseButtonElements = document.getElementsByClassName('button-decrease');
+// ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
+const plusminButtonElements = document.getElementsByClassName('button-plusmin');
 
-for(const e of increaseButtonElements) {
+/*
+  Looper igennem alle increaseButtons 
+  og giver dem en eventlistener
+  Gem productId for at kunne opdatere
+  aktuelle product i db
+
+  send et request til serveren
+  hvor i body'en af requestet 
+  er en action property der 
+  fortæller serveren hvad den skal 
+  gøre med requestet
+  Responset fra requestet gemmes i en variabel
+
+  Find aktuelle paragraph element
+  ved at få alle elementer med 
+  klassen storage. Filtrer for dem
+  der har data productId
+
+  opdater dette paragraph elements
+  text, så det passer med det nye
+  antal products
+  
+*/
+for(const e of plusminButtonElements) {
+  const productId = e.dataset.productid
+  const btnAction = e.dataset.action
   e.addEventListener('click', async () => {
-    const productId = e.dataset.productid
-    const response = await fetch(`/product/amount/increase/${productId}`, {method: 'PUT'})
+    const response = await fetch(`/product/${productId}/amount`, {
+      method: 'PUT',
+      headers: {"content-Type": "application/json"},
+      body: JSON.stringify( {action: btnAction} )
+    })
     const json = await response.json()
-
+    
     const amount = json.amount
     const unit = json.unit
     
     const storagePElement = Array.from(document.getElementsByClassName('storage'))
-      .filter((e) => e.dataset.productid === productId)[0]
+    .filter((e) => e.dataset.productid === productId)[0]
     storagePElement.innerHTML = `På lager: ${amount} ${unit}`
   })
 }
 
-for(const e of decreaseButtonElements) {
-  e.addEventListener('click', async () => {
-    const productId = e.dataset.productid
-    const response = await fetch(`/product/amount/decrease/${productId}`, {method: 'PUT'})
-    const json = await response.json()
+// -----------HJÆLPE FUNKTIONER---------------------------------------------------------------------------------------------------
 
-    const amount = json.amount
-    const unit = json.unit
-    
-    const storagePElement = Array.from(document.getElementsByClassName('storage'))
-      .filter((e) => e.dataset.productid === productId)[0]
-    storagePElement.innerHTML = `På lager: ${amount} ${unit}`
-  })
-}
+
+
+
+
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------
 //  ------- create product ----------
 //const createProductElement = document.getElementByClassName("create-product");
 // få knappen til at printe

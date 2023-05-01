@@ -9,6 +9,7 @@ const app = express();
 //middleware
 app.use(express.static("assets"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json())
 
 // 1. templating
 app.set("view engine", "pug");
@@ -23,24 +24,32 @@ app.get("/createProduct", (req, res) => {
   res.render("createProduct");
 });
 
-// decrease product amount
-app.put('/product/amount/decrease/:productid', async (req, res) => {
-  const productId = req.params.productid
-  console.log(productId)
-  await updateAmountToProduct((-1), productId)
-  const product = await getDbProduct(productId)
-  res.send(product)
-  console.log(product)
-})
+// DECREASE PRODUCT AMOUNT
 
-//increase product amount
-app.put('/product/amount/increase/:productid', async (req, res) => {
+/*
+  Når der kommer et put request to denne adresse
+  gem productId og action fra request.body
+  alt efter hvilken action der er i bodyen
+  skal requestet opdatere product amount 1 op 
+  eller 1 ned
+  derefter sender requestet det opdaterede
+  product fra databasen til klienten
+*/
+app.put('/product/:productid/amount', async (req, res) => {
   const productId = req.params.productid
-  console.log(productId)
-  await updateAmountToProduct(1, productId)
+  const action = req.body.action;
+  
+  if (action === "increase") {
+    
+    await updateAmountToProduct(1, productId)
+
+  } else if (action === "decrease") {
+    
+    await updateAmountToProduct((-1), productId)
+
+  }
   const product = await getDbProduct(productId)
   res.send(product)
-  console.log(product)
 })
 
 app.post("/productCreated", (req, res) => {

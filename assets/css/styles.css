@@ -44,30 +44,26 @@ include includes/head
   }
 
   .buttons{
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
   }
-
-  .button-increase{
-    margin: 2px;
-  }
   
-  .button-decrease{
-    margin: 2px;
-  }
-
   .addProduct{ 
     margin-top: 10px
   }
 
+  
   p {
     font-size: 18px;
     color: #333;
     margin: 0;
   }
-
+  
   button {
-    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: content-box;
     color: #fff;
     background-color: #333;
     border: none;
@@ -75,10 +71,13 @@ include includes/head
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;  
-    margin-left: 5px;
-    margin-top: 5px;
+    margin: 2px;
   }
-
+  
+  ion-icon {
+    height: 20px;
+    width: 20px;
+  }
   button a {
     color: #fff;
     text-decoration: none;
