@@ -71,6 +71,8 @@ include includes/head
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;  
+    margin-left: 5px;
+    margin-top: 5px;
   }
 
   button a {
@@ -81,6 +83,7 @@ include includes/head
   button:hover {
     background-color: #555;
   }
+
   label{
     display: block
   }
