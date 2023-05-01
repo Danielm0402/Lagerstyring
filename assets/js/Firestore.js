@@ -51,6 +51,11 @@ export async function updateAmountToProduct(amount, productId) {
   return newAmount
 }
 
+export async function createProduct(product){
+  const docRef = await addDoc(productCollection, product)
+  console.log("firestore log")
+}
+
 async function test() {
   console.log(await getProduct("BONWE3fCkcuYyu4knvj5"))
 

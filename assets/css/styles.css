@@ -87,3 +87,7 @@ include includes/head
   label{
     display: block
   }
+
+  p.storage{
+    align-items: center;
+  }
