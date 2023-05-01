@@ -9,14 +9,14 @@ body
         div
             label(for="input-name") Produkt navn:
             input.inputtag(type="text" name="input-name")
-            br
-            label(for="input-produkt-id") vareid: 
+
+            label(for="input-produkt-id") Vare ID: 
             input.inputtag(type="text" name="input-produkt-id")
-            br
-            label(for="input-amount") mængde: 
+
+            label(for="input-amount") Mængde: 
             input.inputtag(type="text" name="input-amount")
-            br
-            label(for="dropdown-unit") enhed: 
+
+            label(for="dropdown-unit") Enhed: 
             select(name="dropdown-unit")
                 each option in ['stk', 'm', 'cm', 'mm', 'kg', 'g']
                     option(value = option)= option
