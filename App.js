@@ -1,4 +1,4 @@
-import { getDataFromFirestore } from "./assets/js/Firestore.js";
+import { getDataFromFirestore, createProduct } from "./assets/js/Firestore.js";
 
 import express from "express";
 import bodyParser from "body-parser";
@@ -33,6 +33,16 @@ app.post("/productCreated", (req, res) => {
   const productID = req.body["input-product-id"];
   const amount = req.body["input-amount"];
   const unit = req.body["dropdown-unit"];
+
+  let product = {
+    productName: productName,
+    productID: productID,
+    amount: amount,
+    unit: unit,
+  };
+
+  createProduct(product)
+
 
   console.log(productName);
   console.log(productID);

@@ -15,7 +15,7 @@ body
     each product in products
         div.product-container
                 p #{product.productName}
-                p På lager: 5
+                p.storage På lager: #{product.amount}
                 div.buttons
                     button.delete-button(type='button')
                         ion-icon(src="icons/trash-outline.svg")
