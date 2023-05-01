@@ -58,7 +58,7 @@ async function test() {
   console.log(await getProduct("QnZZpRrwYWUCUoatQfQ5"))
 }
 
-test();
+// test();
 
 //   const q = query(
 //     registrationsCollection,

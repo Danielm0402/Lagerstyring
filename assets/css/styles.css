@@ -43,7 +43,7 @@ include includes/head
 
   }
 
-  .knapper{
+  .buttons{
     display: flex;
     flex-direction: column;
   }
