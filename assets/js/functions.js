@@ -1,22 +1,26 @@
 // import { getDataFromFirestore } from "./Firestore.js";
 
-document.getElementById('addButton')
+document.getElementById("addButton");
 
 function x() {
-  const addButton = document.getElementById('addButton')
+  const addButton = document.getElementById("addButton");
   addButton.addEventListener("click", () => {
     console.log("Hej");
-  })
+  });
 }
 
-const deleteButtonElements = document.getElementsByClassName('delete-button')
+const deleteButtonElements = document.getElementsByClassName("delete-button");
 
 for (const e of deleteButtonElements) {
   e.addEventListener("click", () => {
-    const productboksediv = e.parentElement.parentElement 
-    productboksediv.remove()
-  })
+    const productboksediv = e.parentElement.parentElement;
+    productboksediv.remove();
+  });
 }
+
+//  ------- create product ----------
+const createProductElement = document.getElementByClassName("create-product");
+// få knappen til at printe
 
 // const productCarsElements = document.getElementsByClassName('product-container')
 
@@ -34,9 +38,3 @@ for (const e of deleteButtonElements) {
 //       productCarsElement.className = "product-container"
 //     }
 //     })
-
-
-
-
-
-

@@ -6,7 +6,7 @@ const app = express();
 
 //middleware
 app.use(express.static("assets"));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // 1. templating
 app.set("view engine", "pug");
@@ -19,22 +19,22 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/createProduct", (req, res) => {
-  res.render("addProduct");
+  res.render("createProduct");
 });
 
 app.post("/productCreated", (req, res) => {
-  const productName = req.body.inputName
-  const productID = req.body.inputProductID
-  const amount = req.body.inputAmount
-  const unit = req.body.dropdownUnit
+  const productName = req.body.inputName;
+  const productID = req.body.inputProductID;
+  const amount = req.body.inputAmount;
+  const unit = req.body.dropdownUnit;
 
-  console.log(productName)
-  console.log(productID)
-  console.log(amount)
-  console.log(unit)
+  console.log(productName);
+  console.log(productID);
+  console.log(amount);
+  console.log(unit);
 
-  res.redirect("/createProduct")
-})
+  res.redirect("/createProduct");
+});
 
 app.get("/admin", (req, res) => {
   res.render("admin");
