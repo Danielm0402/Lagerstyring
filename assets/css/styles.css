@@ -18,7 +18,6 @@ include includes/head
     border-radius: 5px;
     background-color: #fff;
     box-shadow: 0 0 5px #ccc;
-    margin-left: 10px;
   }
 
   .product-container {
@@ -44,7 +43,7 @@ include includes/head
 
   }
 
-  .knapper{
+  .buttons{
     display: flex;
     flex-direction: column;
   }
@@ -82,4 +81,6 @@ include includes/head
   button:hover {
     background-color: #555;
   }
-
+  label{
+    display: block
+  }

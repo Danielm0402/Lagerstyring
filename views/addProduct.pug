@@ -3,21 +3,20 @@ include includes/head
 body
     form(action="/productCreated", method='POST')
 
-        //- div#div-createProduct
-        //- div
-        //-     h2 Opret produkt
-        //- div
-        label(for="input-name") Produkt navn:
-        input.inputtag(type="text" name="inputName")
-        br
-        label(for="input-produkt-id") vareid: 
-        input.inputtag(type="text" name="inputProductID")
-        br
-        label(for="input-amount") mængde: 
-        input.inputtag(type="text" name="inputAmount")
-        br
-        label(for="dropdown-unit") enhed: 
-        select(name="dropdownUnit")
-            each option in ['stk', 'm', 'cm', 'mm', 'kg', 'g']
-                option(value = option)= option
-        button(type="submit") Opret produkt 
+        div#div-createProduct
+        div
+            h2 Opret produkt
+        div
+            label(for="input-name") Produkt navn:
+            input.inputtag(type="text" name="input-name")
+
+            label(for="input-produkt-id") Vare ID: 
+            input.inputtag(type="text" name="input-produkt-id")
+
+            label(for="input-amount") Mængde: 
+            input.inputtag(type="text" name="input-amount")
+
+            label(for="dropdown-unit") Enhed: 
+            select(name="dropdown-unit")
+                each option in ['stk', 'm', 'cm', 'mm', 'kg', 'g']
+                    option(value = option)= option
