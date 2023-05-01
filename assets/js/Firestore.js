@@ -51,11 +51,11 @@ export async function addAmountToProduct(amount, productId) {
 }
 
 async function test() {
-  console.log(await getProduct("QnZZpRrwYWUCUoatQfQ5"))
+  console.log(await getProduct("BONWE3fCkcuYyu4knvj5"))
 
-  await addAmountToProduct(10, "QnZZpRrwYWUCUoatQfQ5")
+  await addAmountToProduct(10, "BONWE3fCkcuYyu4knvj5")
 
-  console.log(await getProduct("QnZZpRrwYWUCUoatQfQ5"))
+  console.log(await getProduct("BONWE3fCkcuYyu4knvj5"))
 }
 
 test();

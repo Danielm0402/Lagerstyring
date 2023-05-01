@@ -13,14 +13,14 @@ body
     
 
     each product in products
-        div.productcontainer
-                p #{product.productName}
-                p På lager: 5
-                div.knapper
-                    button.delete-button(type='button')
-                        ion-icon(src="icons/trash-outline.svg")
-                     button.plusminus(type='button', data-proudctid=product.id, on-click='justerAntal(this, "op")') +
-      button.plusminus(type='button', data-productid=product.id, on-click='justerAntal(this, "ned")') -
+        div.product-container
+            p #{product.productName}
+            p På lager: 5
+            div.knapper
+                button.delete-button(type='button')
+                    ion-icon(src="icons/trash-outline.svg")
+                button.plusminus(type='button', data-proudctid=product.id, on-click='justerAntal(this, "op")') +
+                button.plusminus(type='button', data-productid=product.id, on-click='justerAntal(this, "ned")') -
 
     button.addProduct
         a(href="/createProduct") Tilføj ny vare
