@@ -42,12 +42,13 @@ export async function getProduct(productId) {
   return product[0]
 }
 
-export async function addAmountToProduct(amount, productId) {
+export async function updateAmountToProduct(amount, productId) {
   const docRef = doc(db, 'Products', productId)
   const productDoc = await getDoc(docRef);
   const productData = productDoc.data()
   const newAmount = productData.amount + amount
   await updateDoc(docRef, {amount: newAmount})
+  return newAmount
 }
 
 async function test() {
