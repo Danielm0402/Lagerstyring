@@ -1,7 +1,9 @@
-import { getDataFromFirestore, createProduct } from "./assets/js/Firestore.js";
-
+import { getDbProducts, createProduct, getDbProduct, updateAmountToProduct } from "./assets/js/Firestore.js";
 import express from "express";
 import bodyParser from "body-parser";
+import fetch from "node-fetch";
+
+
 const app = express();
 
 //middleware
@@ -12,19 +14,33 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "pug");
 
 app.get("/", async (req, res) => {
-  let products = await getDataFromFirestore();
-  console.log(products);
-
+  let products = await getDbProducts();
   res.render("index", { products: products });
+  // console.log(products)
 });
 
 app.get("/createProduct", (req, res) => {
   res.render("createProduct");
 });
 
-app.update('/updateamount', (req, res) => {
-  const amount
-  res.send({})
+// decrease product amount
+app.put('/product/amount/decrease/:productid', async (req, res) => {
+  const productId = req.params.productid
+  console.log(productId)
+  await updateAmountToProduct((-1), productId)
+  const product = await getDbProduct(productId)
+  res.send(product)
+  console.log(product)
+})
+
+//increase product amount
+app.put('/product/amount/increase/:productid', async (req, res) => {
+  const productId = req.params.productid
+  console.log(productId)
+  await updateAmountToProduct(1, productId)
+  const product = await getDbProduct(productId)
+  res.send(product)
+  console.log(product)
 })
 
 app.post("/productCreated", (req, res) => {

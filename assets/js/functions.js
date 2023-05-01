@@ -18,6 +18,38 @@ for (const e of deleteButtonElements) {
   });
 }
 
+const increaseButtonElements = document.getElementsByClassName('button-increase');
+const decreaseButtonElements = document.getElementsByClassName('button-decrease');
+
+for(const e of increaseButtonElements) {
+  e.addEventListener('click', async () => {
+    const productId = e.dataset.productid
+    const response = await fetch(`/product/amount/increase/${productId}`, {method: 'PUT'})
+    const json = await response.json()
+
+    const amount = json.amount
+    const unit = json.unit
+    
+    const storagePElement = Array.from(document.getElementsByClassName('storage'))
+      .filter((e) => e.dataset.productid === productId)[0]
+    storagePElement.innerHTML = `På lager: ${amount} ${unit}`
+  })
+}
+
+for(const e of decreaseButtonElements) {
+  e.addEventListener('click', async () => {
+    const productId = e.dataset.productid
+    const response = await fetch(`/product/amount/decrease/${productId}`, {method: 'PUT'})
+    const json = await response.json()
+
+    const amount = json.amount
+    const unit = json.unit
+    
+    const storagePElement = Array.from(document.getElementsByClassName('storage'))
+      .filter((e) => e.dataset.productid === productId)[0]
+    storagePElement.innerHTML = `På lager: ${amount} ${unit}`
+  })
+}
 //  ------- create product ----------
 //const createProductElement = document.getElementByClassName("create-product");
 // få knappen til at printe
