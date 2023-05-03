@@ -1,6 +1,3 @@
-// import { getDataFromFirestore } from "./Firestore.js";
-import { updateAmountToProduct } from "./Firestore";
-
 document.getElementById("addButton");
 
 function x() {
@@ -59,19 +56,9 @@ for(const e of plusminButtonElements) {
     const amount = json.amount
     const unit = json.unit
     
-    const storagePElement = Array.from(document.getElementsByClassName('storage'))
+    const storagePElement = Array.from(document.getElementsByClassName('storage-p'))
     .filter((e) => e.dataset.productid === productId)[0]
     storagePElement.innerHTML = `På lager: ${amount} ${unit}`
-  })
-}
-
-const plusButtonsElements = document.getElementsByClassName('button-plus')
-
-const minusButtonsElements = document.getElementsByClassName('button-minus')
-
-for(const e of plusButtonsElements){
-  e.addEventListener("click", () => {
-    updateAmountToProduct(1, )
   })
 }
 

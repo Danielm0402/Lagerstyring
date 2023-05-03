@@ -15,7 +15,7 @@ body
     each product in products
         div.product-container
                 p #{product.productName}
-                p På lager: #{product.amount} #{product.unit}
+                p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
                 div.buttons
                     button.delete-button(type='button')
                         ion-icon(src="icons/trash-outline.svg")
