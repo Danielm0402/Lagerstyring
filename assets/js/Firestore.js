@@ -8,7 +8,8 @@ import {
   getDocs,
   getDoc,
   doc,
-  updateDoc
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -35,29 +36,44 @@ export async function getDataFromFirestore() {
   return products;
 }
 
-export async function getDbProduct(productId) {
-  const firestoreData = await getDataFromFirestore()
+export async function deleteDBProduct(productId) {
+  console.log("4444");
 
-  const products = firestoreData.filter((product) => product.productId === productId)
-  return products[0]
+  // delete product from database where products productID === productId
+  const productRef = doc(productCollection, productId);
+  await deleteDoc(productRef);
+  console.log("deleted procuctasf");
+}
+
+export async function getDbProduct(productId) {
+  const firestoreData = await getDataFromFirestore();
+
+  const products = firestoreData.filter(
+    (product) => product.productId === productId
+  );
+  return products[0];
+}
+
+export async function createProduct(product) {
+  const docRef = await addDoc(productCollection, product);
+  console.log("firestore log");
 }
 
 export async function updateAmountToProduct(amount, productId) {
-  const docRef = doc(db, 'Products', productId)
+  const docRef = doc(db, "Products", productId);
   const productDoc = await getDoc(docRef);
-  const productData = productDoc.data()
-  const newAmount = productData.amount + amount
-  await updateDoc(docRef, {amount: newAmount})
-  return newAmount
+  const productData = productDoc.data();
+  const newAmount = productData.amount + amount;
+  await updateDoc(docRef, { amount: newAmount });
+  return newAmount;
 }
 
 async function test() {
   let productsQueryDocs = await getDocs(productCollection);
   let products = productsQueryDocs.docs.map((doc) => {
-
     let data = doc.data();
     data.productId = doc.id;
-    console.log(data)
+    console.log(data);
   });
 }
 

@@ -1,13 +1,20 @@
-import { getDataFromFirestore, getDbProduct, updateAmountToProduct } from "./assets/js/Firestore.js";
+import {
+  getDataFromFirestore,
+  getDbProduct,
+  deleteDBProduct,
+  updateAmountToProduct,
+  createProduct,
+} from "./assets/js/Firestore.js";
 
 import express from "express";
 import bodyParser from "body-parser";
+import { collectionGroup } from "firebase/firestore";
 const app = express();
 
 //middleware
 app.use(express.static("assets"));
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 // 1. templating
 app.set("view engine", "pug");
@@ -19,8 +26,19 @@ app.get("/", async (req, res) => {
   res.render("index", { products: products });
 });
 
+// opens /createProduct form to create a form
 app.get("/createProduct", (req, res) => {
   res.render("addProduct");
+});
+
+// delete Product from database
+app.put("/deleteProduct/:productid", async (req, res) => {
+  const productId = req.params.productid;
+
+  console.log("afasdg ", productId);
+
+  const product = await deleteDBProduct(productId);
+  res.send(product);
 });
 
 // DECREASE PRODUCT AMOUNT
@@ -34,38 +52,42 @@ app.get("/createProduct", (req, res) => {
   derefter sender requestet det opdaterede
   product fra databasen til klienten
 */
-app.put('/products/:productid/amount', async (req, res) => {
-  const productId = req.params.productid
+app.put("/products/:productid/amount", async (req, res) => {
+  const productId = req.params.productid;
   const action = req.body.action;
 
-  console.log(req.body)
+  console.log(req.body);
 
   if (action === "increase") {
-    console.log("increase")
-    await updateAmountToProduct(1, productId)
-
+    console.log("increase");
+    await updateAmountToProduct(1, productId);
   } else if (action === "decrease") {
-    console.log("decrease")
-    await updateAmountToProduct((-1), productId)
-
+    console.log("decrease");
+    await updateAmountToProduct(-1, productId);
   }
-  const product = await getDbProduct(productId)
-  res.send(product)
-})
+  const product = await getDbProduct(productId);
+  res.send(product);
+});
 
 app.post("/productCreated", (req, res) => {
-  const productName = req.body.inputName
-  const productID = req.body.inputProductID
-  const amount = req.body.inputAmount
-  const unit = req.body.dropdownUnit
+  console.log("req.body: ", req.body);
 
-  console.log(productName)
-  console.log(productID)
-  console.log(amount)
-  console.log(unit)
+  const productName = req.body["input-name"];
+  const productID = req.body["input-produkt-id"];
+  const amount = req.body["input-amount"];
+  const unit = req.body["dropdown-unit"];
 
-  res.redirect("/createProduct")
-})
+  const product = {
+    productName: productName,
+    productId: productID,
+    amount: amount,
+    unit: unit,
+  };
+
+  createProduct(product);
+
+  res.redirect("/createProduct");
+});
 
 app.get("/admin", (req, res) => {
   res.render("admin");

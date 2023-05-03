@@ -17,7 +17,7 @@ body
                 p #{product.productName}
                 p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
                 div.buttons
-                    button.delete-button(type='button')
+                    button.delete-button(type='button', data-productid=product.productId)
                         ion-icon(src="icons/trash-outline.svg")
                     button.button-plusmin(type='button', data-productid=product.productId, data-action="increase") +
                     button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease") -
