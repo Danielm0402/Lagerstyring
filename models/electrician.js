@@ -3,7 +3,7 @@
     elektriker 0..* <--> 0..* lagerbiler 
 */
 
-export class Electrician {
+export default class Electrician {
     constructor(name, vanKey) {
         this.name = name
         this.vanKey = vanKey
