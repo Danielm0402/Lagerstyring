@@ -6,9 +6,8 @@
     product 0..* komposition 1 lagerbil
 */
 
-export class Van {
-
-    constructor(licenseplate) {
+export default class Van {
+    constructor(licenseplate, vanOwner) {
         this.licenseplate = licenseplate
         this.vanKey = 
         this.electricianKey
@@ -27,3 +26,4 @@ export class Van {
     }
 
 }
+
