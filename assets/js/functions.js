@@ -45,12 +45,15 @@ const plusminButtonElements = document.getElementsByClassName('button-plusmin');
 for(const e of plusminButtonElements) {
   const productId = e.dataset.productid
   const btnAction = e.dataset.action
+
   e.addEventListener('click', async () => {
-    const response = await fetch(`/product/${productId}/amount`, {
+    console.log(JSON.stringify( {action: btnAction}))
+    const response = await fetch(`/products/${productId}/amount`, {
       method: 'PUT',
-      headers: {"content-Type": "application/json"},
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify( {action: btnAction} )
     })
+
     const json = await response.json()
     
     const amount = json.amount

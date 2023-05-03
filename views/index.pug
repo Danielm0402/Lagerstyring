@@ -19,8 +19,8 @@ body
                 div.buttons
                     button.delete-button(type='button')
                         ion-icon(src="icons/trash-outline.svg")
-                    button.plusmin(type='button', data-proudctid=product.productId, data-action="increase") +
-                    button.plusmin(type='button', data-productid=product.productId, data-action="decrease") -
+                    button.button-plusmin(type='button', data-productid=product.productId, data-action="increase") +
+                    button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease") -
 
     button.addProduct
         a(href="/createProduct") Tilføj ny vare

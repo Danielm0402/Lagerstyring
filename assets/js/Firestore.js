@@ -29,17 +29,17 @@ export async function getDataFromFirestore() {
   let productsQueryDocs = await getDocs(productCollection);
   let products = productsQueryDocs.docs.map((doc) => {
     let data = doc.data();
-    data.docID = doc.id;
+    data.productId = doc.id;
     return data;
   });
   return products;
 }
 
-export async function getProduct(productId) {
+export async function getDbProduct(productId) {
   const firestoreData = await getDataFromFirestore()
 
-  const product = firestoreData.filter((product) => product.docID === productId)
-  return product[0]
+  const products = firestoreData.filter((product) => product.productId === productId)
+  return products[0]
 }
 
 export async function updateAmountToProduct(amount, productId) {
@@ -52,11 +52,13 @@ export async function updateAmountToProduct(amount, productId) {
 }
 
 async function test() {
-  console.log(await getProduct("BONWE3fCkcuYyu4knvj5"))
+  let productsQueryDocs = await getDocs(productCollection);
+  let products = productsQueryDocs.docs.map((doc) => {
 
-  await addAmountToProduct(10, "BONWE3fCkcuYyu4knvj5")
-
-  console.log(await getProduct("BONWE3fCkcuYyu4knvj5"))
+    let data = doc.data();
+    data.productId = doc.id;
+    console.log(data)
+  });
 }
 
 // test();

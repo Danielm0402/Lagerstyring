@@ -1,4 +1,4 @@
-import { getDataFromFirestore } from "./assets/js/Firestore.js";
+import { getDataFromFirestore, getDbProduct, updateAmountToProduct } from "./assets/js/Firestore.js";
 
 import express from "express";
 import bodyParser from "body-parser";
@@ -7,13 +7,14 @@ const app = express();
 //middleware
 app.use(express.static("assets"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json())
 
 // 1. templating
 app.set("view engine", "pug");
 
 app.get("/", async (req, res) => {
   let products = await getDataFromFirestore();
-  console.log(products);
+  // console.log(products);
 
   res.render("index", { products: products });
 });
@@ -33,16 +34,18 @@ app.get("/createProduct", (req, res) => {
   derefter sender requestet det opdaterede
   product fra databasen til klienten
 */
-app.put('/product/:productid/amount', async (req, res) => {
+app.put('/products/:productid/amount', async (req, res) => {
   const productId = req.params.productid
   const action = req.body.action;
-  
+
+  console.log(req.body)
+
   if (action === "increase") {
-    
+    console.log("increase")
     await updateAmountToProduct(1, productId)
 
   } else if (action === "decrease") {
-    
+    console.log("decrease")
     await updateAmountToProduct((-1), productId)
 
   }
