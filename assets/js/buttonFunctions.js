@@ -107,34 +107,12 @@ createVanBtn.addEventListener("click", async () => {
   const vanOwnerElement = document.getElementsByClassName("input-vanOwner")[0];
 
   const licensePlate = licensePlateElement.value;
-  const vanKey = parseInt(vanOwnerElement.value);
+  const owner = vanOwnerElement.value;
 
-  const createdVan = controller.createVan(licensePlate, vanKey);
-
-  await fetch(`/createvan/${createdVan.vanKey}`, {
+  const createdVan = controller.createVan(licensePlate, owner);
+  await fetch(`/createvan/${createdVan.licensePlate}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ van: createdVan }),
   });
 });
-
-// test()
-// const van = controller.createVan("2321", "13513614")
-// console.log(van)
-
-// const productCarsElements = document.getElementsByClassName('product-container')
-
-// for(const productCarsElement of productCarsElements){
-//     productCarsElement.addEventListener("click", () => {
-//       const valgteBilerElements = document.getElementsByClassName('product-container-selected')
-
-//       for(const valgteBilerElement of valgteBilerElements){
-//         valgteBilerElement.className = 'product-container'
-//       }
-
-//       if("product-container" === productCarsElement.className){
-//       productCarsElement.className = "product-container-selected"
-//     } else {
-//       productCarsElement.className = "product-container"
-//     }
-//     })

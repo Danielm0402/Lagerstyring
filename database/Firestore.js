@@ -11,6 +11,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  setDoc
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -25,13 +26,13 @@ const firebaseConfig = {
 const firebase_app = initializeApp(firebaseConfig);
 const db = getFirestore(firebase_app);
 
-let productCollectionRef = collection(db, "Products");
-let vanCollectionRef = collection(db, "Vans");
-let electriciansCollectionRef = collection(db, "Electricians");
+const productCollectionRef = collection(db, "Products");
+const vanCollectionRef = collection(db, "Vans");
+const electriciansCollectionRef = collection(db, "Electricians");
 
-export async function getDataFromFirestore() {
-  let productsQueryDocs = await getDocs(productCollectionRef);
-  let products = productsQueryDocs.docs.map((doc) => {
+export async function getProductsFromDb() {
+  let productQueryDocs = await getDocs(productCollectionRef);
+  let products = productQueryDocs.docs.map((doc) => {
     let data = doc.data();
     data.productId = doc.id;
     return data;
@@ -39,7 +40,7 @@ export async function getDataFromFirestore() {
   return products;
 }
 
-export async function deleteDBProduct(productId) {
+export async function deleteProductFromDb(productId) {
   console.log("4444");
 
   // delete product from database where products productID === productId
@@ -48,8 +49,8 @@ export async function deleteDBProduct(productId) {
   console.log("deleted procuctasf");
 }
 
-export async function getDbProduct(productId) {
-  const firestoreData = await getDataFromFirestore();
+export async function getProductFromDb(productId) {
+  const firestoreData = await getProductsFromDb();
 
   const products = firestoreData.filter(
     (product) => product.productId === productId
@@ -72,8 +73,17 @@ export async function updateAmountToProduct(amount, productId) {
 }
 
 export async function addVanToDb(van) {
-  const vanDocRef = await addDoc(vanCollectionRef, van);
-  console.log("Adding van");
+  await setDoc(doc(db, "Vans", van.licensePlate), van)
+} 
+
+export async function getVansFromDb() {
+  const vanQueryDocs = await getDocs(vanCollectionRef);
+  let vans = vanQueryDocs.docs.map((doc) => {
+    let data = doc.data();
+    data.vanKey = doc.id;
+    return data;
+  });
+  return vans;
 }
 
 async function test() {
@@ -84,22 +94,3 @@ async function test() {
     console.log(data);
   });
 }
-
-// test();
-
-//   const q = query(
-//     registrationsCollection,
-//     where("companyToken", "==", "YMVOcbfrry6WtWcIgenGBsus7zAhduf6bc87WaqI81w1"),
-//     where("employeeNo", "==", 1)
-//   );
-
-//   console.log("q: ", q);
-
-//   getDocs(q).then((querySnapshot) => {
-//     let totalHours = 0;
-//     querySnapshot.forEach((doc) => {
-//       const data = doc.data();
-//       totalHours += data.totalHours;
-//     });
-//     console.log(totalHours);
-//   });

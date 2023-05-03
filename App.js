@@ -1,11 +1,12 @@
 import {
-  getDataFromFirestore,
-  getDbProduct,
-  deleteDBProduct,
+  getProductsFromDb,
+  getProductFromDb,
+  deleteProductFromDb,
   updateAmountToProduct,
   createProduct,
   addVanToDb,
-} from "./assets/js/Firestore.js";
+  getVansFromDb,
+} from "./database/Firestore.js";
 
 import express from "express";
 import bodyParser from "body-parser";
@@ -21,11 +22,14 @@ app.use(express.json());
 // 1. templating
 app.set("view engine", "pug");
 
-app.get("/", async (req, res) => {
-  let products = await getDataFromFirestore();
-  // console.log(products);
+//---------------ROUTES-----------------------------------------------------------------------------------------------------------------------------
 
-  res.render("index", { products: products });
+//---------------GET REQUESTS------------------------------------------------------------------------
+app.get("/", async (req, res) => {
+  const products = await getProductsFromDb();
+  const vans = await getVansFromDb();
+
+  res.render("index", { products: products, vans: vans });
 });
 
 // opens /createProduct form to create a form
@@ -33,17 +37,32 @@ app.get("/createProduct", (req, res) => {
   res.render("addProduct");
 });
 
+app.get("/admin", (req, res) => {
+  res.render("admin");
+});
+
+app.get("/createVan", (req, res) => {
+  res.render("createVan");
+});
+
+app.get("/createelectrician", (req, res) => {
+  res.render("createElectrician");
+});
+
+
+
+
+//--------------PUT REQUESTS--------------------------------------------------------------------------------------------------
+
 // delete Product from database
 app.put("/deleteProduct/:productid", async (req, res) => {
   const productId = req.params.productid;
 
   console.log("afasdg ", productId);
 
-  const product = await deleteDBProduct(productId);
+  const product = await deleteProductFromDb(productId);
   res.send(product);
 });
-
-// DECREASE PRODUCT AMOUNT
 
 /*
   Når der kommer et put request to denne adresse
@@ -59,15 +78,18 @@ app.put("/products/:productid/amount", async (req, res) => {
   const action = req.body.action;
 
   if (action === "increase") {
-    console.log("increase");
     await updateAmountToProduct(1, productId);
   } else if (action === "decrease") {
-    console.log("decrease");
     await updateAmountToProduct(-1, productId);
   }
-  const product = await getDbProduct(productId);
+  const product = await getProductFromDb(productId);
   res.send(product);
 });
+
+
+
+
+//----------POST REQUEST--------------------------------------------------------------------------
 
 app.post("/productCreated", (req, res) => {
   console.log("req.body: ", req.body);
@@ -89,21 +111,11 @@ app.post("/productCreated", (req, res) => {
   res.redirect("/createProduct");
 });
 
-app.get("/admin", (req, res) => {
-  res.render("admin");
-});
 
-app.get("/createVan", (req, res) => {
-  res.render("createVan");
-});
-
-app.get("/createelectrician", (req, res) => {
-  res.render("createElectrician");
-});
-
-app.post("/createvan/:vankey", (req, res) => {
+app.post("/createvan/:licensePlate", async (req, res) => {
   const van = req.body.van;
-  addVanToDb(van);
+  await addVanToDb(van)
+  res.redirect("/createvan")
 });
 
 app.listen(4000);

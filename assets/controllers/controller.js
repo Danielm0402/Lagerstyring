@@ -14,9 +14,8 @@ export default class Controller {
         e.addVan(v);
     }
 
-    createVan(licensePlate, vanKey){
-        const van = new Van(licensePlate, vanKey)
+    createVan(licensePlate, owner, vanKey){
+        const van = new Van(licensePlate, owner, vanKey)
         return van
     }
 }
-

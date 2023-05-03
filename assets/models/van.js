@@ -7,9 +7,10 @@
 */
 
 export default class Van {
-    constructor(licenseplate, vanKey) {
-        this.licenseplate = licenseplate
+    constructor(licensePlate, owner, vanKey) {
+        this.licensePlate = licensePlate
         this.vanKey = vanKey
+        this.owner = owner
     }
 
     createProduct(name, amount, unit){
@@ -23,6 +24,5 @@ export default class Van {
             this.products.slice(this.products.indexOf(product), 1)
         }
     }
-
 }
 
