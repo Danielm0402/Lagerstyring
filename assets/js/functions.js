@@ -1,5 +1,4 @@
 // import { getDataFromFirestore } from "./Firestore.js";
-import { updateAmountToProduct } from "./Firestore";
 
 document.getElementById('addButton')
 
@@ -18,17 +17,6 @@ for (const e of deleteButtonElements) {
     productboksediv.remove()
   })
 }
-
-const plusButtonsElements = document.getElementsByClassName('button-plus')
-
-const minusButtonsElements = document.getElementsByClassName('button-minus')
-
-for(const e of plusButtonsElements){
-  e.addEventListener("click", () => {
-    updateAmountToProduct(1, )
-  })
-}
-
 
 // const productCarsElements = document.getElementsByClassName('product-container')
 

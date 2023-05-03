@@ -48,11 +48,7 @@ include includes/head
     flex-direction: column;
   }
 
-  .button-plus{
-    margin: 2px;
-  }
-
-  .button-minus{
+  .plusminus{
     margin: 2px;
   }
 
