@@ -64,6 +64,9 @@ async function test() {
   });
 }
 
+{
+  vanName: "vanName"
+}
 
 export async function addVanToDb(van){
   const collectionRef = collection('Vans')

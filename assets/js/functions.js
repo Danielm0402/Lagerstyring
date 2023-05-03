@@ -1,4 +1,6 @@
-import Controller from "/controller.js";
+
+import { test } from "../../controllers/controller.js";
+import Controller from "../../controllers/controller.js";
 
 const controller = new Controller()
 
@@ -89,7 +91,9 @@ createVanBtn.addEventListener('click', () =>{
 
 })
 
-
+// test()
+// const van = controller.createVan("2321", "13513614")
+// console.log(van)
 
 
 // const productCarsElements = document.getElementsByClassName('product-container')

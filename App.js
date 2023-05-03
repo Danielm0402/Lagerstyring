@@ -6,6 +6,7 @@ const app = express();
 
 //middleware
 app.use(express.static("assets"));
+app.use(express.static("controllers"))
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.json())
 

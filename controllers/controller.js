@@ -1,6 +1,10 @@
-import { Electrician } from "../models/electrician";
-import { Van } from "../models/van";
+import Electrician from "../models/electrician.js";
+import Van from "../models/van.js";
 
+
+export function test() {
+    console.log("test")
+}
 
 export default class Controller {
     test() {
@@ -14,6 +18,5 @@ export default class Controller {
         const van = new Van(licensePlate,vanOwner)
         return van
     }
-    
 }
 
