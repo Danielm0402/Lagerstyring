@@ -1,3 +1,7 @@
+import Controller from "/controller.js";
+
+const controller = new Controller()
+
 document.getElementById("addButton");
 
 function x() {
@@ -64,6 +68,28 @@ for(const e of plusminButtonElements) {
     storagePElement.innerHTML = `På lager: ${amount} ${unit}`
   })
 }
+
+
+//-------------------------Create lagerbil-------------------------------------------------
+
+const createVanBtn = document.getElementsByClassName('button-createVan') [0]
+
+createVanBtn.addEventListener('click', () =>{
+
+    const licensePlateElement = document.getElementsByClassName('input-vanLicensePlate') [0]
+    const vanOwnerElement = document.getElementsByClassName('input-vanOwner') [0]
+
+    const licensePlate = licensePlateElement.value
+    const vanOwner = vanOwnerElement.value
+
+    const van = controller.createVan(licensePlate,vanOwner)
+
+    console.log(van);
+
+
+})
+
+
 
 
 // const productCarsElements = document.getElementsByClassName('product-container')

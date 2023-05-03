@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+
 import {
   collection,
   getFirestore,
@@ -24,6 +25,8 @@ const firebase_app = initializeApp(firebaseConfig);
 const db = getFirestore(firebase_app);
 
 let productCollection = collection(db, "Products");
+let vanCollection = collection(db, "Vans")
+let electriciansCollection = collection(db, "Electricians")
 
 export async function getDataFromFirestore() {
   let productsQueryDocs = await getDocs(productCollection);
@@ -59,6 +62,14 @@ async function test() {
     data.productId = doc.id;
     console.log(data)
   });
+}
+
+
+export async function addVanToDb(van){
+  const collectionRef = collection('Vans')
+
+  const newDocRef = await collectionRef.add(van)
+
 }
 
 // test();

@@ -6,9 +6,10 @@
     product 0..* <-- 1 lagerbil
 */
 
-export class Van {
-    constructor(licenseplate) {
+export default class Van {
+    constructor(licenseplate, vanOwner) {
         this.licenseplate = licenseplate
+        this.vanOwner = vanOwner
         this.products = []
         this.electricians = []
     }
@@ -21,3 +22,4 @@ export class Van {
         this.products.push(product)
     }
 }
+
