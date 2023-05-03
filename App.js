@@ -88,7 +88,7 @@ app.post("/createvan/:vankey", (req, res) => {
   const van = req.body.van
   addVanToDb(van)
 
-}) 
+})
 
 app.listen(4000);
 console.log("listening on port 4000");

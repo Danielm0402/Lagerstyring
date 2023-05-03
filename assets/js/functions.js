@@ -82,7 +82,7 @@ createVanBtn.addEventListener('click', async () => {
     const vanOwnerElement = document.getElementsByClassName('input-vanOwner') [0]
 
     const licensePlate = licensePlateElement.value
-    const vanKey = vanOwnerElement.value
+    const vanKey = parseInt(vanOwnerElement.value)
 
     const createdVan = controller.createVan(licensePlate, vanKey)
 
