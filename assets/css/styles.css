@@ -44,7 +44,7 @@ include includes/head
   }
 
   .buttons{
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
   }
 
@@ -60,14 +60,18 @@ include includes/head
     margin-top: 10px
   }
 
+  
   p {
     font-size: 18px;
     color: #333;
     margin: 0;
   }
-
+  
   button {
-    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: content-box;
     color: #fff;
     background-color: #333;
     border: none;
@@ -75,8 +79,13 @@ include includes/head
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;  
+    margin: 2px;
   }
-
+  
+  ion-icon {
+    height: 20px;
+    width: 20px;
+  }
   button a {
     color: #fff;
     text-decoration: none;
@@ -85,6 +94,11 @@ include includes/head
   button:hover {
     background-color: #555;
   }
+
   label{
     display: block
+  }
+
+  p.storage{
+    align-items: center;
   }

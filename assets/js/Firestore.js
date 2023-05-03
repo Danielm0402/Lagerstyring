@@ -25,20 +25,20 @@ const db = getFirestore(firebase_app);
 
 let productCollection = collection(db, "Products");
 
-export async function getDataFromFirestore() {
+export async function getDbProducts() {
   let productsQueryDocs = await getDocs(productCollection);
   let products = productsQueryDocs.docs.map((doc) => {
     let data = doc.data();
-    data.docID = doc.id;
+    data.productId = doc.id;
     return data;
   });
   return products;
 }
 
-export async function getProduct(productId) {
-  const firestoreData = await getDataFromFirestore()
+export async function getDbProduct(productId) {
+  const firestoreData = await getDbProducts()
 
-  const product = firestoreData.filter((product) => product.docID === productId)
+  const product = firestoreData.filter((product) => product.productId === productId)
   return product[0]
 }
 
@@ -51,12 +51,14 @@ export async function updateAmountToProduct(amount, productId) {
   return newAmount
 }
 
+export async function createProduct(product){
+  const docRef = await addDoc(productCollection, product)
+  console.log("firestore log")
+}
+
 async function test() {
-  console.log(await getProduct("BONWE3fCkcuYyu4knvj5"))
+  console.log(await getDbProduct("BONWE3fCkcuYyu4knvj5"))
 
-  await addAmountToProduct(10, "BONWE3fCkcuYyu4knvj5")
-
-  console.log(await getProduct("BONWE3fCkcuYyu4knvj5"))
 }
 
 // test();
