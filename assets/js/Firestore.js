@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+
 import {
   collection,
   getFirestore,
@@ -24,10 +25,12 @@ const firebaseConfig = {
 const firebase_app = initializeApp(firebaseConfig);
 const db = getFirestore(firebase_app);
 
-let productCollection = collection(db, "Products");
+let productCollectionRef = collection(db, "Products");
+let vanCollectionRef = collection(db, "Vans")
+let electriciansCollectionRef = collection(db, "Electricians")
 
 export async function getDataFromFirestore() {
-  let productsQueryDocs = await getDocs(productCollection);
+  let productsQueryDocs = await getDocs(productCollectionRef);
   let products = productsQueryDocs.docs.map((doc) => {
     let data = doc.data();
     data.productId = doc.id;
@@ -68,8 +71,13 @@ export async function updateAmountToProduct(amount, productId) {
   return newAmount;
 }
 
+export async function addVanToDb(van) {
+  const vanDocRef = await addDoc(vanCollectionRef, van)
+  console.log("Adding van")
+}
+
 async function test() {
-  let productsQueryDocs = await getDocs(productCollection);
+  let productsQueryDocs = await getDocs(productCollectionRef);
   let products = productsQueryDocs.docs.map((doc) => {
     let data = doc.data();
     data.productId = doc.id;

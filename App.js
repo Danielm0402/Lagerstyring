@@ -4,6 +4,7 @@ import {
   deleteDBProduct,
   updateAmountToProduct,
   createProduct,
+  addVanToDb,
 } from "./assets/js/Firestore.js";
 
 import express from "express";
@@ -13,6 +14,7 @@ const app = express();
 
 //middleware
 app.use(express.static("assets"));
+app.use(express.static("controllers"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -56,8 +58,6 @@ app.put("/products/:productid/amount", async (req, res) => {
   const productId = req.params.productid;
   const action = req.body.action;
 
-  console.log(req.body);
-
   if (action === "increase") {
     console.log("increase");
     await updateAmountToProduct(1, productId);
@@ -97,8 +97,13 @@ app.get("/createVan", (req, res) => {
   res.render("createVan");
 });
 
-app.get("/createElectrician", (req, res) => {
+app.get("/createelectrician", (req, res) => {
   res.render("createElectrician");
+});
+
+app.post("/createvan/:vankey", (req, res) => {
+  const van = req.body.van;
+  addVanToDb(van);
 });
 
 app.listen(4000);
