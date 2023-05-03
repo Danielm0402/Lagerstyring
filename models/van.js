@@ -3,21 +3,27 @@
 */
 
 /*
-    product 0..* <-- 1 lagerbil
+    product 0..* komposition 1 lagerbil
 */
 
 export class Van {
+
     constructor(licenseplate) {
         this.licenseplate = licenseplate
-        this.products = []
-        this.electricians = []
+        this.vanKey = 
+        this.electricianKey
     }
 
-    addElectrician(electrician) {
-        this.electricians.push(electrician)
+    createProduct(name, amount, unit){
+        let newProduct = new product(name, amount, unit)
+        this.products.push(newProduct)
+        return newProduct
     }
 
-    addProduct(product) {
-        this.products.push(product)
+    removeProduct(product){
+        if(this.products.includes(product)){
+            this.products.slice(this.products.indexOf(product), 1)
+        }
     }
+
 }

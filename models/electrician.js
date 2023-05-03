@@ -4,11 +4,13 @@
 */
 
 export class Electrician {
-    constructor(navn) {
-        this.navn = navn
+    constructor(name, vanKey) {
+        this.name = name
+        this.vanKey = vanKey
     }
 
-    addVan(van) {
-        this.van = van
+    changeVanKey(newVanKey){
+        this.vanKey = newVanKey
     }
+    
 }
