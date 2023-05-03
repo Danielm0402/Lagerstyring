@@ -79,9 +79,3 @@ for(const e of plusminButtonElements) {
 //       productCarsElement.className = "product-container"
 //     }
 //     })
-
-
-
-
-
-

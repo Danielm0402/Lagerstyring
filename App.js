@@ -22,6 +22,34 @@ app.get("/createProduct", (req, res) => {
   res.render("addProduct");
 });
 
+// DECREASE PRODUCT AMOUNT
+
+/*
+  Når der kommer et put request to denne adresse
+  gem productId og action fra request.body
+  alt efter hvilken action der er i bodyen
+  skal requestet opdatere product amount 1 op 
+  eller 1 ned
+  derefter sender requestet det opdaterede
+  product fra databasen til klienten
+*/
+app.put('/product/:productid/amount', async (req, res) => {
+  const productId = req.params.productid
+  const action = req.body.action;
+  
+  if (action === "increase") {
+    
+    await updateAmountToProduct(1, productId)
+
+  } else if (action === "decrease") {
+    
+    await updateAmountToProduct((-1), productId)
+
+  }
+  const product = await getDbProduct(productId)
+  res.send(product)
+})
+
 app.post("/productCreated", (req, res) => {
   const productName = req.body.inputName
   const productID = req.body.inputProductID
