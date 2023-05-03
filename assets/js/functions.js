@@ -1,5 +1,4 @@
-
-import { test } from "../../controllers/controller.js";
+import { test } from "../controllers/controller.js";
 import Controller from "../../controllers/controller.js";
 
 const controller = new Controller()
@@ -23,31 +22,32 @@ for (const e of deleteButtonElements) {
 }
 
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
-const plusminButtonElements = document.getElementsByClassName('button-plusmin');
 
 /*
-  Looper igennem alle increaseButtons 
-  og giver dem en eventlistener
-  Gem productId for at kunne opdatere
-  aktuelle product i db
+Looper igennem alle increaseButtons 
+og giver dem en eventlistener
+Gem productId for at kunne opdatere
+aktuelle product i db
 
-  send et request til serveren
-  hvor i body'en af requestet 
-  er en action property der 
-  fortæller serveren hvad den skal 
-  gøre med requestet
-  Responset fra requestet gemmes i en variabel
+send et request til serveren
+hvor i body'en af requestet 
+er en action property der 
+fortæller serveren hvad den skal 
+gøre med requestet
+Responset fra requestet gemmes i en variabel
 
-  Find aktuelle paragraph element
-  ved at få alle elementer med 
-  klassen storage. Filtrer for dem
-  der har data productId
+Find aktuelle paragraph element
+ved at få alle elementer med 
+klassen storage. Filtrer for dem
+der har data productId
 
-  opdater dette paragraph elements
-  text, så det passer med det nye
-  antal products
-  
+opdater dette paragraph elements
+text, så det passer med det nye
+antal products
+
 */
+const plusminButtonElements = document.getElementsByClassName('button-plusmin');
+
 for(const e of plusminButtonElements) {
   const productId = e.dataset.productid
   const btnAction = e.dataset.action
@@ -74,20 +74,23 @@ for(const e of plusminButtonElements) {
 
 //-------------------------Create lagerbil-------------------------------------------------
 
-const createVanBtn = document.getElementsByClassName('button-createVan') [0]
+const createVanBtn = document.getElementsByClassName('button-createVan')[0]
 
-createVanBtn.addEventListener('click', () =>{
+createVanBtn.addEventListener('click', async () => {
 
     const licensePlateElement = document.getElementsByClassName('input-vanLicensePlate') [0]
     const vanOwnerElement = document.getElementsByClassName('input-vanOwner') [0]
 
     const licensePlate = licensePlateElement.value
-    const vanOwner = vanOwnerElement.value
+    const vanKey = vanOwnerElement.value
 
-    const van = controller.createVan(licensePlate,vanOwner)
+    const createdVan = controller.createVan(licensePlate, vanKey)
 
-    console.log(van);
-
+    await fetch(`/createvan/${createdVan.vanKey}`, {
+      method: 'POST',
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify( {van: createdVan} )
+    })
 
 })
 

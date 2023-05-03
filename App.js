@@ -1,4 +1,9 @@
-import { getDataFromFirestore, getDbProduct, updateAmountToProduct } from "./assets/js/Firestore.js";
+import { 
+  getDataFromFirestore, 
+  getDbProduct, 
+  updateAmountToProduct,
+  addVanToDb 
+} from "./assets/js/Firestore.js";
 
 import express from "express";
 import bodyParser from "body-parser";
@@ -39,8 +44,6 @@ app.put('/products/:productid/amount', async (req, res) => {
   const productId = req.params.productid
   const action = req.body.action;
 
-  console.log(req.body)
-
   if (action === "increase") {
     console.log("increase")
     await updateAmountToProduct(1, productId)
@@ -76,9 +79,16 @@ app.get("/createVan", (req, res) => {
   res.render("createVan");
 });
 
-app.get("/createElectrician", (req, res) => {
+app.get("/createelectrician", (req, res) => {
   res.render("createElectrician");
 });
+
+app.post("/createvan/:vankey", (req, res) => {
+
+  const van = req.body.van
+  addVanToDb(van)
+
+}) 
 
 app.listen(4000);
 console.log("listening on port 4000");
