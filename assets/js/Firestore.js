@@ -26,8 +26,8 @@ const firebase_app = initializeApp(firebaseConfig);
 const db = getFirestore(firebase_app);
 
 let productCollectionRef = collection(db, "Products");
-let vanCollectionRef = collection(db, "Vans")
-let electriciansCollectionRef = collection(db, "Electricians")
+let vanCollectionRef = collection(db, "Vans");
+let electriciansCollectionRef = collection(db, "Electricians");
 
 export async function getDataFromFirestore() {
   let productsQueryDocs = await getDocs(productCollectionRef);
@@ -58,7 +58,7 @@ export async function getDbProduct(productId) {
 }
 
 export async function createProduct(product) {
-  const docRef = await addDoc(productCollection, product);
+  const docRef = await addDoc(productCollectionRef, product);
   console.log("firestore log");
 }
 
@@ -72,8 +72,8 @@ export async function updateAmountToProduct(amount, productId) {
 }
 
 export async function addVanToDb(van) {
-  const vanDocRef = await addDoc(vanCollectionRef, van)
-  console.log("Adding van")
+  const vanDocRef = await addDoc(vanCollectionRef, van);
+  console.log("Adding van");
 }
 
 async function test() {
