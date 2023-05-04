@@ -99,6 +99,12 @@ for (const e of plusminButtonElements) {
 const selectVanDropdownElement = document.getElementById('dropdown-select-van')
 
 selectVanDropdownElement.addEventListener('change', () => {
-  console.log("test");
-  fetch('/')
+  const selectedIndex = selectVanDropdownElement.selectedIndex;
+  const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
+  const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
+  const vanProducts = fetch(`/van/${selectedLicensePlate}/products`, {
+    method: "GET",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({licensePlate: selectedLicensePlate})
+  })
 });

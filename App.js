@@ -39,12 +39,15 @@ app.get("/createProduct", (req, res) => {
   res.render("createProduct");
 });
 
-
 app.get("/admin", async (req, res) => {
   const vans = await getVansFromDb();
   res.render("admin", {vans: vans});
 });
 
+app.get('/van/:licenseplate/products', async (req, res) => {
+  const licensePlate = req.body.licensePlate
+  
+})
 
 app.get("/createVan", (req, res) => {
   res.render("createVan");
