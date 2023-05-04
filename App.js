@@ -39,9 +39,12 @@ app.get("/createProduct", (req, res) => {
   res.render("createProduct");
 });
 
-app.get("/admin", (req, res) => {
-  res.render("admin");
+
+app.get("/admin", async (req, res) => {
+  const vans = await getVansFromDb();
+  res.render("admin", {vans: vans});
 });
+
 
 app.get("/createVan", (req, res) => {
   res.render("createVan");
