@@ -1,4 +1,4 @@
-import { test } from "../controllers/controller.js";
+import { test } from "../../controllers/controller.js";
 import Controller from "../../controllers/controller.js";
 
 const controller = new Controller();
@@ -115,6 +115,13 @@ for (const e of plusminButtonElements) {
 //     headers: { "Content-Type": "application/json" },
 //     body: JSON.stringify({ van: createdVan }),
 //   });
+// });
+// const createdVan = controller.createVan(licensePlate, owner);
+// await fetch(`/createvan/${createdVan.licensePlate}`, {
+//   method: "POST",
+//   headers: { "Content-Type": "application/json" },
+//   body: JSON.stringify({ van: createdVan }),
+// });
 // });
 
 //------------------------------- SELECT VAN-----------------------------------------------
