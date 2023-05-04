@@ -1,4 +1,4 @@
-import { test } from "../controllers/controller.js";
+import { test } from "../../controllers/controller.js";
 import Controller from "../../controllers/controller.js";
 
 const controller = new Controller();
@@ -98,43 +98,35 @@ for (const e of plusminButtonElements) {
 
 //-------------------------Create lagerbil-------------------------------------------------
 
-const createVanBtn = document.getElementsByClassName("button-createVan")[0];
+// const createVanBtn = document.getElementsByClassName("button-createVan")[0];
 
-createVanBtn.addEventListener("click", async () => {
-  const licensePlateElement = document.getElementsByClassName(
-    "input-vanLicensePlate"
-  )[0];
-  const vanOwnerElement = document.getElementsByClassName("input-vanOwner")[0];
+// createVanBtn.addEventListener("click", async () => {
+//   const licensePlateElement = document.getElementsByClassName(
+//     "input-vanLicensePlate"
+//   )[0];
+//   const vanOwnerElement = document.getElementsByClassName("input-vanOwner")[0];
 
-  const licensePlate = licensePlateElement.value;
-  const vanKey = parseInt(vanOwnerElement.value);
+//   const licensePlate = licensePlateElement.value;
+//   const owner = vanOwnerElement.value;
 
-  const createdVan = controller.createVan(licensePlate, vanKey);
+//   const createdVan = controller.createVan(licensePlate, owner);
+//   await fetch(`/van/${createdVan.licensePlate}`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ van: createdVan }),
+//   });
+// });
+// const createdVan = controller.createVan(licensePlate, owner);
+// await fetch(`/createvan/${createdVan.licensePlate}`, {
+//   method: "POST",
+//   headers: { "Content-Type": "application/json" },
+//   body: JSON.stringify({ van: createdVan }),
+// });
+// });
 
-  await fetch(`/createvan/${createdVan.vanKey}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ van: createdVan }),
-  });
+//------------------------------- SELECT VAN-----------------------------------------------
+const selectVanDropdownElement = document.getElementById('dropdown-select-van')
+
+selectVanDropdownElement.addEventListener('change', () => {
+  console.log("test");
 });
-
-// test()
-// const van = controller.createVan("2321", "13513614")
-// console.log(van)
-
-// const productCarsElements = document.getElementsByClassName('product-container')
-
-// for(const productCarsElement of productCarsElements){
-//     productCarsElement.addEventListener("click", () => {
-//       const valgteBilerElements = document.getElementsByClassName('product-container-selected')
-
-//       for(const valgteBilerElement of valgteBilerElements){
-//         valgteBilerElement.className = 'product-container'
-//       }
-
-//       if("product-container" === productCarsElement.className){
-//       productCarsElement.className = "product-container-selected"
-//     } else {
-//       productCarsElement.className = "product-container"
-//     }
-//     })

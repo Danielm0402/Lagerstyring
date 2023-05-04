@@ -1,37 +1,64 @@
 import {
-  getDataFromFirestore,
-  getDbProduct,
-  deleteDBProduct,
+  getProductsFromDb,
+  getProductFromDb,
+  deleteProductFromDb,
   updateAmountToProduct,
-  createProduct,
   addVanToDb,
-} from "./assets/js/Firestore.js";
+  getVansFromDb,
+} from "./database/Firestore.js";
+
+import Controller from "./controllers/controller.js";
 
 import express from "express";
 import bodyParser from "body-parser";
 import { collectionGroup } from "firebase/firestore";
 const app = express();
 
+const controller = new Controller();
+
 //middleware
 app.use(express.static("assets"));
-app.use(express.static("controllers"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 // 1. templating
 app.set("view engine", "pug");
 
-app.get("/", async (req, res) => {
-  let products = await getDataFromFirestore();
-  // console.log(products);
+//---------------ROUTES-----------------------------------------------------------------------------------------------------------------------------
 
-  res.render("index", { products: products });
+//---------------GET REQUESTS------------------------------------------------------------------------
+app.get("/", async (req, res) => {
+  const products = await getProductsFromDb();
+  const vans = await getVansFromDb();
+
+  res.render("index", { products: products, vans: vans });
 });
 
 // opens /createProduct form to create a form
 app.get("/createProduct", (req, res) => {
-  res.render("addProduct");
+  res.render("createProduct");
 });
+
+app.get("/admin", (req, res) => {
+  res.render("admin");
+});
+
+app.get("/createVan", (req, res) => {
+  res.render("createVan");
+});
+
+app.get("/createelectrician", (req, res) => {
+  res.render("createElectrician");
+});
+
+app.get("/test", (req, res) => {
+  res.send('Dette var en god test');
+  console.log("testestest")
+})
+
+
+
+//--------------PUT REQUESTS--------------------------------------------------------------------------------------------------
 
 // delete Product from database
 app.put("/deleteProduct/:productid", async (req, res) => {
@@ -39,11 +66,9 @@ app.put("/deleteProduct/:productid", async (req, res) => {
 
   console.log("afasdg ", productId);
 
-  const product = await deleteDBProduct(productId);
+  const product = await deleteProductFromDb(productId);
   res.send(product);
 });
-
-// DECREASE PRODUCT AMOUNT
 
 /*
   Når der kommer et put request to denne adresse
@@ -59,19 +84,17 @@ app.put("/products/:productid/amount", async (req, res) => {
   const action = req.body.action;
 
   if (action === "increase") {
-    console.log("increase");
     await updateAmountToProduct(1, productId);
   } else if (action === "decrease") {
-    console.log("decrease");
     await updateAmountToProduct(-1, productId);
   }
-  const product = await getDbProduct(productId);
+  const product = await getProductFromDb(productId);
   res.send(product);
 });
 
-app.post("/productCreated", (req, res) => {
-  console.log("req.body: ", req.body);
+//----------POST REQUEST--------------------------------------------------------------------------
 
+app.post("/product", (req, res) => {
   const productName = req.body["input-name"];
   const productID = req.body["input-produkt-id"];
   const amount = req.body["input-amount"];
@@ -80,30 +103,20 @@ app.post("/productCreated", (req, res) => {
   const product = {
     productName: productName,
     productId: productID,
-    amount: amount,
+    amount: parseInt(amount),
     unit: unit,
   };
 
-  createProduct(product);
+  controller.createProductToDB(product);
 
   res.redirect("/createProduct");
 });
 
-app.get("/admin", (req, res) => {
-  res.render("admin");
-});
 
-app.get("/createVan", (req, res) => {
-  res.render("createVan");
-});
-
-app.get("/createelectrician", (req, res) => {
-  res.render("createElectrician");
-});
-
-app.post("/createvan/:vankey", (req, res) => {
+app.post("/van/:licensePlate", async (req, res) => {
   const van = req.body.van;
-  addVanToDb(van);
+  await addVanToDb(van)
+  res.redirect("/van")
 });
 
 app.listen(4000);

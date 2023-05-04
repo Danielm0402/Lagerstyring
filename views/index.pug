@@ -2,9 +2,9 @@ include includes/head
 
 body
     h1 Bil:
-        select(name='my-dropdown')
-            each option in ['Olivers Bil', 'Bil 2', 'Bil 3']
-                option(value=option)= option
+        select#dropdown-select-van(name='select-van')
+            each van in vans
+                option(value=option)=van.licensePlate + ' - ' + van.owner
     
 
 
