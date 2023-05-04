@@ -49,6 +49,10 @@ app.get("/createelectrician", (req, res) => {
   res.render("createElectrician");
 });
 
+app.get("/test", (req, res) => {
+  res.send('Dette var en god test');
+  console.log("testestest")
+})
 
 
 
@@ -112,10 +116,10 @@ app.post("/productCreated", (req, res) => {
 });
 
 
-app.post("/createvan/:licensePlate", async (req, res) => {
+app.post("/van/:licensePlate", async (req, res) => {
   const van = req.body.van;
   await addVanToDb(van)
-  res.redirect("/createvan")
+  res.redirect("/van")
 });
 
 app.listen(4000);

@@ -74,7 +74,7 @@ export async function updateAmountToProduct(amount, productId) {
 
 export async function addVanToDb(van) {
   await setDoc(doc(db, "Vans", van.licensePlate), van)
-} 
+}
 
 export async function getVansFromDb() {
   const vanQueryDocs = await getDocs(vanCollectionRef);

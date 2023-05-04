@@ -2,9 +2,9 @@ include includes/head
 
 body
     h1 Bil:
-        select(name='my-dropdown')
+        select#dropdown-select-van(name='select-van')
             each van in vans
-                option(value=option)= van.vanKey
+                option(value=option)=van.licensePlate + ' - ' + van.owner
     
 
 
