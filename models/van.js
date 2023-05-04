@@ -7,9 +7,8 @@
 */
 
 export default class Van {
-    constructor(licenseplate, vanKey) {
+    constructor(licenseplate) {
         this.licenseplate = licenseplate
-        this.vanKey = vanKey
     }
 
     createProduct(name, amount, unit){
