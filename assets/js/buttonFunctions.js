@@ -1,5 +1,3 @@
-const controller = new Controller();
-
 document.getElementById("addButton");
 
 function x() {
@@ -8,24 +6,6 @@ function x() {
     console.log("Hej");
   });
 }
-
-const createProductElement = document.getElementById("create-product-btn");
-
-// createProductElement.addEventListener("click", async () => {
-//   const formData = new FormData(document.querySelector("form"));
-//   const product = {
-//     "input-name": formData.get("input-name"),
-//     "input-produkt-id": formData.get("input-produkt-id"),
-//     "input-amount": formData.get("input-amount"),
-//     "dropdown-unit": formData.get("dropdown-unit"),
-//   };
-
-//   const response = await fetch(`/productCreated`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(product),
-//   });
-// });
 
 const deleteButtonElements = document.getElementsByClassName("delete-button");
 for (const e of deleteButtonElements) {
@@ -74,7 +54,6 @@ for (const e of plusminButtonElements) {
   const btnAction = e.dataset.action;
 
   e.addEventListener("click", async () => {
-    console.log(JSON.stringify({ action: btnAction }));
     const response = await fetch(`/products/${productId}/amount`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
