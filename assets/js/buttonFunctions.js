@@ -14,7 +14,6 @@ for (const e of deleteButtonElements) {
     const response = await fetch(`/deleteProduct/${productId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      // body: JSON.stringify( {action: btnAction} )
     });
 
     const productboksediv = e.parentElement.parentElement;
@@ -22,6 +21,25 @@ for (const e of deleteButtonElements) {
   });
 }
 
+if (document.getElementById("delete-van")) {
+  // på forsiden er der ikke noget der hedder delete-van, så der fejler den, hvis ikke der lige et et tjek på om der findes en "delete-van" på den side man er på.
+  const deleteVanButtonElement = document.getElementById("delete-van");
+
+  deleteVanButtonElement.addEventListener("click", async () => {
+    const selectElement = document.querySelector("#dropdown-select-van");
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    let licensePlate = selectedOption.value;
+    console.log("hey", licensePlate);
+
+    // licensePlate = await selectedOption.value;
+
+    const response = await fetch(`/deleteVan/${licensePlate}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    });
+    location.reload();
+  });
+}
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
 
 /*
@@ -96,7 +114,7 @@ for (const e of plusminButtonElements) {
 // });
 
 //------------------------------- SELECT VAN-----------------------------------------------
-const selectVanDropdownElement = document.getElementById('dropdown-select-van')
+const selectVanDropdownElement = document.getElementById("dropdown-select-van");
 
 selectVanDropdownElement.addEventListener('change', () => {
   const selectedIndex = selectVanDropdownElement.selectedIndex;
