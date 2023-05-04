@@ -59,6 +59,9 @@ app.get("/test", (req, res) => {
   console.log("testestest")
 })
 
+app.get("/deleteVan", (req, res) => {
+  res.render("deleteVan")
+})
 
 
 //--------------PUT REQUESTS--------------------------------------------------------------------------------------------------

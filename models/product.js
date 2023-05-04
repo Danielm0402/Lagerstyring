@@ -4,15 +4,11 @@
 */
 
 class Product {
-    constructor(name, amount, unit, vanKey) {
+    constructor(name, amount, unit, licenseplate) {
         this.name = name
         this.amount = amount
         this.unit = unit
-        this.vanKey = vanKey
-    }
-
-    getVanKey(){
-        return this.vanKey
+        this.licenseplate = licenseplate
     }
 
 

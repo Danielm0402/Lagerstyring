@@ -1,11 +1,11 @@
 import { Electrician } from "./electrician";
 
 export class Admin extends Electrician{
-    constructor(name, vankey){
-        super(name, vankey)
+    constructor(name, licenseplate){
+        super(name, licenseplate)
     }
 
-    changeVanKey(newVanKey){
-        this.vanKey = newVanKey
+    changeLicenseplate(newLicenseplate){
+        this.licenseplate = newLicenseplate
     }
 }
