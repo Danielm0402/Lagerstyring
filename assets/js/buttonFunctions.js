@@ -1,4 +1,4 @@
-import { test } from "../controllers/controller.js";
+import { test } from "../../controllers/controller.js";
 import Controller from "../../controllers/controller.js";
 
 const controller = new Controller();

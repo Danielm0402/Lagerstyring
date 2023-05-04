@@ -3,19 +3,21 @@ import {
   getProductFromDb,
   deleteProductFromDb,
   updateAmountToProduct,
-  createProduct,
   addVanToDb,
   getVansFromDb,
 } from "./database/Firestore.js";
+
+import Controller from "./controllers/controller.js";
 
 import express from "express";
 import bodyParser from "body-parser";
 import { collectionGroup } from "firebase/firestore";
 const app = express();
 
+const controller = new Controller();
+
 //middleware
 app.use(express.static("assets"));
-app.use(express.static("controllers"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -34,7 +36,7 @@ app.get("/", async (req, res) => {
 
 // opens /createProduct form to create a form
 app.get("/createProduct", (req, res) => {
-  res.render("addProduct");
+  res.render("createProduct");
 });
 
 app.get("/admin", (req, res) => {
@@ -48,9 +50,6 @@ app.get("/createVan", (req, res) => {
 app.get("/createelectrician", (req, res) => {
   res.render("createElectrician");
 });
-
-
-
 
 //--------------PUT REQUESTS--------------------------------------------------------------------------------------------------
 
@@ -86,14 +85,9 @@ app.put("/products/:productid/amount", async (req, res) => {
   res.send(product);
 });
 
-
-
-
 //----------POST REQUEST--------------------------------------------------------------------------
 
-app.post("/productCreated", (req, res) => {
-  console.log("req.body: ", req.body);
-
+app.post("/product", (req, res) => {
   const productName = req.body["input-name"];
   const productID = req.body["input-produkt-id"];
   const amount = req.body["input-amount"];
@@ -102,20 +96,19 @@ app.post("/productCreated", (req, res) => {
   const product = {
     productName: productName,
     productId: productID,
-    amount: amount,
+    amount: parseInt(amount),
     unit: unit,
   };
 
-  createProduct(product);
+  controller.createProductToDB(product);
 
   res.redirect("/createProduct");
 });
 
-
 app.post("/createvan/:licensePlate", async (req, res) => {
   const van = req.body.van;
-  await addVanToDb(van)
-  res.redirect("/createvan")
+  await addVanToDb(van);
+  res.redirect("/createvan");
 });
 
 app.listen(4000);

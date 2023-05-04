@@ -1,7 +1,11 @@
 include includes/head
 
 body
-    form(action="/productCreated", method='post')
+
+    button
+        a.knap(href='/') Tilbage
+
+    form(action="/product", method='post')
 
         div#div-createProduct
         div
@@ -21,4 +25,4 @@ body
                 each option in ['stk', 'm', 'cm', 'mm', 'kg', 'g']
                     option(value = option)= option
 
-            button(id="create-product-btn" class="create-product" type="submit") Opret vare
+        button(id="create-product-btn" class="create-product" type="submit") Opret vare
