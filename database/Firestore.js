@@ -44,7 +44,7 @@ export async function deleteProductFromDb(productId) {
   console.log("4444");
 
   // delete product from database where products productID === productId
-  const productRef = doc(productCollection, productId);
+  const productRef = doc(productCollectionRef, productId);
   await deleteDoc(productRef);
   console.log("deleted procuctasf");
 }
