@@ -1,7 +1,7 @@
 import Electrician from "../models/electrician.js";
 import Van from "../models/van.js";
 
-import { createProduct } from "../database/Firestore.js";
+import { createProduct, addVanToDb } from "../database/Firestore.js";
 
 export function test() {
   console.log("test");
@@ -15,8 +15,9 @@ export default class Controller {
     e.addVan(v);
   }
 
-  createVan(licensePlate, owner, vanKey) {
-    const van = new Van(licensePlate, owner, vanKey);
+  async createVan(licensePlate, owner) {
+    const van = new Van(licensePlate, owner);
+    await addVanToDb(van.toJSON());
     return van;
   }
 

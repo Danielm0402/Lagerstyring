@@ -23,5 +23,9 @@ export default class Van {
             this.products.slice(this.products.indexOf(product), 1)
         }
     }
+
+    toJSON() {
+        return {licensePlate: this.licensePlate, owner: this.owner}
+    }
 }
 

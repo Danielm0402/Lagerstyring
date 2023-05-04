@@ -1,13 +1,17 @@
 include includes/head
 
 body
-    h2 Opret Lagerbil
-    
-    label(for="input-licensePlate") Registreringsnummer:
-    input.input-vanLicensePlate(type="text" name="input-name")
 
-    label(for="input-vanOwner") Navn: 
-    input.input-vanOwner(type="text" name="input-produkt-id")
+    form(action=`/van`, method="post")
 
+        div#div-create-van
+        div
+            h2 Opret Lagerbil
+        div 
+            label(for="input-licensePlate") Registreringsnummer:
+            input.input-vanLicensePlate(type="text" name="licensePlate")
 
-    button.button-createVan Opret Lagerbil
+            label(for="input-vanOwner") Navn: 
+            input.input-vanOwner(type="text" name="owner")
+
+        button(id="create-van-btn" class="button-create-van" type="submit") Opret Lagerbil
