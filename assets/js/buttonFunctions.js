@@ -103,19 +103,14 @@ for (const e of plusminButtonElements) {
 //   const licensePlate = licensePlateElement.value;
 //   const owner = vanOwnerElement.value;
 
-//   const createdVan = controller.createVan(licensePlate, owner);
-//   await fetch(`/van/${createdVan.licensePlate}`, {
+//   console.log(licensePlate)
+//   console.log(owner)
+
+//   await fetch(`/van/${licensePlate}`, {
 //     method: "POST",
 //     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ van: createdVan }),
+//     body: JSON.stringify({ licensePlate, owner }),
 //   });
-// });
-// const createdVan = controller.createVan(licensePlate, owner);
-// await fetch(`/createvan/${createdVan.licensePlate}`, {
-//   method: "POST",
-//   headers: { "Content-Type": "application/json" },
-//   body: JSON.stringify({ van: createdVan }),
-// });
 // });
 
 //------------------------------- SELECT VAN-----------------------------------------------
@@ -123,4 +118,5 @@ const selectVanDropdownElement = document.getElementById("dropdown-select-van");
 
 selectVanDropdownElement.addEventListener("change", () => {
   console.log("test");
+  fetch('/')
 });
