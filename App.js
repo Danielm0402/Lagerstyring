@@ -46,7 +46,8 @@ app.get("/admin", async (req, res) => {
 });
 
 app.get('/van/:licenseplate/products', async (req, res) => {
-  const licensePlate = req.body.licensePlate
+  const licenseplate = req.params.licenseplate
+  const vanProducts = await controller.getVanProducts(licenseplate)
   
 })
 
@@ -130,10 +131,9 @@ app.post("/product", (req, res) => {
   res.redirect("/createProduct");
 });
 
-app.post("/van/:licensePlate", async (req, res) => {
-  const van = req.body.van;
-  await addVanToDb(van);
-  res.redirect("/van");
+app.post("/van", async (req, res) => {
+  await controller.createVan(req.body.licensePlate, req.body.owner)
+  res.redirect("/createvan");
 });
 
 app.listen(4000);

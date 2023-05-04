@@ -84,6 +84,13 @@ export async function addVanToDb(van) {
   await setDoc(doc(db, "Vans", van.licensePlate), van);
 }
 
+export async function getVanFromDb(licensePlate) {
+  const vanQueryDoc = doc(db, "Vans", licensePlate);
+  const vanDoc = await getDoc(vanQueryDoc);
+  const van = vanDoc.data()
+  return van
+}
+
 export async function getVansFromDb() {
   const vanQueryDocs = await getDocs(vanCollectionRef);
   let vans = vanQueryDocs.docs.map((doc) => {

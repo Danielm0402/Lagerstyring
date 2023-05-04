@@ -22,7 +22,9 @@ for (const e of deleteButtonElements) {
 }
 
 if (document.getElementById("delete-van")) {
-  // på forsiden er der ikke noget der hedder delete-van, så der fejler den, hvis ikke der lige et et tjek på om der findes en "delete-van" på den side man er på.
+  // på forsiden er der ikke noget der hedder delete-van, 
+  // så der fejler den, hvis ikke der lige et et tjek på 
+  // om der findes en "delete-van" på den side man er på.
   const deleteVanButtonElement = document.getElementById("delete-van");
 
   deleteVanButtonElement.addEventListener("click", async () => {
@@ -67,31 +69,33 @@ antal products
 */
 const plusminButtonElements = document.getElementsByClassName("button-plusmin");
 
-for (const e of plusminButtonElements) {
-  const productId = e.dataset.productid;
-  const btnAction = e.dataset.action;
+if(plusminButtonElements) {
 
-  e.addEventListener("click", async () => {
-    const response = await fetch(`/products/${productId}/amount`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: btnAction }),
+  for (const e of plusminButtonElements) {
+    const productId = e.dataset.productid;
+    const btnAction = e.dataset.action;
+  
+    e.addEventListener("click", async () => {
+      const response = await fetch(`/products/${productId}/amount`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: btnAction }),
+      });
+  
+      const json = await response.json();
+  
+      const amount = json.amount;
+      const unit = json.unit;
+  
+      const storagePElement = Array.from(
+        document.getElementsByClassName("storage-p")
+      ).filter((e) => e.dataset.productid === productId)[0];
+      storagePElement.innerHTML = `På lager: ${amount} ${unit}`;
     });
-
-    const json = await response.json();
-
-    const amount = json.amount;
-    const unit = json.unit;
-
-    const storagePElement = Array.from(
-      document.getElementsByClassName("storage-p")
-    ).filter((e) => e.dataset.productid === productId)[0];
-    storagePElement.innerHTML = `På lager: ${amount} ${unit}`;
-  });
+  }
 }
 
-//-------------------------Create lagerbil-------------------------------------------------
-
+//-------------------------Create lagerbil------------------------------------------------
 // const createVanBtn = document.getElementsByClassName("button-createVan")[0];
 
 // createVanBtn.addEventListener("click", async () => {
@@ -116,13 +120,15 @@ for (const e of plusminButtonElements) {
 //------------------------------- SELECT VAN-----------------------------------------------
 const selectVanDropdownElement = document.getElementById("dropdown-select-van");
 
-selectVanDropdownElement.addEventListener('change', () => {
-  const selectedIndex = selectVanDropdownElement.selectedIndex;
-  const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
-  const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-  const vanProducts = fetch(`/van/${selectedLicensePlate}/products`, {
-    method: "GET",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({licensePlate: selectedLicensePlate})
-  })
-});
+if (selectVanDropdownElement) {
+
+  selectVanDropdownElement.addEventListener('change', async () => {
+    const selectedIndex = selectVanDropdownElement.selectedIndex;
+    const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
+    const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
+    
+    const vanProducts = await fetch(`/van/${selectedLicensePlate}/products`, {
+      method: "GET",
+    })
+  });
+}

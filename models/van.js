@@ -10,6 +10,11 @@ export default class Van {
     constructor(licensePlate, owner) {
         this.licensePlate = licensePlate
         this.owner = owner
+        this.products = []
+    }
+
+    addProduct(product) {
+        this.products.push(product)
     }
 
     createProduct(name, amount, unit){
@@ -25,7 +30,7 @@ export default class Van {
     }
 
     toJSON() {
-        return {licensePlate: this.licensePlate, owner: this.owner}
+        return {licensePlate: this.licensePlate, owner: this.owner, products: this.products}
     }
 }
 
