@@ -4,13 +4,13 @@
 */
 
 export default class Electrician {
-    constructor(name, vanKey) {
+    constructor(name, licenseplate) {
         this.name = name
-        this.vanKey = vanKey
+        this.licenseplate = licenseplate
     }
 
-    changeVanKey(newVanKey){
-        this.vanKey = newVanKey
+    changeLicenseplate(newLicenseplate){
+        this.licenseplate = newLicenseplate
     }
     
 }

@@ -7,9 +7,8 @@
 */
 
 export default class Van {
-    constructor(licensePlate, owner, vanKey) {
+    constructor(licensePlate, owner) {
         this.licensePlate = licensePlate
-        this.vanKey = vanKey
         this.owner = owner
     }
 
