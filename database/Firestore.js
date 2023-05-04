@@ -11,7 +11,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
-  setDoc
+  setDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -44,9 +44,17 @@ export async function deleteProductFromDb(productId) {
   console.log("4444");
 
   // delete product from database where products productID === productId
-  const productRef = doc(productCollection, productId);
+  const productRef = doc(productCollectionRef, productId);
   await deleteDoc(productRef);
   console.log("deleted procuctasf");
+}
+
+export async function deleteVanFromDb(licensePlate) {
+  console.log("yay deleteVanFromDb virker", licensePlate);
+
+  const vanRef = doc(vanCollectionRef, licensePlate);
+  await deleteDoc(vanRef);
+  console.log("van deleted");
 }
 
 export async function getProductFromDb(productId) {
@@ -73,7 +81,7 @@ export async function updateAmountToProduct(amount, productId) {
 }
 
 export async function addVanToDb(van) {
-  await setDoc(doc(db, "Vans", van.licensePlate), van)
+  await setDoc(doc(db, "Vans", van.licensePlate), van);
 }
 
 export async function getVansFromDb() {

@@ -5,6 +5,7 @@ import {
   updateAmountToProduct,
   addVanToDb,
   getVansFromDb,
+  deleteVanFromDb,
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -39,12 +40,10 @@ app.get("/createProduct", (req, res) => {
   res.render("createProduct");
 });
 
-
 app.get("/admin", async (req, res) => {
   const vans = await getVansFromDb();
-  res.render("admin", {vans: vans});
+  res.render("admin", { vans: vans });
 });
-
 
 app.get("/createVan", (req, res) => {
   res.render("createVan");
@@ -55,14 +54,13 @@ app.get("/createelectrician", (req, res) => {
 });
 
 app.get("/test", (req, res) => {
-  res.send('Dette var en god test');
-  console.log("testestest")
-})
+  res.send("Dette var en god test");
+  console.log("testestest");
+});
 
 app.get("/deleteVan", (req, res) => {
-  res.render("deleteVan")
-})
-
+  res.render("deleteVan");
+});
 
 //--------------PUT REQUESTS--------------------------------------------------------------------------------------------------
 
@@ -74,6 +72,15 @@ app.put("/deleteProduct/:productid", async (req, res) => {
 
   const product = await deleteProductFromDb(productId);
   res.send(product);
+});
+
+app.put("/deleteVan/:licensePlate", async (req, res) => {
+  // const licensePlate = req.params.licensePlate;
+  const licensePlate = req.params.licensePlate;
+  console.log("afasdg ", licensePlate);
+
+  const van = await deleteVanFromDb(licensePlate);
+  res.send(van);
 });
 
 /*
@@ -118,11 +125,10 @@ app.post("/product", (req, res) => {
   res.redirect("/createProduct");
 });
 
-
 app.post("/van/:licensePlate", async (req, res) => {
   const van = req.body.van;
-  await addVanToDb(van)
-  res.redirect("/van")
+  await addVanToDb(van);
+  res.redirect("/van");
 });
 
 app.listen(4000);

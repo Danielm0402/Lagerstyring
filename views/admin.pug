@@ -18,7 +18,7 @@ div
         select#dropdown-select-van(name='select-van')
             each van in vans 
                 option(value=option)=van.licensePlate
-        button.delete-button(type='button', )
+        button(type='button' id="delete-van")
             ion-icon(src="icons/trash-outline.svg")
 
 
