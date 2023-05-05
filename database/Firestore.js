@@ -11,7 +11,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
-  setDoc
+  setDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -49,6 +49,14 @@ export async function deleteProductFromDb(productId) {
   console.log("deleted procuctasf");
 }
 
+export async function deleteVanFromDb(licensePlate) {
+  console.log("yay deleteVanFromDb virker", licensePlate);
+
+  const vanRef = doc(vanCollectionRef, licensePlate);
+  await deleteDoc(vanRef);
+  console.log("van deleted");
+}
+
 export async function getProductFromDb(productId) {
   const firestoreData = await getProductsFromDb();
 
@@ -73,7 +81,14 @@ export async function updateAmountToProduct(amount, productId) {
 }
 
 export async function addVanToDb(van) {
-  await setDoc(doc(db, "Vans", van.licensePlate), van)
+  await setDoc(doc(db, "Vans", van.licensePlate), van);
+}
+
+export async function getVanFromDb(licensePlate) {
+  const vanQueryDoc = doc(db, "Vans", licensePlate);
+  const vanDoc = await getDoc(vanQueryDoc);
+  const van = vanDoc.data()
+  return van
 }
 
 export async function getVansFromDb() {
