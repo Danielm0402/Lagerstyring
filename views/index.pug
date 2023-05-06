@@ -16,9 +16,11 @@ body
                 p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
                 div.buttons
                     button.delete-button(type='button', data-productid=product.productId)
-                        ion-icon(src="icons/trash-outline.svg")
-                    button.button-plusmin(type='button', data-productid=product.productId, data-action="increase") +
-                    button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease") -
+                        ion-icon(name="trash-outline")
+                    button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
+                        ion-icon(name="add-circle-outline")
+                    button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
+                        ion-icon(name="remove-circle-outline")
 
     button.addProduct
         a(href="/createProduct") Tilføj ny vare
