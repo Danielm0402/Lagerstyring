@@ -6,7 +6,8 @@ body
             each van in vans
                 option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
 
-    button.admin 
+    button.admin
+        <i class="fa-solid fa-lock"></i>
         a(href="/admin") Admin
     
 
@@ -23,5 +24,6 @@ body
                         ion-icon(name="remove-circle-outline")
 
     button.addProduct
+        ion-icon(name="cube")
         a(href="/createProduct") Tilføj ny vare
 

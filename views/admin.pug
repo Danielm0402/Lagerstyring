@@ -2,14 +2,17 @@ include includes/head
 
 body 
     button
+        <i class="fa-sharp fa-solid fa-left-long"></i>
         a.knap(href='/') Tilbage
 
     h1 AdminSide 
 
-    button.admin 
+    button.admin
+        <i class="fa-solid fa-truck-front"></i>
         a(href="/createVan") Opret Lagerbil
     
-    button.admin 
+    button.admin
+        <i class="fa-solid fa-user"></i>
         a(href="/createElectrician") Opret Elektrikker 
 
 
@@ -19,7 +22,7 @@ div
             each van in vans 
                 option(value=option)=van.licensePlate
         button(type='button' id="delete-van")
-            ion-icon(src="icons/trash-outline.svg")
+            ion-icon(name="trash-outline")
 
 
 
