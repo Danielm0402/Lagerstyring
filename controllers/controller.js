@@ -2,7 +2,6 @@ import Electrician from "../models/electrician.js";
 import Van from "../models/van.js";
 
 import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb } from "../database/Firestore.js";
-import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb } from "../database/Firestore.js";
 
 export function test() {
   console.log("test");
