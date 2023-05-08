@@ -3,6 +3,10 @@ import Van from "../models/van.js";
 
 import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb, updateVan, updateElectrician } from "../database/Firestore.js";
 
+// export function test() {
+//   console.log("test");
+// }
+
 export default class Controller {
 
   async createVan(licensePlate) {
@@ -24,6 +28,12 @@ export default class Controller {
     electrician.addVan(van);
     await updateVan(van);
     await updateElectrician(electrician);
+  }
+
+  async createElectrician(name, employeeId){
+    const electrician = new Electrician(name, employeeId);
+    await addElectricianToDb(electrician.toJSON());
+    return electrician;
   }
 
   createProductToDB(product) {

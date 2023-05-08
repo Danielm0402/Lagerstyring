@@ -42,6 +42,22 @@ if (document.getElementById("delete-van")) {
     location.reload();
   });
 }
+
+if (document.getElementById("delete-electrician")) {
+  const deleteElectricianButtonElement = document.getElementById("delete-electrician");
+
+  deleteElectricianButtonElement.addEventListener("click", async () => {
+    const selectElement = document.querySelector("#dropdown-select-electrician");
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    let employeeId = selectedOption.value;
+
+    const response = await fetch(`/deleteElectrician/${employeeId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    });
+    location.reload()
+  })
+}
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
 
 /*

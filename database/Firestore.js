@@ -78,6 +78,12 @@ export async function deleteVanFromDb(licensePlate) {
   console.log("van deleted");
 }
 
+export async function deleteElectricianFromDb(employeeId){
+  const electricanRef = doc(electriciansCollectionRef, employeeId);
+  await deleteDoc(electricanRef);
+  console.log("electrican deleted")
+}
+
 export async function getProductFromDb(productId) {
   const firestoreData = await getProductsFromDb();
 
@@ -117,6 +123,20 @@ export async function getVansFromDb() {
     return data;
   });
   return vans;
+}
+
+export async function addElectricianToDb(electrician){
+  await setDoc(doc(db, "Electricians", electrician.employeeId), electrician);
+}
+
+export async function getElectriciansFromDb(){
+  const electricianQueryDocs = await getDocs(electriciansCollectionRef);
+  let electricians = electricianQueryDocs.docs.map((doc) => {
+    let data = doc.data();
+    data.employeeId = doc.id;
+    return data;
+  })
+  return electricians;
 }
 
 async function test() {

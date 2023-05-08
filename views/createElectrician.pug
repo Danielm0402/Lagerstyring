@@ -1,10 +1,20 @@
 include includes/head
 
 body
-    h2 Opret Elektrikker
-    
-    label(for="input-name") Navn:
-    input(type="text" name="input-name")
+    button
+        <i class="fa-sharp fa-solid fa-left-long"></i>
+        a.knap(href='/admin') Tilbage
 
-    label(for="input-cprNumber") CPR: 
-    input(type="text" name="input-cprNumber")
+    form(action=`/electrician`, method="post")
+
+        div#div-create-electrician
+        div 
+            h2 Opret Elektrikker
+        div
+            label(for="input-name") Navn:
+            input.input-electricianName(type="text" name="name")
+
+            label(for="input-employeeId") Medarbejder nr.: 
+            input.input-employeeId(type="text" name="employeeId")
+
+        button(id="create-electrician-btn" class="button-create-electrician" type="submit") Opret medarbejder
