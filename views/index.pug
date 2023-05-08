@@ -1,29 +1,33 @@
 include includes/head
 
 body
-    h1 Bil:
-        select#dropdown-select-van(name='select-van')
-            each van in vans
-                option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
 
     button.admin
         <i class="fa-solid fa-lock"></i>
         a(href="/admin") Admin
     
 
-    each product in products
-        div.product-container
-                p #{product.productName}
-                p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
-                div.buttons
-                    button.delete-button(type='button', data-productid=product.productId)
-                        ion-icon(name="trash-outline")
-                    button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
-                        ion-icon(name="add-circle-outline")
-                    button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
-                        ion-icon(name="remove-circle-outline")
+    h1 Bil:
+        select#dropdown-select-van(name='select-van')
+            each van in vans
+                option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
+
 
     button.addProduct
         <i class="fa-solid fa-box-open"></i>
         a(href="/createProduct") Tilføj ny vare
+
+    each product in products
+        div.product-container
+            p #{product.productName}
+            p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
+                button.delete-button(type='button', data-productid=product.productId)
+                    ion-icon(name="trash-outline")
+            div.buttons    
+                button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
+                    ion-icon(name="add-circle-outline")
+                button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
+                    ion-icon(name="remove-circle-outline")
+
+
 
