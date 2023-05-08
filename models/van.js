@@ -7,10 +7,23 @@
 */
 
 export default class Van {
-    constructor(licensePlate, owner) {
+    constructor(licensePlate) {
         this.licensePlate = licensePlate
-        this.owner = owner
+        this.electricians = [];
         this.products = []
+    }
+
+    addElectrician(electrician) {
+        if(!this.electricians.includes(electrician)) {
+            this.electricians.push(electrician);
+        }
+    }
+
+    removeElectrician(electrician) {
+        const index = this.electricians.findIndex(electrician);
+
+        if (index > -1)
+            this.electricians.splice(index, 1);
     }
 
     addProduct(product) {
@@ -30,7 +43,7 @@ export default class Van {
     }
 
     toJSON() {
-        return {licensePlate: this.licensePlate, owner: this.owner, products: this.products}
+        return {licensePlate: this.licensePlate, electricians: this.electricians, products: this.products}
     }
 }
 

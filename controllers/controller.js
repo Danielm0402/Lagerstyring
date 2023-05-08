@@ -2,23 +2,32 @@ import Electrician from "../models/electrician.js";
 import Van from "../models/van.js";
 
 import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb } from "../database/Firestore.js";
+import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb } from "../database/Firestore.js";
 
 export function test() {
   console.log("test");
 }
 
 export default class Controller {
-  test() {
-    const v = new Van("Ab12345");
-    const e = new Electrician("Oliver");
-    v.addElectrician(e);
-    e.addVan(v);
+
+  async createVan(licensePlate) {
+    const van = new Van(licensePlate);
+
+    await addVanToDb(van);
+    return van;
   }
 
-  async createVan(licensePlate, owner) {
-    const van = new Van(licensePlate, owner);
-    await addVanToDb(van.toJSON());
-    return van;
+  async createElectrician(name, employeeId) {
+    const e = new Electrician(name, employeeId);
+
+    await addElectricianToDb(e);
+  }
+
+  async addElectricianToVan(electrician, van) {
+    van.addElectrician(electrician);
+    electrician.addVan(van);
+    await addVanToDb(van) /* hvis en van allerede har det samme id i db, bliver den erstattet */
+    await addElectricianToDb(electrician);
   }
 
   async createElectrician(name, employeeId){
@@ -38,3 +47,15 @@ export default class Controller {
     console.log(van)
   }
 }
+
+
+async function test() {
+  const c = new Controller();
+
+  const e = await c.createElectrician("Torben", "AB8327596297ijfsj");
+  const v = await c.createVan("GG 123 64");
+
+  addElectricianToVan(e, v);
+}
+
+test();
