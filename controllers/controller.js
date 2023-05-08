@@ -3,9 +3,9 @@ import Van from "../models/van.js";
 
 import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb } from "../database/Firestore.js";
 
-export function test() {
-  console.log("test");
-}
+// export function test() {
+//   console.log("test");
+// }
 
 export default class Controller {
 
@@ -48,13 +48,13 @@ export default class Controller {
 }
 
 
-async function test() {
-  const c = new Controller();
+// async function test() {
+//   const c = new Controller();
 
-  const e = await c.createElectrician("Torben", "AB8327596297ijfsj");
-  const v = await c.createVan("GG 123 64");
+//   const e = await c.createElectrician("Torben", "AB8327596297ijfsj");
+//   const v = await c.createVan("GG 123 64");
 
-  addElectricianToVan(e, v);
-}
+//   addElectricianToVan(e, v);
+// }
 
-test();
+// test();

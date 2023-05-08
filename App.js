@@ -7,6 +7,7 @@ import {
   getVansFromDb,
   deleteVanFromDb,
   getElectriciansFromDb,
+  deleteElectricianFromDb,
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -90,6 +91,14 @@ app.put("/deleteVan/:licensePlate", async (req, res) => {
   const van = await deleteVanFromDb(licensePlate);
   res.send(van);
 });
+
+app.put("/deleteElectrician/:employeeId", async (req, res) => {
+  const employeeId = req.params.employeeId;
+  console.log("delete Electrician", employeeId);
+
+  const electrician = await deleteElectricianFromDb(employeeId);
+  res.send(electrician);
+})
 
 /*
   Når der kommer et put request to denne adresse
