@@ -124,20 +124,12 @@ app.put("/products/:productid/amount", async (req, res) => {
 
 //----------POST REQUEST--------------------------------------------------------------------------
 
-app.post("/product", (req, res) => {
+app.post("/product", async (req, res) => {
   const productName = req.body["input-name"];
-  const productID = req.body["input-produkt-id"];
+  const productId = req.body["input-produkt-id"];
   const amount = req.body["input-amount"];
   const unit = req.body["dropdown-unit"];
-
-  const product = {
-    productName: productName,
-    productId: productID,
-    amount: parseInt(amount),
-    unit: unit,
-  };
-
-  controller.createProductToDB(product);
+  await controller.createProduct(productName, productId, amount, unit);
 
   res.redirect("/createProduct");
 });

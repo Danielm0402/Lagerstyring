@@ -1,7 +1,8 @@
 import Electrician from "../models/electrician.js";
 import Van from "../models/van.js";
+import Product from "../models/product.js";
 
-import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb, updateVan, updateElectrician } from "../database/Firestore.js";
+import { addProductToDb, addVanToDb, getVanFromDb, addElectricianToDb, updateVan, updateElectrician } from "../database/Firestore.js";
 
 // export function test() {
 //   console.log("test");
@@ -36,8 +37,9 @@ export default class Controller {
     return electrician;
   }
 
-  createProductToDB(product) {
-    createProduct(product);
+  async createProduct(name, productID, amount, unit) {
+    const product = new Product(name, productID, amount, unit)
+    await addProductToDb(product);
     console.log("det virker");
   }
 
@@ -50,12 +52,6 @@ export default class Controller {
 
 
 async function test() {
-  const c = new Controller();
-
-  const e = await c.createElectrician("Kirsten", "10");
-  const v = await c.createVan("LKDF 3819836");
-
-  await c.addElectricianToVan(e, v);
 }
 
 test();

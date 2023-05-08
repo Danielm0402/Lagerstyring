@@ -3,22 +3,21 @@
     product 0..* komposition 1 lagerbil
 */
 
-class Product {
-    constructor(name, amount, unit, van) {
+export default class Product {
+    constructor(name, productId, amount, unit) {
         this.name = name
+        this.productId = productId
         this.amount = amount
         this.unit = unit
-        this.van = van
     }
 
     toJSON() {
         const json = {
             name: this.name,
+            productId: this.productId,
             amount: this.amount,
             unit: this.unit,
-            van: this.van.licensePlate
         }
-        return { 
-              }
+        return json;
     }
 }

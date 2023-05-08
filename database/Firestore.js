@@ -60,6 +60,11 @@ export async function addVanToDb(van) {
   const docRef = doc(db, "Vans", van.licensePlate)
   await setDoc(docRef, van.toJSON());
 }
+export async function addProductToDb(product) {
+  const docRef = doc(db, "Products", product.productId);
+  await setDoc(docRef, product.toJSON())
+  console.log("firestore log");
+} 
 
 export async function deleteProductFromDb(productId) {
   console.log("4444");
@@ -93,10 +98,6 @@ export async function getProductFromDb(productId) {
   return products[0];
 }
 
-export async function createProduct(product) {
-  const docRef = await addDoc(productCollectionRef, product);
-  console.log("firestore log");
-}
 
 export async function updateAmountToProduct(amount, productId) {
   const docRef = doc(db, "Products", productId);
