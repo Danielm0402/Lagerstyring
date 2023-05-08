@@ -3,6 +3,7 @@ include includes/head
 body
 
     button
+        <i class="fa-sharp fa-solid fa-left-long"></i>
         a.knap(href='/') Tilbage
 
     form(action="/product", method='post')
@@ -25,4 +26,5 @@ body
                 each option in ['stk', 'm', 'cm', 'mm', 'kg', 'g']
                     option(value = option)= option
 
-        button(id="create-product-btn" class="create-product" type="submit") Opret vare
+        button(id="create-product-btn" class="create-product" type="submit") 
+            <i class="fa-solid fa-box-open"></i>Opret vare
