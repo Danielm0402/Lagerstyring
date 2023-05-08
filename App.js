@@ -133,7 +133,7 @@ app.post("/product", (req, res) => {
 
 app.post("/van", async (req, res) => {
   await controller.createVan(req.body.licensePlate, req.body.owner)
-  res.redirect("/createvan");
+  res.redirect("/admin");
 });
 
 app.listen(4000);
