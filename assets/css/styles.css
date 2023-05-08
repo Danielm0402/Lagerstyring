@@ -27,9 +27,9 @@ body {
     flex: none;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     padding: 20px;
-    background-color: #fff;
+    /* background-color: #fff; */
     box-shadow: 0 0 5px #ccc;
     border-radius: 5px;
     margin-top: 20px;
@@ -37,8 +37,8 @@ body {
 
   .product-container-selected {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    /* align-items: center;
+    justify-content: space-between; */
     padding: 20px;
     background-color: #ced5da;
     box-shadow: 0 0 5px #ccc;
@@ -49,21 +49,19 @@ body {
 
   .buttons{
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    /* padding-left: 500px; */
-    /* flex-direction: column; */
+    grid-template-rows: repeat(2, 1fr);
   }
 
   .button-plusmin{
     margin: 2px;
-    justify-content: space-evenly;
+    padding: 5px;
     max-width: 30px;
+    justify-self: end;
   }
   .delete-button {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    justify-content: space-between;
+    padding: 5px;
     max-width: 30px;
+    float:right
   }
 
   .addProduct{ 
@@ -100,7 +98,7 @@ body {
   }
 
   /* .storage-p{
-    padding-left: 200px;
+    justify-content: space-between;
   } */
 
 
