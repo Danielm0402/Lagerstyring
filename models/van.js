@@ -43,7 +43,12 @@ export default class Van {
     }
 
     toJSON() {
-        return {licensePlate: this.licensePlate, electricians: this.electricians, products: this.products}
+        const json = {
+            licensePlate: this.licensePlate,
+            electricians: this.electricians.map(e => e.employeeId),
+            products: this.products.map(p => p.name)
+        }
+        return json;
     }
 }
 

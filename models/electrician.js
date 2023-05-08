@@ -11,7 +11,7 @@ export default class Electrician {
     }
 
     addVan(van) {
-        if (!this.vans.includes(van)) {
+        if (!this.vans.includes(van.toJSON())) {
             this.vans.push(van)
         }
     }
@@ -25,7 +25,12 @@ export default class Electrician {
 
 
     toJSON() {
-        return {name: this.name, employeeId: this.employeeId, vans: this.vans}
+        const json = {
+            name: this.name, 
+            employeeId: this.employeeId, 
+            vans: this.vans.map(van => van.licensePlate)
+        }
+        return json;
     }
     
 }

@@ -1,7 +1,7 @@
 import Electrician from "../models/electrician.js";
 import Van from "../models/van.js";
 
-import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb } from "../database/Firestore.js";
+import { createProduct, addVanToDb, getVanFromDb, addElectricianToDb, updateVan, updateElectrician } from "../database/Firestore.js";
 
 export default class Controller {
 
@@ -16,13 +16,14 @@ export default class Controller {
     const e = new Electrician(name, employeeId);
 
     await addElectricianToDb(e);
+    return e;
   }
 
   async addElectricianToVan(electrician, van) {
     van.addElectrician(electrician);
     electrician.addVan(van);
-    await addVanToDb(van) /* hvis en van allerede har det samme id i db, bliver den erstattet */
-    await addElectricianToDb(electrician);
+    await updateVan(van);
+    await updateElectrician(electrician);
   }
 
   createProductToDB(product) {
@@ -41,10 +42,10 @@ export default class Controller {
 async function test() {
   const c = new Controller();
 
-  const e = await c.createElectrician("Torben", "AB8327596297ijfsj");
-  const v = await c.createVan("GG 123 64");
+  const e = await c.createElectrician("Kirsten", "10");
+  const v = await c.createVan("LKDF 3819836");
 
-  addElectricianToVan(e, v);
+  await c.addElectricianToVan(e, v);
 }
 
 test();

@@ -4,14 +4,21 @@
 */
 
 class Product {
-    constructor(name, amount, unit, licensePlate) {
+    constructor(name, amount, unit, van) {
         this.name = name
         this.amount = amount
         this.unit = unit
-        this.licenseplate = licensePlate
+        this.van = van
     }
 
     toJSON() {
-        return {name: this.name, amount: this.amount, unit: this.unit, licensePlate: this.licensePlate}
+        const json = {
+            name: this.name,
+            amount: this.amount,
+            unit: this.unit,
+            van: this.van.licensePlate
+        }
+        return { 
+              }
     }
 }

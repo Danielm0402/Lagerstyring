@@ -40,9 +40,30 @@ export async function getProductsFromDb() {
   return products;
 }
 
+export async function updateElectrician(electrician) {
+  const docRef = doc(db, "Electricians", electrician.employeeId)
+
+  updateDoc(docRef, electrician.toJSON())
+}
+
+export async function updateVan(van) {
+  const docRef = doc(db, "Vans", van.licensePlate)
+
+  updateDoc(docRef, van.toJSON())
+}
+
+export async function addElectricianToDb(electrician) {
+  const docRef = doc(db, "Electricians", electrician.employeeId);
+  await setDoc(docRef, electrician.toJSON())
+}
+export async function addVanToDb(van) {
+  const docRef = doc(db, "Vans", van.licensePlate)
+  await setDoc(docRef, van.toJSON());
+}
+
 export async function deleteProductFromDb(productId) {
   console.log("4444");
-
+  
   // delete product from database where products productID === productId
   const productRef = doc(productCollectionRef, productId);
   await deleteDoc(productRef);
@@ -80,9 +101,6 @@ export async function updateAmountToProduct(amount, productId) {
   return newAmount;
 }
 
-export async function addVanToDb(van) {
-  await setDoc(doc(db, "Vans", van.licensePlate), van);
-}
 
 export async function getVanFromDb(licensePlate) {
   const vanQueryDoc = doc(db, "Vans", licensePlate);
