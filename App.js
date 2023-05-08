@@ -6,6 +6,7 @@ import {
   addVanToDb,
   getVansFromDb,
   deleteVanFromDb,
+  getElectriciansFromDb,
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -42,7 +43,8 @@ app.get("/createProduct", (req, res) => {
 
 app.get("/admin", async (req, res) => {
   const vans = await getVansFromDb();
-  res.render("admin", { vans: vans });
+  const electricians = await getElectriciansFromDb();
+  res.render("admin", { vans: vans, electricians: electricians});
 });
 
 app.get('/van/:licenseplate/products', async (req, res) => {
@@ -135,6 +137,11 @@ app.post("/van", async (req, res) => {
   await controller.createVan(req.body.licensePlate, req.body.owner)
   res.redirect("/admin");
 });
+
+app.post("/electrician", async (req, res) => {
+  await controller.createElectrician(req.body.name, req.body.employeeId)
+  res.redirect("/admin")
+})
 
 app.listen(4000);
 console.log("listening on port 4000");

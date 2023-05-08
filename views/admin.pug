@@ -23,6 +23,12 @@ div
                 option(value=option)=van.licensePlate
         button(type='button' id="delete-van")
             ion-icon(name="trash-outline")
+    h2 Medarbejdere:
+        select#dropdown-select-electrician(name='select-electrician')
+            each electrician in electricians
+                option(value=option)=electrician.employeeId 
+        button(type='button' id="delete-electrician")
+            ion-icon(name="trash-outline")
 
 
 
