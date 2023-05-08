@@ -19,7 +19,6 @@ export default class Controller {
 
   async createElectrician(name, employeeId) {
     const e = new Electrician(name, employeeId);
-
     await addElectricianToDb(e);
     return e;
   }
@@ -29,12 +28,6 @@ export default class Controller {
     electrician.addVan(van);
     await updateVan(van);
     await updateElectrician(electrician);
-  }
-
-  async createElectrician(name, employeeId){
-    const electrician = new Electrician(name, employeeId);
-    await addElectricianToDb(electrician.toJSON());
-    return electrician;
   }
 
   async createProduct(name, productID, amount, unit) {
@@ -52,6 +45,8 @@ export default class Controller {
 
 
 async function test() {
+
+
 }
 
 test();
