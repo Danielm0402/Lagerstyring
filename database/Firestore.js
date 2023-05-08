@@ -125,10 +125,6 @@ export async function getVansFromDb() {
   return vans;
 }
 
-export async function addElectricianToDb(electrician){
-  await setDoc(doc(db, "Electricians", electrician.employeeId), electrician);
-}
-
 export async function getElectriciansFromDb(){
   const electricianQueryDocs = await getDocs(electriciansCollectionRef);
   let electricians = electricianQueryDocs.docs.map((doc) => {
