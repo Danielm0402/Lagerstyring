@@ -59,9 +59,11 @@ body {
     justify-self: end;
   }
   .delete-button {
+    margin: 2px;
     padding: 5px;
     max-width: 30px;
-    float:right
+    /* float:right; */
+    justify-self: end;
   }
 
   .addProduct{ 
