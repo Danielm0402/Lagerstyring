@@ -8,6 +8,7 @@ import {
   deleteVanFromDb,
   getElectriciansFromDb,
   deleteElectricianFromDb,
+  
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -42,6 +43,12 @@ app.get("/createProduct", (req, res) => {
   res.render("createProduct");
 });
 
+app.get("/createProduct/:licenseplate", async (req, res) => {
+  const licensePlate = req.params.licenseplate;
+  const van = await controller.getVan(licensePlate)
+  res.render("createProduct", {van: van})
+}) 
+
 app.get("/admin", async (req, res) => {
   const vans = await getVansFromDb();
   const electricians = await getElectriciansFromDb();
@@ -51,7 +58,6 @@ app.get("/admin", async (req, res) => {
 app.get('/van/:licenseplate/products', async (req, res) => {
   const licenseplate = req.params.licenseplate
   const vanProducts = await controller.getVanProducts(licenseplate)
-  
 })
 
 app.get("/createVan", (req, res) => {
@@ -124,12 +130,17 @@ app.put("/products/:productid/amount", async (req, res) => {
 
 //----------POST REQUEST--------------------------------------------------------------------------
 
-app.post("/product", async (req, res) => {
+app.post("/product/:licenseplate", async (req, res) => {
   const productName = req.body["input-name"];
   const productId = req.body["input-produkt-id"];
-  const amount = req.body["input-amount"];
+  const amount = parseInt(req.body["input-amount"]);
   const unit = req.body["dropdown-unit"];
-  await controller.createProduct(productName, productId, amount, unit);
+  const licensePlate = req.params.licenseplate
+  console.log("nummerplade: " ,licensePlate)
+  
+  const product = await controller.createProduct(productName, productId, amount, unit);
+  const van = await controller.getVan(licensePlate);
+  await controller.addProductToVan(product, van);
 
   res.redirect("/createProduct");
 });

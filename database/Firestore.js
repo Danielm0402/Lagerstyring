@@ -38,18 +38,18 @@ export async function getProductsFromDb() {
     return data;
   });
   return products;
-}
-
+} 
+ 
 export async function updateElectrician(electrician) {
   const docRef = doc(db, "Electricians", electrician.employeeId)
 
-  updateDoc(docRef, electrician.toJSON())
+  await updateDoc(docRef, electrician.toJSON())
 }
 
 export async function updateVan(van) {
   const docRef = doc(db, "Vans", van.licensePlate)
 
-  updateDoc(docRef, van.toJSON())
+  await updateDoc(docRef, van.toJSON())
 }
 
 export async function addElectricianToDb(electrician) {

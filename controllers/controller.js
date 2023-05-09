@@ -33,20 +33,43 @@ export default class Controller {
   async createProduct(name, productID, amount, unit) {
     const product = new Product(name, productID, amount, unit)
     await addProductToDb(product);
-    console.log("det virker");
+    return product
+  }
+
+  async getVan(licensePlate) {
+    const vanData = await getVanFromDb(licensePlate)
+    const v = new Van(vanData.licensePlate);
+    // console.log(vanData.electricians)
+    vanData.electricians.map(e => v.addElectrician(e))
+    vanData.products.map(p => v.addProduct(p))
+
+    return v 
   }
 
   async getVanProducts(licensePlate) {
     const van = await getVanFromDb(licensePlate)
-
-    console.log(van)
+    console.log(van.products)
+    return van.products
   }
+
+  async addProductToVan(product, van) {
+    van.addProduct(product);
+    console.log("firebase: ", van)
+    await updateVan(van);
+  }
+
+
 }
 
 
 async function test() {
+  // const v = new Van("123123123");
+  // const p = new Product("p1", "111", 10, "stk")
+  // v.addProduct(p);
 
+  // console.log(v)
 
 }
 
-test();
+test(); 
+ 

@@ -7,9 +7,10 @@
 */
 
 export default class Van {
+
     constructor(licensePlate) {
-        this.licensePlate = licensePlate
-        this.electricians = [];
+        this.licensePlate = licensePlate;
+        this.electricians = []
         this.products = []
     }
 
@@ -27,7 +28,9 @@ export default class Van {
     }
 
     addProduct(product) {
-        this.products.push(product)
+        if (!this.products.includes(product)) {
+            this.products.push(product)
+        }
     }
 
     createProduct(name, amount, unit){

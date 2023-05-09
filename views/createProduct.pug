@@ -1,16 +1,18 @@
 include includes/head
 
-body
+- var licensePlate = van.licensePlate
 
+body
     button
         <i class="fa-sharp fa-solid fa-left-long"></i>
         a.knap(href='/') Tilbage
 
-    form(action="/product", method='post')
+    form(action='/product', method='post')
 
         div#div-createProduct
         div
             h2 Opret produkt
+            h3 #{licensePlate}
         div
             label(for="input-name") Produkt navn:
             input.inputtag(type="text" name="input-name")

@@ -15,7 +15,7 @@ body
 
     button.addProduct
         <i class="fa-solid fa-box-open"></i>
-        a(href="/createProduct") Tilføj ny vare
+        a#anchor-create-product(href=`/createProduct`) Tilføj ny vare
 
     each product in products
         div.product-container

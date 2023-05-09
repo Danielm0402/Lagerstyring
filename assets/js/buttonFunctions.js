@@ -135,6 +135,7 @@ if(plusminButtonElements) {
 
 //------------------------------- SELECT VAN-----------------------------------------------
 const selectVanDropdownElement = document.getElementById("dropdown-select-van");
+const createProductLinkElement = document.getElementById("anchor-create-product");
 
 if (selectVanDropdownElement) {
 
@@ -142,7 +143,7 @@ if (selectVanDropdownElement) {
     const selectedIndex = selectVanDropdownElement.selectedIndex;
     const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
     const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-    
+    createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
     const vanProducts = await fetch(`/van/${selectedLicensePlate}/products`, {
       method: "GET",
     })
