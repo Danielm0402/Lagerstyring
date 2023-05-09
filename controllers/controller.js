@@ -39,7 +39,9 @@ export default class Controller {
 
   async createCompany(name, cvr, contactpersonName, contactpersonNumber) {
     const company = new Company(name, cvr, contactpersonName, contactpersonNumber)
+
     await addCompanyToDb(company)
+    return company
   }
 
   async getVanProducts(licensePlate) {
@@ -51,8 +53,6 @@ export default class Controller {
 
 
 async function test() {
-
-
 }
 
-test();
+// test();

@@ -180,7 +180,7 @@ app.post("/electrician", async (req, res) => {
 })
 
 app.post("/company", async (req, res) => {
-  await controller.createCompany(req.body.name, req.body.cvr, req.body.contactpersonName, req.body.contactpersonNumber)
+  await controller.createCompany(req.body.companyName, req.body.cvrNr, req.body.contactPersonName, req.body.contactPersonNumber)
   res.redirect("/login")
 })
 

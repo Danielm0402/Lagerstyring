@@ -160,4 +160,4 @@ async function test() {
     data.productId = doc.id;
     console.log(data);
   });
-}
+} 
