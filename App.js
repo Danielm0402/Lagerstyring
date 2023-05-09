@@ -181,7 +181,7 @@ app.put("/products/:productid/amount", async (req, res) => {
 app.post("/product", async (req, res) => {
   const productName = req.body["input-name"];
   const productId = req.body["input-produkt-id"];
-  const amount = req.body["input-amount"];
+  const amount = parseInt(req.body["input-amount"]);
   const unit = req.body["dropdown-unit"];
   await controller.createProduct(productName, productId, amount, unit);
 
