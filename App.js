@@ -8,7 +8,10 @@ import {
   deleteVanFromDb,
   getElectriciansFromDb,
   deleteElectricianFromDb,
-  getUsersFromDb
+  getUsersFromDb,
+  getAdminsFromDb,
+  getElectricianVans,
+  getVanProducts
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -35,18 +38,34 @@ app.set("view engine", "pug");
 
 //---------------GET REQUESTS------------------------------------------------------------------------
 app.get("/", async (req, res) => {
-  const products = await getProductsFromDb();
-  const vans = await getVansFromDb();
   let isLoggedIn = false;
   if (req.session.isLoggedIn) {
     isLoggedIn = true;
+  
   }
-  res.render("index", { products: products, vans: vans, knownUser: isLoggedIn});
+  const user = req.session.user;
+
+  let products = []
+  let role = '';
+
+  if (user && user.role === 'electrician') {
+    const van = await getElectricianVans(user.employeeId);
+    
+    products = await getVanProducts(van.licensePlate);
+    
+  } else {
+    
+    products = await getProductsFromDb();
+  }
+  const vans = await getVansFromDb();
+
+  res.render("index", { products: products, vans: vans, knownUser: isLoggedIn, role: role});
 });
 
 app.get('/logout', (req, res) => {
   req.session.isLoggedIn = false;
-  res.redirect('/')
+  console.log("logged out")
+  res.redirect('/login')
 })
 
 app.get("/login", (req, res) => {
@@ -57,15 +76,20 @@ app.post('/', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const users = await getUsersFromDb();
+  const electricians = await getElectriciansFromDb();
+  const admins = await getAdminsFromDb()
+  const users = electricians.concat(admins);
+
   const user = users.find(u => u.username === username);
 
-  if (user.password === password) {
-    console.log("logged in!")
+  if (user && user.password === password) {
+    console.log("logged in as: " + user.username)
     req.session.isLoggedIn = true;
+    req.session.user = user
+  } else {
+    console.log("Wrong username or password.")
   }
-  res.redirect('/') 
-
+  res.redirect('/')
 })
 
 // opens /createProduct form to create a form
