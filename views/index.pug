@@ -29,13 +29,14 @@ body
                 p #{product.name}
                 p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
                     
-                div.buttons
-                    button.delete-button(type='button', data-productid=product.productId)
+                div.buttons-trash-and-plusmin
+                    button.delete-button(type='button', data-productid=product.productId id="button-delete-product")
                         ion-icon(name="trash-outline")  
-                    button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
-                        ion-icon(name="add-circle-outline")
-                    button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
-                        ion-icon(name="remove-circle-outline")
+                    div.buttons-plus-minus
+                        button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
+                            ion-icon(name="add-circle-outline")
+                        button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
+                            ion-icon(name="remove-circle-outline")
 
 
 
