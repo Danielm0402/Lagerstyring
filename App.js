@@ -17,6 +17,7 @@ import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 import { collectionGroup } from "firebase/firestore";
+import { async } from "@firebase/util";
 const app = express();
 
 const controller = new Controller();
@@ -87,6 +88,10 @@ app.get('/van/:licenseplate/products', async (req, res) => {
 app.get("/createVan", (req, res) => {
   res.render("createVan");
 });
+
+app.get("/createCompany", (req, res) => {
+  res.render("createCompany");
+})
 
 app.get("/createelectrician", (req, res) => {
   res.render("createElectrician");
@@ -172,6 +177,11 @@ app.post("/van", async (req, res) => {
 app.post("/electrician", async (req, res) => {
   await controller.createElectrician(req.body.name, req.body.employeeId)
   res.redirect("/admin")
+})
+
+app.post("/company", async (req, res) => {
+  await controller.createCompany(req.body.name, req.body.cvr, req.body.contactpersonName, req.body.contactpersonNumber)
+  res.redirect("/login")
 })
 
 app.listen(4000);

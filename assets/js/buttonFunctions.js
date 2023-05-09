@@ -106,8 +106,7 @@ if(plusminButtonElements) {
       const storagePElement = Array.from(
         document.getElementsByClassName("storage-p")
       ).filter((e) => e.dataset.productid === productId)[0];
-      storagePElement.innerHTML = `På lager: ${amount} ${unit}
-      `;
+      storagePElement.innerHTML = `På lager: ${amount} ${unit}`;
     });
   }
 }

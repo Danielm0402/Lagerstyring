@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { initializeApp } from "firebase/app";
 
 import {
@@ -30,6 +31,7 @@ const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
 const electriciansCollectionRef = collection(db, "Electricians");
 const userCollectionRef = collection(db, "Users");
+const companiesCollectionRef = collection(db, "Companies")
 
 export async function getProductsFromDb() {
   let productQueryDocs = await getDocs(productCollectionRef);
@@ -66,6 +68,10 @@ export async function addProductToDb(product) {
   await setDoc(docRef, product.toJSON())
   console.log("firestore log");
 } 
+export async function addCompanyToDb(company){
+  const docRef = doc(db, "Companies", company.cvr);
+  await setDoc(docRef, company.toJSON())
+}
 
 export async function deleteProductFromDb(productId) {
   console.log("4444");
