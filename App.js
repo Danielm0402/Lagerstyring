@@ -8,11 +8,13 @@ import {
   deleteVanFromDb,
   getElectriciansFromDb,
   deleteElectricianFromDb,
+  getUsersFromDb
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
 
 import express from "express";
+import session from "express-session";
 import bodyParser from "body-parser";
 import { collectionGroup } from "firebase/firestore";
 const app = express();
@@ -23,6 +25,7 @@ const controller = new Controller();
 app.use(express.static("assets"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(session({secret: 'MYSECRETKEY', resave: false, saveUninitialized: true}));
 
 // 1. templating
 app.set("view engine", "pug");
@@ -33,9 +36,36 @@ app.set("view engine", "pug");
 app.get("/", async (req, res) => {
   const products = await getProductsFromDb();
   const vans = await getVansFromDb();
-
-  res.render("index", { products: products, vans: vans });
+  let isLoggedIn = false;
+  if (req.session.isLoggedIn) {
+    isLoggedIn = true;
+  }
+  res.render("index", { products: products, vans: vans, knownUser: isLoggedIn});
 });
+
+app.get('/logout', (req, res) => {
+  req.session.isLoggedIn = false;
+  res.redirect('/')
+})
+
+app.get("/login", (req, res) => {
+  res.render("loginForm", )
+})
+
+app.post('/', async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  const users = await getUsersFromDb();
+  const user = users.find(u => u.username === username);
+
+  if (user.password === password) {
+    console.log("logged in!")
+    req.session.isLoggedIn = true;
+  }
+  res.redirect('/') 
+
+})
 
 // opens /createProduct form to create a form
 app.get("/createProduct", (req, res) => {

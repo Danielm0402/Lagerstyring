@@ -1,0 +1,10 @@
+include includes/head
+
+body 
+    form(action='/', method='POST')
+        label(for="username") Brugernavn:
+        input(type="text", name="username")
+
+        label(for="password") Adgangskode:
+        input(type="text", name="password")
+        button(type="submit") Login

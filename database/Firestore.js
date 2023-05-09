@@ -29,6 +29,7 @@ const db = getFirestore(firebase_app);
 const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
 const electriciansCollectionRef = collection(db, "Electricians");
+const userCollectionRef = collection(db, "Users");
 
 export async function getProductsFromDb() {
   let productQueryDocs = await getDocs(productCollectionRef);
@@ -134,6 +135,16 @@ export async function getElectriciansFromDb(){
     return data;
   })
   return electricians;
+}
+
+export async function getUsersFromDb() {
+  const userDocs = await getDocs(userCollectionRef);
+  let users = userDocs.docs.map((doc) => {
+    let data = doc.data();
+    data.userId = doc.id;
+    return data;
+  })
+  return users;
 }
 
 async function test() {
