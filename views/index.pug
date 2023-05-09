@@ -6,10 +6,10 @@ body
         include loginForm
 
     else
-
-        button.admin
-            <i class="fa-solid fa-lock"></i>
-            a(href="/admin") Admin
+        if role=='admin'
+            button.admin
+                <i class="fa-solid fa-lock"></i>
+                a(href="/admin") Admin
         
         button#button-logout
             a(href="/logout") Log ud

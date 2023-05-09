@@ -30,6 +30,7 @@ const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
 const electriciansCollectionRef = collection(db, "Electricians");
 const userCollectionRef = collection(db, "Users");
+const adminCollectionRef = collection(db, "Admins");
 
 export async function getProductsFromDb() {
   let productQueryDocs = await getDocs(productCollectionRef);
@@ -135,6 +136,44 @@ export async function getElectriciansFromDb(){
     return data;
   })
   return electricians;
+}
+
+export async function getAdminsFromDb() {
+  const adminQueryDocs = await getDocs(adminCollectionRef);
+  let admins = adminQueryDocs.docs.map((doc) => {
+    let data = doc.data();
+    data.employeeId = doc.id;
+    return data;
+  })
+  return admins;
+}
+
+export async function getElectricianVans(employeeId) {
+  const electricianDocRef = doc(db, "Electricians", employeeId);
+  const electrician = (await getDoc(electricianDocRef)).data();
+  const vanLicensePlate = electrician.vans[0];
+  const vanDocRef = doc(db, "Vans", vanLicensePlate);
+  const van = (await getDoc(vanDocRef)).data();
+  return van;
+}
+
+export async function getVanProducts(licensePlate) {
+  const vanDocRef = doc(db, "Vans", licensePlate);
+  const van = (await getDoc(vanDocRef)).data();
+  const productIds = van.products;
+
+  const allProducts = await getProductsFromDb();
+  const vanProducts = allProducts.filter(p => productIds.includes(p.productId))
+
+  return vanProducts;
+  // return await Promise.all(productPromises);
+
+
+
+  // const products = prodDocRefs.map(async (p) => {
+  //   p.map(p.data())
+  // })
+  // return products;
 }
 
 export async function getUsersFromDb() {
