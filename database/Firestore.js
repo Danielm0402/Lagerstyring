@@ -172,14 +172,6 @@ export async function getVanProducts(licensePlate) {
   const vanProducts = allProducts.filter(p => productIds.includes(p.productId))
 
   return vanProducts;
-  // return await Promise.all(productPromises);
-
-
-
-  // const products = prodDocRefs.map(async (p) => {
-  //   p.map(p.data())
-  // })
-  // return products;
 }
 
 export async function getUsersFromDb() {
