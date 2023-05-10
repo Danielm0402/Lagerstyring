@@ -125,7 +125,11 @@ app.post("/van/:licensePlate/products", async (req, res) => {
 app.post('/products', async (req, res) => {
   const productIds = req.body.productIds;
   console.log(req.body.productIds)
+})
 
+app.get('/van/:licenseplate/products', async (req, res) => {
+  const licenseplate = req.params.licenseplate
+  const vanProducts = await controller.getVanProducts(licenseplate)
 
 })
 
