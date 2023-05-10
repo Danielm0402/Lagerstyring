@@ -34,6 +34,9 @@ const userCollectionRef = collection(db, "Users");
 const companiesCollectionRef = collection(db, "Companies")
 const adminCollectionRef = collection(db, "Admins");
 
+
+
+
 export async function getProductsFromDb() {
   let productQueryDocs = await getDocs(productCollectionRef);
   let products = productQueryDocs.docs.map((doc) => {

@@ -113,6 +113,7 @@ app.get("/admin", async (req, res) => {
 app.get('/van/:licenseplate/products', async (req, res) => {
   const licenseplate = req.params.licenseplate
   const vanProducts = await controller.getVanProducts(licenseplate)
+
 })
 
 app.get("/createVan", (req, res) => {

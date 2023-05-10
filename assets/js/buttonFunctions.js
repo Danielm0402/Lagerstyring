@@ -146,6 +146,8 @@ if (selectVanDropdownElement) {
     createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
     const vanProducts = await fetch(`/van/${selectedLicensePlate}/products`, {
       method: "GET",
+
     })
+
   });
 }
