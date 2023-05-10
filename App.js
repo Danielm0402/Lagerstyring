@@ -6,12 +6,10 @@ import {
   addVanToDb,
   getVansFromDb,
   deleteVanFromDb,
-  getElectriciansFromDb,
-  deleteElectricianFromDb,
   getUsersFromDb,
-  getAdminsFromDb,
-  getElectricianVans,
-  getVanProducts
+  getVanProducts,
+  deleteUserFromDb,
+  getUserVans
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -49,7 +47,7 @@ app.get("/", async (req, res) => {
   let role = '';
 
   if (user && user.role === 'electrician') {
-    const van = await getElectricianVans(user.employeeId);
+    const van = await getUserVans(user.employeeId);
     
     products = await getVanProducts(van.licensePlate);
     
@@ -63,6 +61,7 @@ app.get("/", async (req, res) => {
   res.render("index", { products: products, vans: vans, knownUser: isLoggedIn, role: role});
 });
 
+
 app.get('/logout', (req, res) => {
   req.session.isLoggedIn = false;
   console.log("logged out")
@@ -73,13 +72,15 @@ app.get("/login", (req, res) => {
   res.render("loginForm", )
 })
 
+//2. STEP I integration af elec og admin --------------------------------------
 app.post('/', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const electricians = await getElectriciansFromDb();
-  const admins = await getAdminsFromDb()
-  const users = electricians.concat(admins);
+  // const electricians = await getElectriciansFromDb();
+  // const admins = await getAdminsFromDb()
+  // const users = electricians.concat(admins);
+  const users = await getUsersFromDb();
 
   const user = users.find(u => u.username === username);
 
@@ -104,10 +105,11 @@ app.get("/createProduct/:licenseplate", async (req, res) => {
   res.render("createProduct", {van: van})
 }) 
 
+//3. step---------------------------------------
 app.get("/admin", async (req, res) => {
   const vans = await getVansFromDb();
-  const electricians = await getElectriciansFromDb();
-  res.render("admin", { vans: vans, electricians: electricians});
+  const users = await getUsersFromDb();
+  res.render("admin", { vans: vans, users: users});
 });
 
 app.get('/van/:licenseplate/products', async (req, res) => {
@@ -123,9 +125,15 @@ app.get("/createCompany", (req, res) => {
   res.render("createCompany");
 })
 
-app.get("/createelectrician", (req, res) => {
-  res.render("createElectrician");
-});
+// app.get("/createelectrician", (req, res) => {
+//   res.render("createElectrician");
+// });
+
+//1. step Start af vores fusion af electrician og admin-------------------------------------------------
+app.get("/createUser", (req, res) =>{
+  res.render("createUser");
+})
+
 
 app.get("/test", (req, res) => {
   res.send("Dette var en god test");
@@ -157,12 +165,13 @@ app.put("/deleteVan/:licensePlate", async (req, res) => {
   res.send(van);
 });
 
-app.put("/deleteElectrician/:employeeId", async (req, res) => {
+//4. step-------------------------
+app.put("/deleteUser/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
-  console.log("delete Electrician", employeeId);
+  console.log("delete User", employeeId);
 
-  const electrician = await deleteElectricianFromDb(employeeId);
-  res.send(electrician);
+  const user = await deleteUserFromDb(employeeId);
+  res.send(user);
 })
 
 /*
@@ -209,8 +218,13 @@ app.post("/van", async (req, res) => {
   res.redirect("/admin");
 });
 
-app.post("/electrician", async (req, res) => {
-  await controller.createElectrician(req.body.name, req.body.employeeId)
+//5. step kom tilbage her. Hvad skal den have af paramtre.
+app.post("/user", async (req, res) => {
+  const {name, employeeId, username, password} = req.body;
+  const role = req.body.admin || req.body.electrician;
+  await controller.createUser(name, employeeId, username, password, role);
+  
+  // await controller.createUser(req.body.name, req.body.employeeId, req.body.role)
   res.redirect("/admin")
 })
 

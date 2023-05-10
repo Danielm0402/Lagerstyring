@@ -136,5 +136,16 @@ body {
     /* margin-right: 10; */
   }
 
+  #radio-buttons label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#radio-buttons input[type="radio"] {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
 
 

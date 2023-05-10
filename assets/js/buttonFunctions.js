@@ -43,15 +43,15 @@ if (document.getElementById("delete-van")) {
   });
 }
 
-if (document.getElementById("delete-electrician")) {
-  const deleteElectricianButtonElement = document.getElementById("delete-electrician");
+if (document.getElementById("delete-user")) {
+  const deleteUserButtonElement = document.getElementById("delete-user");
 
-  deleteElectricianButtonElement.addEventListener("click", async () => {
-    const selectElement = document.querySelector("#dropdown-select-electrician");
+  deleteUserButtonElement.addEventListener("click", async () => {
+    const selectElement = document.querySelector("#dropdown-select-user");
     const selectedOption = selectElement.options[selectElement.selectedIndex];
     let employeeId = selectedOption.value;
 
-    const response = await fetch(`/deleteElectrician/${employeeId}`, {
+    const response = await fetch(`/deleteUser/${employeeId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
     });
@@ -61,26 +61,26 @@ if (document.getElementById("delete-electrician")) {
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
 
 /*
-  Looper igennem alle increaseButtons 
-  og giver dem en eventlistener
-  Gem productId for at kunne opdatere
-  aktuelle product i db
+Looper igennem alle increaseButtons 
+og giver dem en eventlistener
+Gem productId for at kunne opdatere
+aktuelle product i db
 
-  send et request til serveren
-  hvor i body'en af requestet 
-  er en action property der 
-  fortæller serveren hvad den skal 
-  gøre med requestet
-  Responset fra requestet gemmes i en variabel
+send et request til serveren
+hvor i body'en af requestet 
+er en action property der 
+fortæller serveren hvad den skal 
+gøre med requestet
+Responset fra requestet gemmes i en variabel
 
-  Find aktuelle paragraph element
-  ved at få alle elementer med 
-  klassen storage. Filtrer for dem
-  der har data productId
+Find aktuelle paragraph element
+ved at få alle elementer med 
+klassen storage. Filtrer for dem
+der har data productId
 
-  opdater dette paragraph elements
-  text, så det passer med det nye
-  antal products
+opdater dette paragraph elements
+text, så det passer med det nye
+antal products
 
 */
 const plusminButtonElements = document.getElementsByClassName("button-plusmin");
@@ -135,7 +135,6 @@ if(plusminButtonElements) {
 
 //------------------------------- SELECT VAN-----------------------------------------------
 const selectVanDropdownElement = document.getElementById("dropdown-select-van");
-const createProductLinkElement = document.getElementById("anchor-create-product");
 
 if (selectVanDropdownElement) {
 
@@ -143,7 +142,7 @@ if (selectVanDropdownElement) {
     const selectedIndex = selectVanDropdownElement.selectedIndex;
     const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
     const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-    createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
+    
     const vanProducts = await fetch(`/van/${selectedLicensePlate}/products`, {
       method: "GET",
     })

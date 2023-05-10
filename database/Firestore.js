@@ -29,10 +29,10 @@ const db = getFirestore(firebase_app);
 
 const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
-const electriciansCollectionRef = collection(db, "Electricians");
+// const electriciansCollectionRef = collection(db, "Electricians");
 const userCollectionRef = collection(db, "Users");
 const companiesCollectionRef = collection(db, "Companies")
-const adminCollectionRef = collection(db, "Admins");
+// const adminCollectionRef = collection(db, "Admins");
 
 export async function getProductsFromDb() {
   let productQueryDocs = await getDocs(productCollectionRef);
@@ -44,10 +44,11 @@ export async function getProductsFromDb() {
   return products;
 } 
  
-export async function updateElectrician(electrician) {
-  const docRef = doc(db, "Electricians", electrician.employeeId)
+//1.----------------
+export async function updateUser(user) {
+  const docRef = doc(db, "Users", user.employeeId)
 
-  await updateDoc(docRef, electrician.toJSON())
+  await updateDoc(docRef, user.toJSON())
 }
 
 export async function updateVan(van) {
@@ -56,10 +57,11 @@ export async function updateVan(van) {
   await updateDoc(docRef, van.toJSON())
 }
 
-export async function addElectricianToDb(electrician) {
-  const docRef = doc(db, "Electricians", electrician.employeeId);
-  await setDoc(docRef, electrician.toJSON())
+export async function addUserToDb(user) {
+  const docRef = doc(db, "Users", user.employeeId);
+  await setDoc(docRef, user.toJSON())
 }
+
 export async function addVanToDb(van) {
   const docRef = doc(db, "Vans", van.licensePlate)
   await setDoc(docRef, van.toJSON());
@@ -91,10 +93,11 @@ export async function deleteVanFromDb(licensePlate) {
   console.log("van deleted");
 }
 
-export async function deleteElectricianFromDb(employeeId){
-  const electricanRef = doc(electriciansCollectionRef, employeeId);
-  await deleteDoc(electricanRef);
-  console.log("electrican deleted")
+//2.---------------
+export async function deleteUserFromDb(employeeId){
+  const userRef = doc(userCollectionRef, employeeId);
+  await deleteDoc(userRef);
+  console.log("user deleted")
 }
 
 export async function getProductFromDb(productId) {
@@ -134,32 +137,36 @@ export async function getVansFromDb() {
   return vans;
 }
 
-export async function getElectriciansFromDb(){
-  const electricianQueryDocs = await getDocs(electriciansCollectionRef);
-  let electricians = electricianQueryDocs.docs.map((doc) => {
-    let data = doc.data();
-    data.employeeId = doc.id;
-    return data;
-  })
-  return electricians;
-}
+// export async function getElectriciansFromDb(){
+//   const electricianQueryDocs = await getDocs(electriciansCollectionRef);
+//   let electricians = electricianQueryDocs.docs.map((doc) => {
+//     let data = doc.data();
+//     data.employeeId = doc.id;
+//     return data;
+//   })
+//   return electricians;
+// }
 
-export async function getAdminsFromDb() {
-  const adminQueryDocs = await getDocs(adminCollectionRef);
-  let admins = adminQueryDocs.docs.map((doc) => {
-    let data = doc.data();
-    data.employeeId = doc.id;
-    return data;
-  })
-  return admins;
-}
 
-export async function getElectricianVans(employeeId) {
-  const electricianDocRef = doc(db, "Electricians", employeeId);
-  const electrician = (await getDoc(electricianDocRef)).data();
-  const vanLicensePlate = electrician.vans[0];
-  const vanDocRef = doc(db, "Vans", vanLicensePlate);
-  const van = (await getDoc(vanDocRef)).data();
+// export async function getAdminsFromDb() {
+//   const adminQueryDocs = await getDocs(adminCollectionRef);
+//   let admins = adminQueryDocs.docs.map((doc) => {
+//     let data = doc.data();
+//     data.employeeId = doc.id;
+//     return data;
+//   })
+//   return admins;
+// }
+
+export async function getUserVans(employeeId) {
+  const userDocRef = doc(db, "Users", employeeId);
+  const user = (await getDoc(userDocRef)).data();
+  const vanLicensePlate = user.vans[0];
+  let van = ""
+  if (vanLicensePlate) {
+    const vanDocRef = doc(db, "Vans", vanLicensePlate);
+    van = (await getDoc(vanDocRef)).data();
+  }
   return van;
 }
 
@@ -183,6 +190,7 @@ export async function getUsersFromDb() {
   })
   return users;
 }
+
 
 async function test() {
   let productsQueryDocs = await getDocs(productCollectionRef);

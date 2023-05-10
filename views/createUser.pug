@@ -1,0 +1,39 @@
+include includes/head
+
+body
+    button
+        <i class="fa-sharp fa-solid fa-left-long"></i>
+        a.knap(href='/admin') Tilbage
+
+    form(action=`/user`, method="post")
+
+        div#div-create-user
+        div 
+            h2 Opret Bruger
+        div
+            label(for="input-name") Navn:
+            input.input-userName(type="text" name="name")
+
+            label(for="input-employeeId") Medarbejder nr.: 
+            input.input-employeeId(type="text" name="employeeId")
+            
+            label(for="input-username") Brugernavn: 
+            input.input-username(type="text" name="username")
+
+            label(for="input-password") Password: 
+            input.input-password(type="text" name="password")
+
+
+
+
+            label(for="input-role")
+        div#radio-buttons
+            input(type="radio" id="admin" name="admin" value="admin")
+            label(for="admin") Admin
+            
+            input(type="radio" id="electrician" name="electrician" value="electrician")
+            label(for="electrician") Elektrikker
+
+
+
+        button(id="create-user-btn" class="button-create" type="submit") Opret medarbejder
