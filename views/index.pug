@@ -2,32 +2,41 @@ include includes/head
 
 body
 
-    button.admin
-        <i class="fa-solid fa-lock"></i>
-        a(href="/admin") Admin
-    
+    if !knownUser
+        include loginForm
 
-    h1 Bil:
-        select#dropdown-select-van(name='select-van')
-            each van in vans
-                option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
+    else
+        if role=='admin'
+            button.admin
+                <i class="fa-solid fa-lock"></i>
+                a(href="/admin") Admin
+        
+        button#button-logout
+            a(href="/logout") Log ud
+
+        h1 Bil:
+            select#dropdown-select-van(name='select-van')
+                each van in vans
+                    option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
 
 
-    button.addProduct
-        <i class="fa-solid fa-box-open"></i>
-        a#anchor-create-product(href=`/createProduct`) Tilføj ny vare
+        button.addProduct
+            <i class="fa-solid fa-box-open"></i>
+            a(href="/createProduct") Tilføj ny vare
 
-    each product in products
-        div.product-container
-            p #{product.name}
-            p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
-                button.delete-button(type='button', data-productid=product.productId)
-                    ion-icon(name="trash-outline")
-            div.buttons    
-                button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
-                    ion-icon(name="add-circle-outline")
-                button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
-                    ion-icon(name="remove-circle-outline")
+        each product in products
+            div.product-container
+                p #{product.name}
+                p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
+                    
+                div.buttons-trash-and-plusmin
+                    button.delete-button(type='button', data-productid=product.productId id="button-delete-product")
+                        ion-icon(name="trash-outline")  
+                    div.buttons-plus-minus
+                        button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
+                            ion-icon(name="add-circle-outline")
+                        button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
+                            ion-icon(name="remove-circle-outline")
 
 
 

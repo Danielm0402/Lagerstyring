@@ -8,14 +8,19 @@ import {
   deleteVanFromDb,
   getElectriciansFromDb,
   deleteElectricianFromDb,
-  
+  getUsersFromDb,
+  getAdminsFromDb,
+  getElectricianVans,
+  getVanProducts
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
 
 import express from "express";
+import session from "express-session";
 import bodyParser from "body-parser";
 import { collectionGroup } from "firebase/firestore";
+import { async } from "@firebase/util";
 const app = express();
 
 const controller = new Controller();
@@ -24,6 +29,7 @@ const controller = new Controller();
 app.use(express.static("assets"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(session({secret: 'MYSECRETKEY', resave: false, saveUninitialized: true}));
 
 // 1. templating
 app.set("view engine", "pug");
@@ -32,11 +38,59 @@ app.set("view engine", "pug");
 
 //---------------GET REQUESTS------------------------------------------------------------------------
 app.get("/", async (req, res) => {
-  const products = await getProductsFromDb();
+  let isLoggedIn = false;
+  if (req.session.isLoggedIn) {
+    isLoggedIn = true;
+  
+  }
+  const user = req.session.user;
+
+  let products = []
+  let role = '';
+
+  if (user && user.role === 'electrician') {
+    const van = await getElectricianVans(user.employeeId);
+    
+    products = await getVanProducts(van.licensePlate);
+    
+  } else {
+    
+    products = await getProductsFromDb();
+  }
   const vans = await getVansFromDb();
 
-  res.render("index", { products: products, vans: vans });
+  res.render("index", { products: products, vans: vans, knownUser: isLoggedIn, role: role});
 });
+
+app.get('/logout', (req, res) => {
+  req.session.isLoggedIn = false;
+  console.log("logged out")
+  res.redirect('/login')
+})
+
+app.get("/login", (req, res) => {
+  res.render("loginForm", )
+})
+
+app.post('/', async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  const electricians = await getElectriciansFromDb();
+  const admins = await getAdminsFromDb()
+  const users = electricians.concat(admins);
+
+  const user = users.find(u => u.username === username);
+
+  if (user && user.password === password) {
+    console.log("logged in as: " + user.username)
+    req.session.isLoggedIn = true;
+    req.session.user = user
+  } else {
+    console.log("Wrong username or password.")
+  }
+  res.redirect('/')
+})
 
 // opens /createProduct form to create a form
 app.get("/createProduct", (req, res) => {
@@ -63,6 +117,10 @@ app.get('/van/:licenseplate/products', async (req, res) => {
 app.get("/createVan", (req, res) => {
   res.render("createVan");
 });
+
+app.get("/createCompany", (req, res) => {
+  res.render("createCompany");
+})
 
 app.get("/createelectrician", (req, res) => {
   res.render("createElectrician");
@@ -153,6 +211,11 @@ app.post("/van", async (req, res) => {
 app.post("/electrician", async (req, res) => {
   await controller.createElectrician(req.body.name, req.body.employeeId)
   res.redirect("/admin")
+})
+
+app.post("/company", async (req, res) => {
+  await controller.createCompany(req.body.companyName, req.body.cvrNr, req.body.contactPersonName, req.body.contactPersonNumber)
+  res.redirect("/login")
 })
 
 app.listen(4000);

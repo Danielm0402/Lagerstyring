@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { initializeApp } from "firebase/app";
 
 import {
@@ -29,6 +30,9 @@ const db = getFirestore(firebase_app);
 const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
 const electriciansCollectionRef = collection(db, "Electricians");
+const userCollectionRef = collection(db, "Users");
+const companiesCollectionRef = collection(db, "Companies")
+const adminCollectionRef = collection(db, "Admins");
 
 export async function getProductsFromDb() {
   let productQueryDocs = await getDocs(productCollectionRef);
@@ -65,6 +69,10 @@ export async function addProductToDb(product) {
   await setDoc(docRef, product.toJSON())
   console.log("firestore log");
 } 
+export async function addCompanyToDb(company){
+  const docRef = doc(db, "Companies", company.cvr);
+  await setDoc(docRef, company.toJSON())
+}
 
 export async function deleteProductFromDb(productId) {
   console.log("4444");
@@ -136,6 +144,46 @@ export async function getElectriciansFromDb(){
   return electricians;
 }
 
+export async function getAdminsFromDb() {
+  const adminQueryDocs = await getDocs(adminCollectionRef);
+  let admins = adminQueryDocs.docs.map((doc) => {
+    let data = doc.data();
+    data.employeeId = doc.id;
+    return data;
+  })
+  return admins;
+}
+
+export async function getElectricianVans(employeeId) {
+  const electricianDocRef = doc(db, "Electricians", employeeId);
+  const electrician = (await getDoc(electricianDocRef)).data();
+  const vanLicensePlate = electrician.vans[0];
+  const vanDocRef = doc(db, "Vans", vanLicensePlate);
+  const van = (await getDoc(vanDocRef)).data();
+  return van;
+}
+
+export async function getVanProducts(licensePlate) {
+  const vanDocRef = doc(db, "Vans", licensePlate);
+  const van = (await getDoc(vanDocRef)).data();
+  const productIds = van.products;
+
+  const allProducts = await getProductsFromDb();
+  const vanProducts = allProducts.filter(p => productIds.includes(p.productId))
+
+  return vanProducts;
+}
+
+export async function getUsersFromDb() {
+  const userDocs = await getDocs(userCollectionRef);
+  let users = userDocs.docs.map((doc) => {
+    let data = doc.data();
+    data.userId = doc.id;
+    return data;
+  })
+  return users;
+}
+
 async function test() {
   let productsQueryDocs = await getDocs(productCollectionRef);
   let products = productsQueryDocs.docs.map((doc) => {
@@ -143,4 +191,4 @@ async function test() {
     data.productId = doc.id;
     console.log(data);
   });
-}
+} 
