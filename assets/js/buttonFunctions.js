@@ -61,26 +61,26 @@ if (document.getElementById("delete-electrician")) {
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
 
 /*
-Looper igennem alle increaseButtons 
-og giver dem en eventlistener
-Gem productId for at kunne opdatere
-aktuelle product i db
+  Looper igennem alle increaseButtons 
+  og giver dem en eventlistener
+  Gem productId for at kunne opdatere
+  aktuelle product i db
 
-send et request til serveren
-hvor i body'en af requestet 
-er en action property der 
-fortæller serveren hvad den skal 
-gøre med requestet
-Responset fra requestet gemmes i en variabel
+  send et request til serveren
+  hvor i body'en af requestet 
+  er en action property der 
+  fortæller serveren hvad den skal 
+  gøre med requestet
+  Responset fra requestet gemmes i en variabel
 
-Find aktuelle paragraph element
-ved at få alle elementer med 
-klassen storage. Filtrer for dem
-der har data productId
+  Find aktuelle paragraph element
+  ved at få alle elementer med 
+  klassen storage. Filtrer for dem
+  der har data productId
 
-opdater dette paragraph elements
-text, så det passer med det nye
-antal products
+  opdater dette paragraph elements
+  text, så det passer med det nye
+  antal products
 
 */
 const plusminButtonElements = document.getElementsByClassName("button-plusmin");

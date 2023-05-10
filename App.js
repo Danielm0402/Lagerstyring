@@ -56,6 +56,7 @@ app.get("/", async (req, res) => {
   } else {
     
     products = await getProductsFromDb();
+    role = 'admin'
   }
   const vans = await getVansFromDb();
 
