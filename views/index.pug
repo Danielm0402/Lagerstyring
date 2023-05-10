@@ -16,6 +16,7 @@ body
 
         h1 Bil:
             select#dropdown-select-van(name='select-van')
+                option(value='' disabled selected) Select van
                 each van in vans
                     option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
 

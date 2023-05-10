@@ -22,8 +22,8 @@ for (const e of deleteButtonElements) {
 }
 
 if (document.getElementById("delete-van")) {
-  // på forsiden er der ikke noget der hedder delete-van, 
-  // så der fejler den, hvis ikke der lige et et tjek på 
+  // på forsiden er der ikke noget der hedder delete-van,
+  // så der fejler den, hvis ikke der lige et et tjek på
   // om der findes en "delete-van" på den side man er på.
   const deleteVanButtonElement = document.getElementById("delete-van");
 
@@ -44,10 +44,13 @@ if (document.getElementById("delete-van")) {
 }
 
 if (document.getElementById("delete-electrician")) {
-  const deleteElectricianButtonElement = document.getElementById("delete-electrician");
+  const deleteElectricianButtonElement =
+    document.getElementById("delete-electrician");
 
   deleteElectricianButtonElement.addEventListener("click", async () => {
-    const selectElement = document.querySelector("#dropdown-select-electrician");
+    const selectElement = document.querySelector(
+      "#dropdown-select-electrician"
+    );
     const selectedOption = selectElement.options[selectElement.selectedIndex];
     let employeeId = selectedOption.value;
 
@@ -55,8 +58,8 @@ if (document.getElementById("delete-electrician")) {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
     });
-    location.reload()
-  })
+    location.reload();
+  });
 }
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
 
@@ -85,24 +88,23 @@ if (document.getElementById("delete-electrician")) {
 */
 const plusminButtonElements = document.getElementsByClassName("button-plusmin");
 
-if(plusminButtonElements) {
-
+if (plusminButtonElements) {
   for (const e of plusminButtonElements) {
     const productId = e.dataset.productid;
     const btnAction = e.dataset.action;
-  
+
     e.addEventListener("click", async () => {
       const response = await fetch(`/products/${productId}/amount`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: btnAction }),
       });
-  
+
       const json = await response.json();
-  
+
       const amount = json.amount;
       const unit = json.unit;
-  
+
       const storagePElement = Array.from(
         document.getElementsByClassName("storage-p")
       ).filter((e) => e.dataset.productid === productId)[0];
@@ -138,14 +140,25 @@ const selectVanDropdownElement = document.getElementById("dropdown-select-van");
 const createProductLinkElement = document.getElementById("anchor-create-product");
 
 if (selectVanDropdownElement) {
-
-  selectVanDropdownElement.addEventListener('change', async () => {
+  selectVanDropdownElement.addEventListener("change", async () => {
     const selectedIndex = selectVanDropdownElement.selectedIndex;
+<<<<<<< Updated upstream
     const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
     const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
     createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
+=======
+    const selectedLicensePlateId =
+      selectVanDropdownElement.options[selectedIndex].id;
+    const selectedLicensePlate = selectedLicensePlateId.split("-")[1];
+
+>>>>>>> Stashed changes
     const vanProducts = await fetch(`/van/${selectedLicensePlate}/products`, {
       method: "GET",
-    })
+    });
+    console.log("sas", vanProducts);
+    await fetch("/", {
+      method: "post",
+      body: { vanProducts: vanProducts, licensePlate: selectedLicensePlate },
+    });
   });
 }

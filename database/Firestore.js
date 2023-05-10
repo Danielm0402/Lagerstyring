@@ -31,7 +31,7 @@ const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
 const electriciansCollectionRef = collection(db, "Electricians");
 const userCollectionRef = collection(db, "Users");
-const companiesCollectionRef = collection(db, "Companies")
+const companiesCollectionRef = collection(db, "Companies");
 const adminCollectionRef = collection(db, "Admins");
 
 export async function getProductsFromDb() {
@@ -45,38 +45,46 @@ export async function getProductsFromDb() {
 } 
  
 export async function updateElectrician(electrician) {
-  const docRef = doc(db, "Electricians", electrician.employeeId)
+  const docRef = doc(db, "Electricians", electrician.employeeId);
 
+<<<<<<< Updated upstream
   await updateDoc(docRef, electrician.toJSON())
+=======
+  updateDoc(docRef, electrician.toJSON());
+>>>>>>> Stashed changes
 }
 
 export async function updateVan(van) {
-  const docRef = doc(db, "Vans", van.licensePlate)
+  const docRef = doc(db, "Vans", van.licensePlate);
 
+<<<<<<< Updated upstream
   await updateDoc(docRef, van.toJSON())
+=======
+  updateDoc(docRef, van.toJSON());
+>>>>>>> Stashed changes
 }
 
 export async function addElectricianToDb(electrician) {
   const docRef = doc(db, "Electricians", electrician.employeeId);
-  await setDoc(docRef, electrician.toJSON())
+  await setDoc(docRef, electrician.toJSON());
 }
 export async function addVanToDb(van) {
-  const docRef = doc(db, "Vans", van.licensePlate)
+  const docRef = doc(db, "Vans", van.licensePlate);
   await setDoc(docRef, van.toJSON());
 }
 export async function addProductToDb(product) {
   const docRef = doc(db, "Products", product.productId);
-  await setDoc(docRef, product.toJSON())
+  await setDoc(docRef, product.toJSON());
   console.log("firestore log");
-} 
-export async function addCompanyToDb(company){
+}
+export async function addCompanyToDb(company) {
   const docRef = doc(db, "Companies", company.cvr);
-  await setDoc(docRef, company.toJSON())
+  await setDoc(docRef, company.toJSON());
 }
 
 export async function deleteProductFromDb(productId) {
   console.log("4444");
-  
+
   // delete product from database where products productID === productId
   const productRef = doc(productCollectionRef, productId);
   await deleteDoc(productRef);
@@ -91,10 +99,10 @@ export async function deleteVanFromDb(licensePlate) {
   console.log("van deleted");
 }
 
-export async function deleteElectricianFromDb(employeeId){
+export async function deleteElectricianFromDb(employeeId) {
   const electricanRef = doc(electriciansCollectionRef, employeeId);
   await deleteDoc(electricanRef);
-  console.log("electrican deleted")
+  console.log("electrican deleted");
 }
 
 export async function getProductFromDb(productId) {
@@ -106,7 +114,6 @@ export async function getProductFromDb(productId) {
   return products[0];
 }
 
-
 export async function updateAmountToProduct(amount, productId) {
   const docRef = doc(db, "Products", productId);
   const productDoc = await getDoc(docRef);
@@ -116,12 +123,11 @@ export async function updateAmountToProduct(amount, productId) {
   return newAmount;
 }
 
-
 export async function getVanFromDb(licensePlate) {
   const vanQueryDoc = doc(db, "Vans", licensePlate);
   const vanDoc = await getDoc(vanQueryDoc);
-  const van = vanDoc.data()
-  return van
+  const van = vanDoc.data();
+  return van;
 }
 
 export async function getVansFromDb() {
@@ -134,13 +140,13 @@ export async function getVansFromDb() {
   return vans;
 }
 
-export async function getElectriciansFromDb(){
+export async function getElectriciansFromDb() {
   const electricianQueryDocs = await getDocs(electriciansCollectionRef);
   let electricians = electricianQueryDocs.docs.map((doc) => {
     let data = doc.data();
     data.employeeId = doc.id;
     return data;
-  })
+  });
   return electricians;
 }
 
@@ -150,7 +156,7 @@ export async function getAdminsFromDb() {
     let data = doc.data();
     data.employeeId = doc.id;
     return data;
-  })
+  });
   return admins;
 }
 
@@ -169,7 +175,9 @@ export async function getVanProducts(licensePlate) {
   const productIds = van.products;
 
   const allProducts = await getProductsFromDb();
-  const vanProducts = allProducts.filter(p => productIds.includes(p.productId))
+  const vanProducts = allProducts.filter((p) =>
+    productIds.includes(p.productId)
+  );
 
   return vanProducts;
 }
@@ -180,7 +188,7 @@ export async function getUsersFromDb() {
     let data = doc.data();
     data.userId = doc.id;
     return data;
-  })
+  });
   return users;
 }
 
@@ -191,4 +199,4 @@ async function test() {
     data.productId = doc.id;
     console.log(data);
   });
-} 
+}
