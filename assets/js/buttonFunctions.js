@@ -67,6 +67,7 @@ if (document.getElementById("delete-user")) {
     location.reload()
   })
 }
+}
 
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
 
@@ -209,4 +210,4 @@ function initFunctions() {
 
 }
 
-initFunctions();
+initFunctions()

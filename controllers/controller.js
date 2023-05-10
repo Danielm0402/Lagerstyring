@@ -45,8 +45,8 @@ export default class Controller {
     const vanData = await getVanFromDb(licensePlate);
     const v = new Van(vanData.licensePlate);
     // console.log(vanData.electricians)
-    vanData.user.map(e => v.addUser(e))
-    vanData.products.map(p => v.addProduct(p))
+    // vanData.user.map(e => v.addUser(e))
+    // vanData.products.map(p => v.addProduct(p))
 
     return v;
   }
