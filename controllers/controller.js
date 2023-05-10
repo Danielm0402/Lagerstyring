@@ -5,10 +5,6 @@ import { addProductToDb, addVanToDb, getVanFromDb, updateVan, addCompanyToDb, ad
 import Company from "../models/company.js";
 import User from "../models/user.js";
 
-// export function test() {
-//   console.log("test");
-// }
-
 export default class Controller {
 
   async createVan(licensePlate) {
@@ -41,7 +37,7 @@ export default class Controller {
     const vanData = await getVanFromDb(licensePlate)
     const v = new Van(vanData.licensePlate);
     // console.log(vanData.electricians)
-    vanData.electricians.map(e => v.addElectrician(e))
+    vanData.user.map(e => v.addUser(e))
     vanData.products.map(p => v.addProduct(p))
 
     return v 

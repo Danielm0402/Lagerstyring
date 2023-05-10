@@ -48,8 +48,10 @@ app.get("/", async (req, res) => {
 
   if (user && user.role === 'electrician') {
     const van = await getUserVans(user.employeeId);
+    if(van){
+      products = await getVanProducts(van.licensePlate);
+    }
     
-    products = await getVanProducts(van.licensePlate);
     
   } else {
     
@@ -77,9 +79,6 @@ app.post('/', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  // const electricians = await getElectriciansFromDb();
-  // const admins = await getAdminsFromDb()
-  // const users = electricians.concat(admins);
   const users = await getUsersFromDb();
 
   const user = users.find(u => u.username === username);
@@ -125,15 +124,9 @@ app.get("/createCompany", (req, res) => {
   res.render("createCompany");
 })
 
-// app.get("/createelectrician", (req, res) => {
-//   res.render("createElectrician");
-// });
-
-//1. step Start af vores fusion af electrician og admin-------------------------------------------------
 app.get("/createUser", (req, res) =>{
   res.render("createUser");
 })
-
 
 app.get("/test", (req, res) => {
   res.send("Dette var en god test");
@@ -165,7 +158,6 @@ app.put("/deleteVan/:licensePlate", async (req, res) => {
   res.send(van);
 });
 
-//4. step-------------------------
 app.put("/deleteUser/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
   console.log("delete User", employeeId);
@@ -224,7 +216,6 @@ app.post("/user", async (req, res) => {
   const role = req.body.admin || req.body.electrician;
   await controller.createUser(name, employeeId, username, password, role);
   
-  // await controller.createUser(req.body.name, req.body.employeeId, req.body.role)
   res.redirect("/admin")
 })
 
