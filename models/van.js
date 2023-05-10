@@ -27,23 +27,24 @@ export default class Van {
             this.users.splice(index, 1);
     }
 
-    addProduct(product) {
-        if (!this.products.includes(product)) {
-            this.products.push(product)
-        }
+  addProduct(productId) {
+    if (!this.products.includes(productId)) {
+      this.products.push(productId);
+      console.log("this.products", this.products);
     }
+  }
 
-    createProduct(name, amount, unit){
-        let newProduct = new product(name, amount, unit)
-        this.products.push(newProduct)
-        return newProduct
-    }
+  createProduct(name, amount, unit) {
+    let newProduct = new product(name, amount, unit);
+    this.products.push(newProduct);
+    return newProduct;
+  }
 
-    removeProduct(product){
-        if(this.products.includes(product)){
-            this.products.slice(this.products.indexOf(product), 1)
-        }
+  removeProduct(product) {
+    if (this.products.includes(product)) {
+      this.products.slice(this.products.indexOf(product), 1);
     }
+  }
 
     toJSON() {
         const json = {
@@ -54,4 +55,3 @@ export default class Van {
         return json;
     }
 }
-

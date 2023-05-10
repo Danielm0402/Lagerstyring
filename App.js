@@ -27,7 +27,9 @@ const controller = new Controller();
 app.use(express.static("assets"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(session({secret: 'MYSECRETKEY', resave: false, saveUninitialized: true}));
+app.use(
+  session({ secret: "MYSECRETKEY", resave: false, saveUninitialized: true })
+);
 
 // 1. templating
 app.set("view engine", "pug");
@@ -35,16 +37,17 @@ app.set("view engine", "pug");
 //---------------ROUTES-----------------------------------------------------------------------------------------------------------------------------
 
 //---------------GET REQUESTS------------------------------------------------------------------------
+
 app.get("/", async (req, res) => {
   let isLoggedIn = false;
+
   if (req.session.isLoggedIn) {
     isLoggedIn = true;
-  
   }
   const user = req.session.user;
 
-  let products = []
-  let role = '';
+  let products = [];
+  let role = "";
 
   if (user && user.role === 'electrician') {
     const van = await getUserVans(user.employeeId);
@@ -54,67 +57,84 @@ app.get("/", async (req, res) => {
     
     
   } else {
-    
     products = await getProductsFromDb();
-    role = 'admin'
+    role = "admin";
   }
   const vans = await getVansFromDb();
 
-  res.render("index", { products: products, vans: vans, knownUser: isLoggedIn, role: role});
+  res.render("index", {
+    products: products,
+    vans: vans,
+    knownUser: isLoggedIn,
+    role: role,
+  });
 });
 
 
 app.get('/logout', (req, res) => {
   req.session.isLoggedIn = false;
-  console.log("logged out")
-  res.redirect('/login')
-})
+  console.log("logged out");
+  res.redirect("/login");
+});
 
 app.get("/login", (req, res) => {
-  res.render("loginForm", )
-})
+  res.render("loginForm");
+});
 
-//2. STEP I integration af elec og admin --------------------------------------
-app.post('/', async (req, res) => {
+app.post("/", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
   const users = await getUsersFromDb();
 
-  const user = users.find(u => u.username === username);
+  const user = users.find((u) => u.username === username);
 
   if (user && user.password === password) {
-    console.log("logged in as: " + user.username)
+    console.log("logged in as: " + user.username);
     req.session.isLoggedIn = true;
-    req.session.user = user
+    req.session.user = user;
   } else {
-    console.log("Wrong username or password.")
+    console.log("Wrong username or password.");
   }
-  res.redirect('/')
-})
-
-// opens /createProduct form to create a form
-app.get("/createProduct", (req, res) => {
-  res.render("createProduct");
+  res.redirect("/");
 });
 
-app.get("/createProduct/:licenseplate", async (req, res) => {
-  const licensePlate = req.params.licenseplate;
-  const van = await controller.getVan(licensePlate)
-  res.render("createProduct", {van: van})
-}) 
+// opens /createProduct form to create a form
+app.get("/createProduct", async (req, res) => {
+  const vans = await getVansFromDb();
+
+  res.render("createProduct", { vans: vans });
+});
+
+// app.get("/createProduct/:licenseplate", async (req, res) => {
+//   const licensePlate = req.params.licenseplate;
+//   console.log("lasfk", licensePlate);
+//   const van = await controller.getVan(licensePlate);
+//   res.render("createProduct", { van: van });
+// });
 
 //3. step---------------------------------------
 app.get("/admin", async (req, res) => {
   const vans = await getVansFromDb();
   const users = await getUsersFromDb();
-  res.render("admin", { vans: vans, users: users});
+  res.render("admin", { vans: vans, users: users });
 });
 
-app.get('/van/:licenseplate/products', async (req, res) => {
-  const licenseplate = req.params.licenseplate
-  const vanProducts = await controller.getVanProducts(licenseplate)
-})
+app.post("/van/:licensePlate/products", async (req, res) => {
+  const licenseplate = req.params.licensePlate;
+  const vanProducts = await controller.getVanProducts(licenseplate);
+  res.send(vanProducts);
+});
+
+app.post("/products", async (req, res) => {
+  const productIds = req.body.productIds;
+  console.log(req.body.productIds);
+});
+
+app.get("/van/:licenseplate/products", async (req, res) => {
+  const licenseplate = req.params.licenseplate;
+  const vanProducts = await controller.getVanProducts(licenseplate);
+});
 
 app.get("/createVan", (req, res) => {
   res.render("createVan");
@@ -122,6 +142,10 @@ app.get("/createVan", (req, res) => {
 
 app.get("/createCompany", (req, res) => {
   res.render("createCompany");
+})
+
+app.get("/createUser", (req, res) =>{
+  res.render("createUser");
 })
 
 app.get("/createUser", (req, res) =>{
@@ -190,15 +214,20 @@ app.put("/products/:productid/amount", async (req, res) => {
 
 //----------POST REQUEST--------------------------------------------------------------------------
 
-app.post("/product/:licenseplate", async (req, res) => {
+app.post("/product/", async (req, res) => {
   const productName = req.body["input-name"];
   const productId = req.body["input-produkt-id"];
   const amount = parseInt(req.body["input-amount"]);
   const unit = req.body["dropdown-unit"];
-  const licensePlate = req.params.licenseplate
-  console.log("nummerplade: " ,licensePlate)
-  
-  const product = await controller.createProduct(productName, productId, amount, unit);
+  const licensePlate = req.body["select-van"];
+  console.log("nummerplade: ", licensePlate);
+
+  const product = await controller.createProduct(
+    productName,
+    productId,
+    amount,
+    unit
+  );
   const van = await controller.getVan(licensePlate);
   await controller.addProductToVan(product, van);
 
@@ -206,7 +235,7 @@ app.post("/product/:licenseplate", async (req, res) => {
 });
 
 app.post("/van", async (req, res) => {
-  await controller.createVan(req.body.licensePlate, req.body.owner)
+  await controller.createVan(req.body.licensePlate, req.body.owner);
   res.redirect("/admin");
 });
 
@@ -220,9 +249,16 @@ app.post("/user", async (req, res) => {
 })
 
 app.post("/company", async (req, res) => {
-  await controller.createCompany(req.body.companyName, req.body.cvrNr, req.body.contactPersonName, req.body.contactPersonNumber)
-  res.redirect("/login")
-})
+  await controller.createCompany(
+    req.body.companyName,
+    req.body.cvrNr,
+    req.body.contactPersonName,
+    req.body.contactPersonNumber
+  );
+  res.redirect("/login");
+});
+
+app.post("/product", async (req, res) => {});
 
 app.listen(4000);
 console.log("listening on port 4000");

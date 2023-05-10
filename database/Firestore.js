@@ -13,6 +13,7 @@ import {
   updateDoc,
   deleteDoc,
   setDoc,
+  arrayUnion,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -30,7 +31,8 @@ const db = getFirestore(firebase_app);
 const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
 const userCollectionRef = collection(db, "Users");
-const companiesCollectionRef = collection(db, "Companies")
+const companiesCollectionRef = collection(db, "Companies");
+const adminCollectionRef = collection(db, "Admins");
 
 export async function getProductsFromDb() {
   let productQueryDocs = await getDocs(productCollectionRef);
@@ -48,10 +50,12 @@ export async function updateUser(user) {
   await updateDoc(docRef, user.toJSON())
 }
 
-export async function updateVan(van) {
-  const docRef = doc(db, "Vans", van.licensePlate)
+export async function updateVan(van, ID) {
+  const docRef = doc(db, "Vans", van.licensePlate);
 
-  await updateDoc(docRef, van.toJSON())
+  await updateDoc(docRef, { products: arrayUnion(ID) });
+
+  console.log("van updateerered", van);
 }
 
 export async function addUserToDb(user) {
@@ -60,22 +64,22 @@ export async function addUserToDb(user) {
 }
 
 export async function addVanToDb(van) {
-  const docRef = doc(db, "Vans", van.licensePlate)
+  const docRef = doc(db, "Vans", van.licensePlate);
   await setDoc(docRef, van.toJSON());
 }
 export async function addProductToDb(product) {
   const docRef = doc(db, "Products", product.productId);
-  await setDoc(docRef, product.toJSON())
+  await setDoc(docRef, product.toJSON());
   console.log("firestore log");
-} 
-export async function addCompanyToDb(company){
+}
+export async function addCompanyToDb(company) {
   const docRef = doc(db, "Companies", company.cvr);
-  await setDoc(docRef, company.toJSON())
+  await setDoc(docRef, company.toJSON());
 }
 
 export async function deleteProductFromDb(productId) {
   console.log("4444");
-  
+
   // delete product from database where products productID === productId
   const productRef = doc(productCollectionRef, productId);
   await deleteDoc(productRef);
@@ -117,8 +121,8 @@ export async function updateAmountToProduct(amount, productId) {
 export async function getVanFromDb(licensePlate) {
   const vanQueryDoc = doc(db, "Vans", licensePlate);
   const vanDoc = await getDoc(vanQueryDoc);
-  const van = vanDoc.data()
-  return van
+  const van = vanDoc.data();
+  return van;
 }
 
 export async function getVansFromDb() {
@@ -161,7 +165,7 @@ export async function getUsersFromDb() {
     let data = doc.data();
     data.userId = doc.id;
     return data;
-  })
+  });
   return users;
 }
 
@@ -172,4 +176,4 @@ async function test() {
     data.productId = doc.id;
     console.log(data);
   });
-} 
+}
