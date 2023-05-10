@@ -5,10 +5,10 @@ import {
   addProductToDb,
   addVanToDb,
   getVanFromDb,
- 
   updateVan,
- 
-  addCompanyToDb, addUserToDb, updateUser,
+  addCompanyToDb,
+  addUserToDb,
+  updateUser,
   getProductsFromDb,
 } from "../database/Firestore.js";
 import Company from "../models/company.js";
