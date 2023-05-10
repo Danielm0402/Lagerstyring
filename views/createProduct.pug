@@ -1,6 +1,5 @@
 include includes/head
 
-- var licensePlate = van.licensePlate
 
 body
     button
@@ -12,7 +11,6 @@ body
         div#div-createProduct
         div
             h2 Opret produkt
-            h3 #{licensePlate}
         div
             label(for="input-name") Produkt navn:
             input.inputtag(type="text" name="input-name")
@@ -27,6 +25,12 @@ body
             select(name="dropdown-unit")
                 each option in ['stk', 'm', 'cm', 'mm', 'kg', 'g']
                     option(value = option)= option
+
+
+            label(for='select-van') Vælg bil: 
+            select#dropdown-select-van(name='select-van')
+                each van in vans
+                    option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate
 
         button(id="create-product-btn" class="button-create" type="submit") 
             <i class="fa-solid fa-box-open"></i>Opret vare

@@ -7,51 +7,49 @@
 */
 
 export default class Van {
+  constructor(licensePlate) {
+    this.licensePlate = licensePlate;
+    this.electricians = [];
+    this.products = [];
+  }
 
-    constructor(licensePlate) {
-        this.licensePlate = licensePlate;
-        this.electricians = []
-        this.products = []
+  addElectrician(electrician) {
+    if (!this.electricians.includes(electrician)) {
+      this.electricians.push(electrician);
     }
+  }
 
-    addElectrician(electrician) {
-        if(!this.electricians.includes(electrician)) {
-            this.electricians.push(electrician);
-        }
+  removeElectrician(electrician) {
+    const index = this.electricians.findIndex(electrician);
+
+    if (index > -1) this.electricians.splice(index, 1);
+  }
+
+  addProduct(productId) {
+    if (!this.products.includes(productId)) {
+      this.products.push(productId);
+      console.log("this.products", this.products);
     }
+  }
 
-    removeElectrician(electrician) {
-        const index = this.electricians.findIndex(electrician);
+  createProduct(name, amount, unit) {
+    let newProduct = new product(name, amount, unit);
+    this.products.push(newProduct);
+    return newProduct;
+  }
 
-        if (index > -1)
-            this.electricians.splice(index, 1);
+  removeProduct(product) {
+    if (this.products.includes(product)) {
+      this.products.slice(this.products.indexOf(product), 1);
     }
+  }
 
-    addProduct(product) {
-        if (!this.products.includes(product)) {
-            this.products.push(product)
-        }
-    }
-
-    createProduct(name, amount, unit){
-        let newProduct = new product(name, amount, unit)
-        this.products.push(newProduct)
-        return newProduct
-    }
-
-    removeProduct(product){
-        if(this.products.includes(product)){
-            this.products.slice(this.products.indexOf(product), 1)
-        }
-    }
-
-    toJSON() {
-        const json = {
-            licensePlate: this.licensePlate,
-            electricians: this.electricians.map(e => e.employeeId),
-            products: this.products.map(p => p.name)
-        }
-        return json;
-    }
+  toJSON() {
+    const json = {
+      licensePlate: this.licensePlate,
+      electricians: this.electricians.map((e) => e.employeeId),
+      products: this.products.map((p) => p.name),
+    };
+    return json;
+  }
 }
-
