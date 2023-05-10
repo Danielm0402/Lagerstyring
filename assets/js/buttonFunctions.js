@@ -142,16 +142,9 @@ const createProductLinkElement = document.getElementById("anchor-create-product"
 if (selectVanDropdownElement) {
   selectVanDropdownElement.addEventListener("change", async () => {
     const selectedIndex = selectVanDropdownElement.selectedIndex;
-<<<<<<< Updated upstream
     const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
     const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
     createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
-=======
-    const selectedLicensePlateId =
-      selectVanDropdownElement.options[selectedIndex].id;
-    const selectedLicensePlate = selectedLicensePlateId.split("-")[1];
-
->>>>>>> Stashed changes
     const vanProducts = await fetch(`/van/${selectedLicensePlate}/products`, {
       method: "GET",
     });

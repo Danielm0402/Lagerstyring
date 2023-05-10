@@ -120,18 +120,11 @@ app.get("/admin", async (req, res) => {
   res.render("admin", { vans: vans, electricians: electricians });
 });
 
-<<<<<<< Updated upstream
-app.get('/van/:licenseplate/products', async (req, res) => {
-  const licenseplate = req.params.licenseplate
-  const vanProducts = await controller.getVanProducts(licenseplate)
-})
-=======
 app.get("/van/:licenseplate/products", async (req, res) => {
   const licenseplate = req.params.licensePlate;
   const vanProducts = await controller.getVanProducts(licenseplate);
   res.send(vanProducts);
 });
->>>>>>> Stashed changes
 
 app.get("/createVan", (req, res) => {
   res.render("createVan");

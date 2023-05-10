@@ -47,21 +47,13 @@ export async function getProductsFromDb() {
 export async function updateElectrician(electrician) {
   const docRef = doc(db, "Electricians", electrician.employeeId);
 
-<<<<<<< Updated upstream
   await updateDoc(docRef, electrician.toJSON())
-=======
-  updateDoc(docRef, electrician.toJSON());
->>>>>>> Stashed changes
 }
 
 export async function updateVan(van) {
   const docRef = doc(db, "Vans", van.licensePlate);
 
-<<<<<<< Updated upstream
   await updateDoc(docRef, van.toJSON())
-=======
-  updateDoc(docRef, van.toJSON());
->>>>>>> Stashed changes
 }
 
 export async function addElectricianToDb(electrician) {
