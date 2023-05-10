@@ -82,7 +82,6 @@ app.get("/login", (req, res) => {
 app.post("/", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  const licensePlate = req.body.licensePlate;
 
   const electricians = await getElectriciansFromDb();
   const admins = await getAdminsFromDb();
