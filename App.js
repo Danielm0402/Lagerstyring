@@ -82,10 +82,7 @@ app.get("/login", (req, res) => {
 app.post("/", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-
   const licensePlate = req.body.licensePlate;
-
-  console.log("asfdfd", licensePlate);
 
   const electricians = await getElectriciansFromDb();
   const admins = await getAdminsFromDb();
@@ -120,11 +117,18 @@ app.get("/admin", async (req, res) => {
   res.render("admin", { vans: vans, electricians: electricians });
 });
 
-app.get("/van/:licenseplate/products", async (req, res) => {
+app.post("/van/:licensePlate/products", async (req, res) => {
   const licenseplate = req.params.licensePlate;
   const vanProducts = await controller.getVanProducts(licenseplate);
-  res.send(vanProducts);
+  res.send(vanProducts)
 });
+
+app.post('/products', async (req, res) => {
+  const productIds = req.body.productIds;
+  console.log(req.body.productIds)
+
+
+})
 
 app.get("/createVan", (req, res) => {
   res.render("createVan");
@@ -234,6 +238,8 @@ app.post("/company", async (req, res) => {
   );
   res.redirect("/login");
 });
+
+app.post('/product', async (req, res) => {})
 
 app.listen(4000);
 console.log("listening on port 4000");

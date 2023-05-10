@@ -144,14 +144,41 @@ if (selectVanDropdownElement) {
     const selectedIndex = selectVanDropdownElement.selectedIndex;
     const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
     const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-    createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
-    const vanProducts = await fetch(`/van/${selectedLicensePlate}/products`, {
-      method: "GET",
+    // createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
+    let response  = await fetch(`/van/${selectedLicensePlate}/products`, {
+      method: "POST",
     });
-    console.log("sas", vanProducts);
-    await fetch("/", {
-      method: "post",
-      body: { vanProducts: vanProducts, licensePlate: selectedLicensePlate },
-    });
+    const vanProducts = await response.json();
+    updateHtmlProducts(vanProducts)
+
   });
+}
+
+
+function updateHtmlProducts(products) {
+  const productContainerElement = document.getElementById('container-products');
+
+  productContainerElement.innerHTML = '';
+  for (const product of products) {
+    productContainerElement.innerHTML 
+      += `  
+        <div class="product-container">
+          <p>${product.name}</p>
+          <p class="storage-p" data-productid="${product.productId}">På lager: ${product.amount} stk</p>
+          <div class="buttons-trash-and-plusmin">
+            <button class="delete-button" type="button" data-productid="${product.productId}" id="button-delete-product">
+              <ion-icon name="trash-outline" role="img" class="md hydrated"></ion-icon>
+            </button>
+            <div class="buttons-plus-minus">
+              <button class="button-plusmin" type="button" data-productid="${product.productId}" data-action="increase">
+                <ion-icon name="add-circle-outline" role="img" class="md hydrated"></ion-icon>
+              </button>
+              <button class="button-plusmin" type="button" data-productid="${product.productId}" data-action="decrease">
+                <ion-icon name="remove-circle-outline" role="img" class="md hydrated"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        `
+  }
 }

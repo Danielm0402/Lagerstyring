@@ -2,7 +2,7 @@ import Electrician from "../models/electrician.js";
 import Van from "../models/van.js";
 import Product from "../models/product.js";
 
-import { addProductToDb, addVanToDb, getVanFromDb, addElectricianToDb, updateVan, updateElectrician, addCompanyToDb } from "../database/Firestore.js";
+import { addProductToDb, addVanToDb, getVanFromDb, addElectricianToDb, updateVan, updateElectrician, addCompanyToDb, getProductsFromDb } from "../database/Firestore.js";
 import Company from "../models/company.js";
 
 // export function test() {
@@ -40,7 +40,6 @@ export default class Controller {
   async getVan(licensePlate) {
     const vanData = await getVanFromDb(licensePlate)
     const v = new Van(vanData.licensePlate);
-    // console.log(vanData.electricians)
     vanData.electricians.map(e => v.addElectrician(e))
     vanData.products.map(p => v.addProduct(p))
 
@@ -56,13 +55,16 @@ export default class Controller {
 
   async getVanProducts(licensePlate) {
     const van = await getVanFromDb(licensePlate)
-    console.log(van.products)
-    return van.products
+    const vanProductIds = van.products
+    const allProducts = await getProductsFromDb();
+
+    const vanProducts = allProducts.filter(p => vanProductIds.includes(p.productId))
+    
+    return vanProducts
   }
 
   async addProductToVan(product, van) {
     van.addProduct(product);
-    console.log("firebase: ", van)
     await updateVan(van);
   }
 
