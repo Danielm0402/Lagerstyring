@@ -39,8 +39,10 @@ app.set("view engine", "pug");
 //---------------ROUTES-----------------------------------------------------------------------------------------------------------------------------
 
 //---------------GET REQUESTS------------------------------------------------------------------------
+
 app.get("/", async (req, res) => {
   let isLoggedIn = false;
+
   if (req.session.isLoggedIn) {
     isLoggedIn = true;
   }
@@ -115,6 +117,17 @@ app.get("/admin", async (req, res) => {
   const vans = await getVansFromDb();
   const electricians = await getElectriciansFromDb();
   res.render("admin", { vans: vans, electricians: electricians });
+});
+
+app.post("/van/:licensePlate/products", async (req, res) => {
+  const licenseplate = req.params.licensePlate;
+  const vanProducts = await controller.getVanProducts(licenseplate);
+  res.send(vanProducts);
+});
+
+app.post("/products", async (req, res) => {
+  const productIds = req.body.productIds;
+  console.log(req.body.productIds);
 });
 
 app.get("/van/:licenseplate/products", async (req, res) => {
@@ -235,6 +248,8 @@ app.post("/company", async (req, res) => {
   );
   res.redirect("/login");
 });
+
+app.post("/product", async (req, res) => {});
 
 app.listen(4000);
 console.log("listening on port 4000");

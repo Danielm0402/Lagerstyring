@@ -10,6 +10,7 @@ import {
   updateVan,
   updateElectrician,
   addCompanyToDb,
+  getProductsFromDb,
 } from "../database/Firestore.js";
 import Company from "../models/company.js";
 
@@ -68,8 +69,14 @@ export default class Controller {
 
   async getVanProducts(licensePlate) {
     const van = await getVanFromDb(licensePlate);
-    console.log(van.products);
-    return van.products;
+    const vanProductIds = van.products;
+    const allProducts = await getProductsFromDb();
+
+    const vanProducts = allProducts.filter((p) =>
+      vanProductIds.includes(p.productId)
+    );
+
+    return vanProducts;
   }
 
   async addProductToVan(product, van) {
