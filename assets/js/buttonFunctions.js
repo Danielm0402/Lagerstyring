@@ -156,14 +156,20 @@ function selectVanDropdown() {
     selectVanDropdownElement.addEventListener("change", async () => {
       const selectedIndex = selectVanDropdownElement.selectedIndex;
       const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
-      const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-
-      let response  = await fetch(`/van/${selectedLicensePlate}/products`, {
-        method: "POST",
-      });
-      const vanProducts = await response.json();
-      updateHtmlProducts(vanProducts)
+      if (selectedLicensePlateId === 'option-show-all') {
+        updateHtmlProducts(data.products)
+        
+      } else {
+        
+        const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
   
+  
+        let response  = await fetch(`/van/${selectedLicensePlate}/products`, {
+          method: "POST",
+        });
+        const vanProducts = await response.json();
+        updateHtmlProducts(vanProducts)
+      }
     });
   }
 }
@@ -177,7 +183,7 @@ function updateHtmlProducts(products) {
       += `  
         <div class="product-container">
           <p>${product.name}</p>
-          <p class="storage-p" data-productid="${product.productId}">På lager: ${product.amount}${product.unit}</p>
+          <p class="storage-p" data-productid="${product.productId}">På lager: ${product.amount} ${product.unit}</p>
           <div class="buttons-trash-and-plusmin">
             <button class="delete-button" type="button" data-productid="${product.productId}" id="button-delete-product">
               <ion-icon name="trash-outline" role="img" class="md hydrated"></ion-icon>
