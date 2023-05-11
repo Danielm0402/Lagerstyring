@@ -6,13 +6,15 @@ body
         include loginForm
 
     else
-        if role=='admin'
-            button.admin
-                <i class="fa-solid fa-lock"></i>
-                a(href="/admin") Admin
-        
-        button#button-logout
-            a(href="/logout") Log ud
+        if role == 'admin'
+            a(href="/admin")
+                button.admin
+                    i.fa-solid.fa-lock
+                    span.knap Admin
+
+        a(href="/logout")
+            button 
+                span.knap Log ud
 
         h1 Bil:
             select#dropdown-select-van(name='select-van')
@@ -20,9 +22,11 @@ body
                     option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
 
 
-        button.addProduct
-            <i class="fa-solid fa-box-open"></i>
-            a(href="/createProduct") Tilføj ny vare
+        a(href="/createProduct")
+            button.addProduct
+                i.fa-solid.fa-box-open
+                span.knap Tilføj ny vare
+
 
         each product in products
             div.product-container
