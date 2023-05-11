@@ -198,6 +198,28 @@ function updateHtmlProducts(products) {
   initFunctions();
 }
 
+function assignUserToVan(){
+  const assignButton = document.getElementsByClassName("assign")
+
+  const selectVanDropdownElement = document.getElementById("dropdown-select-van")
+  const selectUserDropdownElement = document.getElementsById("dropdown-select-user")
+
+  if(selectUserDropdownElement && selectVanDropdownElement){
+    assignButton.addEventListener("click", async () =>{
+      const selectedVanIndex = selectVanDropdownElement.selectedIndex
+      const selectedVanLicensePlateId = selectVanDropdownElement.options[selectedVanIndex].id
+      const selectedVanLicensePlate = selectedVanLicensePlateId.split('-')[1]
+
+      const selectedUserIndex = selectUserDropdownElement.selectedIndex
+      const selectedUserEmployeeIdId = selectUserDropdownElement.options[selectedUserIndex].id
+      const selectedUserEmployeeId = selectedUserEmployeeIdId.split('-')[1]
+
+          
+      
+    })
+  }
+}
+
 
 function initFunctions() {
 

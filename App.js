@@ -152,6 +152,12 @@ app.get("/createUser", (req, res) =>{
   res.render("createUser");
 })
 
+app.get("/assignUserToVan", async (reg, res) =>{
+  const vans = await getVansFromDb();
+  const users = await getUsersFromDb();
+  res.render("assignUserToVan", {users: users, vans: vans});
+})
+
 app.get("/test", (req, res) => {
   res.send("Dette var en god test");
   console.log("testestest");

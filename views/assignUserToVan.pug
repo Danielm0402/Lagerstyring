@@ -1,0 +1,21 @@
+include includes/head
+
+body 
+    button
+        i.fa.sharp.fa.solid.fa.left.long
+        a.knap(href='/admin') Tilbage
+
+    div
+        h2 Varevogn:
+            select#dropdown-select-van(name='select-van')
+                each van in vans 
+                    option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate
+
+        h2 Medarbejdere:
+            select#dropdown-select-user(name='select-user')
+                each user in users
+                    option(value=user.employeeId, id=`option-${user.employeeId}`)=user.name 
+
+    button.assign
+        i.fa.solid.fa.user
+        a(href="/assignUserToVan") Tilknyt 
