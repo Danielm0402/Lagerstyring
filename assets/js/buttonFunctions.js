@@ -200,7 +200,8 @@ function updateHtmlProducts(products) {
         </div>
         `
   }
-
+  deleteElectricianButton();
+  plusMinButtons();
 }
 
 function lockVans() {
@@ -221,8 +222,6 @@ function lockVans() {
           o.selected = "true"
         }
       }
-      deleteElectricianButton();
-      plusMinButtons();
   }
 }
 
