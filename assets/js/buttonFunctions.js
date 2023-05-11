@@ -158,7 +158,7 @@ function selectVanDropdown() {
       const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
       if (selectedLicensePlateId === 'option-show-all') {
         updateHtmlProducts(data.products)
-        
+
       } else {
         
         const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
@@ -200,7 +200,7 @@ function updateHtmlProducts(products) {
         </div>
         `
   }
-  initFunctions();
+
 }
 
 function lockVans() {
@@ -221,7 +221,8 @@ function lockVans() {
           o.selected = "true"
         }
       }
-    
+      deleteElectricianButton();
+      plusMinButtons();
   }
 }
 
