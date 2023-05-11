@@ -124,28 +124,6 @@ function plusMinButtons() {
   }
 }
 
-//-------------------------Create lagerbil------------------------------------------------
-// const createVanBtn = document.getElementsByClassName("button-createVan")[0];
-
-// createVanBtn.addEventListener("click", async () => {
-//   const licensePlateElement = document.getElementsByClassName(
-//     "input-vanLicensePlate"
-//   )[0];
-//   const vanOwnerElement = document.getElementsByClassName("input-vanOwner")[0];
-
-//   const licensePlate = licensePlateElement.value;
-//   const owner = vanOwnerElement.value;
-
-//   console.log(licensePlate)
-//   console.log(owner)
-
-//   await fetch(`/van/${licensePlate}`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ licensePlate, owner }),
-//   });
-// });
-
 //------------------------------- SELECT VAN-----------------------------------------------
 
 function selectVanDropdown() {
@@ -225,19 +203,15 @@ function lockVans() {
   }
 }
 
-
-
 function initFunctions() {
 
   lockVans();
-
   deleteProductButton();
   deleteVanButton();
   deleteElectricianButton();
 
   plusMinButtons();
   selectVanDropdown();
-
 }
 
 initFunctions()
