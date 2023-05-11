@@ -9,6 +9,9 @@ body
         input(type="text", name="password")
         button(type="submit") Login
 
+        if errorMessage
+            p= errorMessage
+
 
     a(href="/createCompany")
         button(id="create-company")

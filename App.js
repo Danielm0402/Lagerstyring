@@ -9,7 +9,7 @@ import {
   getUsersFromDb,
   getVanProducts,
   deleteUserFromDb,
-  getUserVans
+  getUserVans,
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -40,23 +40,28 @@ app.set("view engine", "pug");
 
 app.get("/", async (req, res) => {
   let isLoggedIn = false;
+  let errorMessage = null;
 
   if (req.session.isLoggedIn) {
     isLoggedIn = true;
   }
-  
+
+  if (req.session.errorMessage) {
+    errorMessage = req.session.errorMessage;
+    console.log("haysi", errorMessage);
+    req.session.errorMessage = null; // Clear the error message after displaying it
+  }
+
   const user = req.session.user;
 
   let products = [];
   let role = "";
 
-  if (user && user.role === 'electrician') {
+  if (user && user.role === "electrician") {
     const van = await getUserVans(user.employeeId);
-    if(van){
+    if (van) {
       products = await getVanProducts(van.licensePlate);
     }
-    
-    
   } else {
     products = await getProductsFromDb();
     role = "admin";
@@ -68,11 +73,11 @@ app.get("/", async (req, res) => {
     vans: vans,
     knownUser: isLoggedIn,
     role: role,
+    errorMessage: errorMessage,
   });
 });
 
-
-app.get('/logout', (req, res) => {
+app.get("/logout", (req, res) => {
   req.session.isLoggedIn = false;
   console.log("logged out");
   res.redirect("/login");
@@ -95,7 +100,14 @@ app.post("/", async (req, res) => {
     req.session.isLoggedIn = true;
     req.session.user = user;
   } else {
-    console.log("Wrong username or password.");
+    req.session.isLoggedIn = false;
+    req.session.errorMessage = "Wrong username or password.";
+    console.log("sdf", req.session.errorMessage);
+
+    // req.session.isLoggedIn = false;
+
+    // res.locals.errorMessage = "Wrong username or password.";
+    // console.log("dsf", res.locals.errorMessage);
   }
   res.redirect("/");
 });
@@ -143,15 +155,15 @@ app.get("/createVan", (req, res) => {
 
 app.get("/createCompany", (req, res) => {
   res.render("createCompany");
-})
+});
 
-app.get("/createUser", (req, res) =>{
+app.get("/createUser", (req, res) => {
   res.render("createUser");
-})
+});
 
-app.get("/createUser", (req, res) =>{
+app.get("/createUser", (req, res) => {
   res.render("createUser");
-})
+});
 
 app.get("/test", (req, res) => {
   res.send("Dette var en god test");
@@ -189,7 +201,7 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
 
   const user = await deleteUserFromDb(employeeId);
   res.send(user);
-})
+});
 
 /*
   Når der kommer et put request to denne adresse
@@ -242,12 +254,12 @@ app.post("/van", async (req, res) => {
 
 //5. step kom tilbage her. Hvad skal den have af paramtre.
 app.post("/user", async (req, res) => {
-  const {name, employeeId, username, password} = req.body;
+  const { name, employeeId, username, password } = req.body;
   const role = req.body.admin || req.body.electrician;
   await controller.createUser(name, employeeId, username, password, role);
-  
-  res.redirect("/admin")
-})
+
+  res.redirect("/admin");
+});
 
 app.post("/company", async (req, res) => {
   await controller.createCompany(
