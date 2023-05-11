@@ -151,20 +151,25 @@ function plusMinButtons() {
 function selectVanDropdown() {
 
   const selectVanDropdownElement = document.getElementById("dropdown-select-van");
-  const createProductLinkElement = document.getElementById("anchor-create-product");
   
   if (selectVanDropdownElement) {
     selectVanDropdownElement.addEventListener("change", async () => {
       const selectedIndex = selectVanDropdownElement.selectedIndex;
       const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
-      const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-      // createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
-      let response  = await fetch(`/van/${selectedLicensePlate}/products`, {
-        method: "POST",
-      });
-      const vanProducts = await response.json();
-      updateHtmlProducts(vanProducts)
+      if (selectedLicensePlateId === 'option-show-all') {
+        updateHtmlProducts(data.products)
+
+      } else {
+        
+        const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
   
+  
+        let response  = await fetch(`/van/${selectedLicensePlate}/products`, {
+          method: "POST",
+        });
+        const vanProducts = await response.json();
+        updateHtmlProducts(vanProducts)
+      }
     });
   }
 }
@@ -178,7 +183,7 @@ function updateHtmlProducts(products) {
       += `  
         <div class="product-container">
           <p>${product.name}</p>
-          <p class="storage-p" data-productid="${product.productId}">På lager: ${product.amount}${product.unit}</p>
+          <p class="storage-p" data-productid="${product.productId}">På lager: ${product.amount} ${product.unit}</p>
           <div class="buttons-trash-and-plusmin">
             <button class="delete-button" type="button" data-productid="${product.productId}" id="button-delete-product">
               <ion-icon name="trash-outline" role="img" class="md hydrated"></ion-icon>
@@ -195,11 +200,36 @@ function updateHtmlProducts(products) {
         </div>
         `
   }
-  initFunctions();
+  deleteElectricianButton();
+  plusMinButtons();
+}
+
+function lockVans() {
+    const user = data.user;
+    const userVans = user.vans;
+  
+    if (userVans.length > 0 && !(user.role === 'admin')) {
+      const dropDownElement = document.getElementById('dropdown-select-van');
+      const options = dropDownElement.options
+
+      for(const o of options) {
+        let id = o.id.split('-')[1];
+        console.log(o)
+        if (!(id === userVans[0])) {
+          o.disabled = "true"
+          o.selected = "false"
+        } else {
+          o.selected = "true"
+        }
+      }
+  }
 }
 
 
+
 function initFunctions() {
+
+  lockVans();
 
   deleteProductButton();
   deleteVanButton();

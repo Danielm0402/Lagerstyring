@@ -18,7 +18,8 @@ body
 
         h1 Bil:
             select#dropdown-select-van(name='select-van')
-                option(value='' disabled selected) Select van
+                option(value='' disabled selected) Vælg bil
+                option(value='', id='option-show-all') Vis alle vare
                 each van in vans
                     option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
 
