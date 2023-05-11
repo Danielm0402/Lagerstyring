@@ -26,11 +26,10 @@ div
         button(type='button' id="delete-van" class='delete-buttons-in-admin-page')
             ion-icon(name="trash-outline")
     h2 Medarbejdere:
-        select#dropdown-select-electrician(name='select-electrician')
-            each electrician in electricians
-                //- option(value=option)=electrician.employeeId
-                option(value=electrician.employeeId)=electrician.name 
-        button(type='button' id="delete-electrician" class='delete-buttons-in-admin-page')
+        select#dropdown-select-user(name='select-user')
+            each user in users
+                option(value=user.employeeId)=user.name 
+        button(type='button' id="delete-user" class='delete-buttons-in-admin-page')
             ion-icon(name="trash-outline")
 
 

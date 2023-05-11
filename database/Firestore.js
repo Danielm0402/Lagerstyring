@@ -13,6 +13,7 @@ import {
   updateDoc,
   deleteDoc,
   setDoc,
+  arrayUnion,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -29,13 +30,9 @@ const db = getFirestore(firebase_app);
 
 const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
-const electriciansCollectionRef = collection(db, "Electricians");
 const userCollectionRef = collection(db, "Users");
-const companiesCollectionRef = collection(db, "Companies")
+const companiesCollectionRef = collection(db, "Companies");
 const adminCollectionRef = collection(db, "Admins");
-
-
-
 
 export async function getProductsFromDb() {
   let productQueryDocs = await getDocs(productCollectionRef);
@@ -47,39 +44,42 @@ export async function getProductsFromDb() {
   return products;
 } 
  
-export async function updateElectrician(electrician) {
-  const docRef = doc(db, "Electricians", electrician.employeeId)
+export async function updateUser(user) {
+  const docRef = doc(db, "Users", user.employeeId)
 
-  await updateDoc(docRef, electrician.toJSON())
+  await updateDoc(docRef, user.toJSON())
 }
 
-export async function updateVan(van) {
-  const docRef = doc(db, "Vans", van.licensePlate)
+export async function updateVan(van, ID) {
+  const docRef = doc(db, "Vans", van.licensePlate);
 
-  await updateDoc(docRef, van.toJSON())
+  await updateDoc(docRef, { products: arrayUnion(ID) });
+
+  console.log("van updateerered", van);
 }
 
-export async function addElectricianToDb(electrician) {
-  const docRef = doc(db, "Electricians", electrician.employeeId);
-  await setDoc(docRef, electrician.toJSON())
+export async function addUserToDb(user) {
+  const docRef = doc(db, "Users", user.employeeId);
+  await setDoc(docRef, user.toJSON())
 }
+
 export async function addVanToDb(van) {
-  const docRef = doc(db, "Vans", van.licensePlate)
+  const docRef = doc(db, "Vans", van.licensePlate);
   await setDoc(docRef, van.toJSON());
 }
 export async function addProductToDb(product) {
   const docRef = doc(db, "Products", product.productId);
-  await setDoc(docRef, product.toJSON())
+  await setDoc(docRef, product.toJSON());
   console.log("firestore log");
-} 
-export async function addCompanyToDb(company){
+}
+export async function addCompanyToDb(company) {
   const docRef = doc(db, "Companies", company.cvr);
-  await setDoc(docRef, company.toJSON())
+  await setDoc(docRef, company.toJSON());
 }
 
 export async function deleteProductFromDb(productId) {
   console.log("4444");
-  
+
   // delete product from database where products productID === productId
   const productRef = doc(productCollectionRef, productId);
   await deleteDoc(productRef);
@@ -94,10 +94,10 @@ export async function deleteVanFromDb(licensePlate) {
   console.log("van deleted");
 }
 
-export async function deleteElectricianFromDb(employeeId){
-  const electricanRef = doc(electriciansCollectionRef, employeeId);
-  await deleteDoc(electricanRef);
-  console.log("electrican deleted")
+export async function deleteUserFromDb(employeeId){
+  const userRef = doc(userCollectionRef, employeeId);
+  await deleteDoc(userRef);
+  console.log("user deleted")
 }
 
 export async function getProductFromDb(productId) {
@@ -109,7 +109,6 @@ export async function getProductFromDb(productId) {
   return products[0];
 }
 
-
 export async function updateAmountToProduct(amount, productId) {
   const docRef = doc(db, "Products", productId);
   const productDoc = await getDoc(docRef);
@@ -119,12 +118,11 @@ export async function updateAmountToProduct(amount, productId) {
   return newAmount;
 }
 
-
 export async function getVanFromDb(licensePlate) {
   const vanQueryDoc = doc(db, "Vans", licensePlate);
   const vanDoc = await getDoc(vanQueryDoc);
-  const van = vanDoc.data()
-  return van
+  const van = vanDoc.data();
+  return van;
 }
 
 export async function getVansFromDb() {
@@ -137,42 +135,26 @@ export async function getVansFromDb() {
   return vans;
 }
 
-export async function getElectriciansFromDb(){
-  const electricianQueryDocs = await getDocs(electriciansCollectionRef);
-  let electricians = electricianQueryDocs.docs.map((doc) => {
-    let data = doc.data();
-    data.employeeId = doc.id;
-    return data;
-  })
-  return electricians;
-}
-
-export async function getAdminsFromDb() {
-  const adminQueryDocs = await getDocs(adminCollectionRef);
-  let admins = adminQueryDocs.docs.map((doc) => {
-    let data = doc.data();
-    data.employeeId = doc.id;
-    return data;
-  })
-  return admins;
-}
-
-export async function getElectricianVans(employeeId) {
-  const electricianDocRef = doc(db, "Electricians", employeeId);
-  const electrician = (await getDoc(electricianDocRef)).data();
-  const vanLicensePlate = electrician.vans[0];
-  const vanDocRef = doc(db, "Vans", vanLicensePlate);
-  const van = (await getDoc(vanDocRef)).data();
-  return van;
+export async function getUserVans(employeeId) {
+  const userDocRef = doc(db, "Users", employeeId);
+  const user = (await getDoc(userDocRef)).data();
+  if(user.vans.length > 0){
+    const vanLicensePlate = user.vans[0];
+    const vanDocRef = doc(db, "Vans", vanLicensePlate);
+    const van = (await getDoc(vanDocRef)).data();
+    return van
+  }
+  
+  return false;
 }
 
 export async function getVanProducts(licensePlate) {
-  const vanDocRef = doc(db, "Vans", licensePlate);
-  const van = (await getDoc(vanDocRef)).data();
-  const productIds = van.products;
+    const vanDocRef = doc(db, "Vans", licensePlate);
+    const van = (await getDoc(vanDocRef)).data();
+    const productIds = van.products;
 
-  const allProducts = await getProductsFromDb();
-  const vanProducts = allProducts.filter(p => productIds.includes(p.productId))
+    const allProducts = await getProductsFromDb();
+    const vanProducts = allProducts.filter(p => productIds.includes(p.productId))
 
   return vanProducts;
 }
@@ -183,7 +165,7 @@ export async function getUsersFromDb() {
     let data = doc.data();
     data.userId = doc.id;
     return data;
-  })
+  });
   return users;
 }
 
@@ -194,4 +176,4 @@ async function test() {
     data.productId = doc.id;
     console.log(data);
   });
-} 
+}

@@ -1,12 +1,12 @@
 
-/*'
-    elektriker 0..* <--> 0..* lagerbiler 
-*/
 
-export default class Electrician {
-    constructor(name, employeeId) {
+export default class User {
+    constructor(name, employeeId, username, password, role) {
         this.name = name;
         this.employeeId = employeeId;
+        this.username = username;
+        this.password = password;
+        this.role = role;
         this.vans = [];
     }
 
@@ -28,9 +28,17 @@ export default class Electrician {
         const json = {
             name: this.name, 
             employeeId: this.employeeId, 
+            username: this.username,
+            password: this.password,
+            role: this.role,
             vans: this.vans.map(van => van.licensePlate)
         }
         return json;
+    }
+
+
+    changeLicenseplate(newLicenseplate){
+        this.licenseplate = newLicenseplate
     }
     
 }

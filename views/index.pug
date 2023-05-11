@@ -18,6 +18,7 @@ body
 
         h1 Bil:
             select#dropdown-select-van(name='select-van')
+                option(value='' disabled selected) Select van
                 each van in vans
                     option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
 
@@ -28,19 +29,20 @@ body
                 span.knap Tilføj ny vare
 
 
-        each product in products
-            div.product-container
-                p #{product.name}
-                p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
-                    
-                div.buttons-trash-and-plusmin
-                    button.delete-button(type='button', data-productid=product.productId id="button-delete-product")
-                        ion-icon(name="trash-outline")  
-                    div.buttons-plus-minus
-                        button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
-                            ion-icon(name="add-circle-outline")
-                        button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
-                            ion-icon(name="remove-circle-outline")
+        div#container-products
+            each product in products
+                div.product-container
+                    p #{product.name}
+                    p.storage-p(data-productid=product.productId) På lager: #{product.amount} #{product.unit}
+                        
+                    div.buttons-trash-and-plusmin
+                        button.delete-button(type='button', data-productid=product.productId id="button-delete-product")
+                            ion-icon(name="trash-outline")  
+                        div.buttons-plus-minus
+                            button.button-plusmin(type='button', data-productid=product.productId, data-action="increase")
+                                ion-icon(name="add-circle-outline")
+                            button.button-plusmin(type='button', data-productid=product.productId, data-action="decrease")
+                                ion-icon(name="remove-circle-outline")
 
 
 

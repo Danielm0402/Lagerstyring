@@ -1,16 +1,20 @@
-import Electrician from "../models/electrician.js";
 import Van from "../models/van.js";
 import Product from "../models/product.js";
 
-import { addProductToDb, addVanToDb, getVanFromDb, addElectricianToDb, updateVan, updateElectrician, addCompanyToDb } from "../database/Firestore.js";
+import {
+  addProductToDb,
+  addVanToDb,
+  getVanFromDb,
+  updateVan,
+  addCompanyToDb,
+  addUserToDb,
+  updateUser,
+  getProductsFromDb,
+} from "../database/Firestore.js";
 import Company from "../models/company.js";
-
-// export function test() {
-//   console.log("test");
-// }
+import User from "../models/user.js";
 
 export default class Controller {
-
   async createVan(licensePlate) {
     const van = new Van(licensePlate);
 
@@ -18,59 +22,65 @@ export default class Controller {
     return van;
   }
 
-  async createElectrician(name, employeeId) {
-    const e = new Electrician(name, employeeId);
-    await addElectricianToDb(e);
-    return e;
+  async createUser(name, employeeId, username, password, role) {
+    const user = new User(name, employeeId, username, password, role);
+    await addUserToDb(user);
+    return user;
   }
 
-  async addElectricianToVan(electrician, van) {
-    van.addElectrician(electrician);
-    electrician.addVan(van);
+  async addUserToVan(user, van) {
+    van.addUser(user);
+    user.addVan(van);
     await updateVan(van);
-    await updateElectrician(electrician);
+    await updateUser(user);
   }
 
   async createProduct(name, productID, amount, unit) {
-    const product = new Product(name, productID, amount, unit)
+    const product = new Product(name, productID, amount, unit);
     await addProductToDb(product);
-    return product
+    return product;
   }
 
   async getVan(licensePlate) {
-    const vanData = await getVanFromDb(licensePlate)
+    const vanData = await getVanFromDb(licensePlate);
     const v = new Van(vanData.licensePlate);
     // console.log(vanData.electricians)
-    vanData.electricians.map(e => v.addElectrician(e))
-    vanData.products.map(p => v.addProduct(p))
+    // vanData.user.map(e => v.addUser(e))
+    // vanData.products.map(p => v.addProduct(p))
 
-    return v 
+    return v;
   }
 
   async createCompany(name, cvr, contactpersonName, contactpersonNumber) {
-    const company = new Company(name, cvr, contactpersonName, contactpersonNumber)
+    const company = new Company(
+      name,
+      cvr,
+      contactpersonName,
+      contactpersonNumber
+    );
 
-    await addCompanyToDb(company)
-    return company
+    await addCompanyToDb(company);
+    return company;
   }
 
   async getVanProducts(licensePlate) {
-    const van = await getVanFromDb(licensePlate)
-    console.log(van.products)
-    return van.products
+    const van = await getVanFromDb(licensePlate);
+    const vanProductIds = van.products;
+    const allProducts = await getProductsFromDb();
+
+    const vanProducts = allProducts.filter((p) =>
+      vanProductIds.includes(p.productId)
+    );
+
+    return vanProducts;
   }
 
   async addProductToVan(product, van) {
-    van.addProduct(product);
-    console.log("firebase: ", van)
-    await updateVan(van);
+    console.log("productid:sasdf ", product.productId);
+    await updateVan(van, product.productId);
   }
-
-
 }
 
-
-async function test() {
-}
+async function test() {}
 
 // test();
