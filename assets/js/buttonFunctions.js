@@ -157,7 +157,6 @@ function selectVanDropdown() {
       const selectedIndex = selectVanDropdownElement.selectedIndex;
       const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
       const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-      console.log(selectedLicensePlateId)
 
       let response  = await fetch(`/van/${selectedLicensePlate}/products`, {
         method: "POST",
@@ -198,8 +197,33 @@ function updateHtmlProducts(products) {
   initFunctions();
 }
 
+function lockVans() {
+    const user = data.user;
+    const userVans = user.vans;
+  
+    if (userVans.length > 0 && !(user.role === 'admin')) {
+      const dropDownElement = document.getElementById('dropdown-select-van');
+      const options = dropDownElement.options
+
+      for(const o of options) {
+        let id = o.id.split('-')[1];
+        console.log(o)
+        if (!(id === userVans[0])) {
+          o.disabled = "true"
+          o.selected = "false"
+        } else {
+          o.selected = "true"
+        }
+      }
+    
+  }
+}
+
+
 
 function initFunctions() {
+
+  lockVans();
 
   deleteProductButton();
   deleteVanButton();

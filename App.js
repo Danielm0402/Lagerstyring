@@ -47,7 +47,7 @@ app.get("/", async (req, res) => {
   
   const user = req.session.user;
   let role = '';
-  
+
   let products = [];
 
   if (user && user.role === 'electrician') {
@@ -65,6 +65,7 @@ app.get("/", async (req, res) => {
 
   res.render("index", {
     products: products,
+    user: user,
     vans: vans,
     knownUser: isLoggedIn,
     role: role,
