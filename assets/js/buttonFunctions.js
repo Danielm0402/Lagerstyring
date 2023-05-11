@@ -151,14 +151,14 @@ function plusMinButtons() {
 function selectVanDropdown() {
 
   const selectVanDropdownElement = document.getElementById("dropdown-select-van");
-  const createProductLinkElement = document.getElementById("anchor-create-product");
   
   if (selectVanDropdownElement) {
     selectVanDropdownElement.addEventListener("change", async () => {
       const selectedIndex = selectVanDropdownElement.selectedIndex;
       const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
       const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-      // createProductLinkElement.href = `/createProduct/${selectedLicensePlate}`
+      console.log(selectedLicensePlateId)
+
       let response  = await fetch(`/van/${selectedLicensePlate}/products`, {
         method: "POST",
       });

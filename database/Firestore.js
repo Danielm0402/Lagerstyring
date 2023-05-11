@@ -135,7 +135,7 @@ export async function getVansFromDb() {
   return vans;
 }
 
-export async function getUserVans(employeeId) {
+export async function getUserVan(employeeId) {
   const userDocRef = doc(db, "Users", employeeId);
   const user = (await getDoc(userDocRef)).data();
   if(user.vans.length > 0){

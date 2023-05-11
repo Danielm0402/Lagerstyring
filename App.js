@@ -9,7 +9,7 @@ import {
   getUsersFromDb,
   getVanProducts,
   deleteUserFromDb,
-  getUserVans
+  getUserVan
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -46,20 +46,20 @@ app.get("/", async (req, res) => {
   }
   
   const user = req.session.user;
-
+  let role = '';
+  
   let products = [];
-  let role = "";
 
   if (user && user.role === 'electrician') {
-    const van = await getUserVans(user.employeeId);
+    const van = await getUserVan(user.employeeId);
+    role = user.role;
     if(van){
       products = await getVanProducts(van.licensePlate);
     }
     
-    
-  } else {
+  } else if (user && user.role === 'admin'){
+    role = user.role;
     products = await getProductsFromDb();
-    role = "admin";
   }
   const vans = await getVansFromDb();
 
