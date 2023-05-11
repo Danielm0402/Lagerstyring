@@ -44,6 +44,7 @@ app.get("/", async (req, res) => {
   if (req.session.isLoggedIn) {
     isLoggedIn = true;
   }
+  
   const user = req.session.user;
 
   let products = [];

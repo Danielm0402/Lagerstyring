@@ -178,7 +178,7 @@ function updateHtmlProducts(products) {
       += `  
         <div class="product-container">
           <p>${product.name}</p>
-          <p class="storage-p" data-productid="${product.productId}">På lager: ${product.amount} stk</p>
+          <p class="storage-p" data-productid="${product.productId}">På lager: ${product.amount}${product.unit}</p>
           <div class="buttons-trash-and-plusmin">
             <button class="delete-button" type="button" data-productid="${product.productId}" id="button-delete-product">
               <ion-icon name="trash-outline" role="img" class="md hydrated"></ion-icon>
