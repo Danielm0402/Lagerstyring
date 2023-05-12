@@ -16,9 +16,9 @@ body
             button 
                 span.knap Log ud
 
-        h1 Bil:
+        h1 Vogn:
             select#dropdown-select-van(name='select-van')
-                option(value='' disabled selected) Vælg bil
+                option(value='' disabled selected) Vælg vogn
                 option(value='', id='option-show-all') Vis alle varer
                 each van in vans
                     option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
