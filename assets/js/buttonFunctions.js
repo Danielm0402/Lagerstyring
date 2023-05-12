@@ -7,9 +7,7 @@ function x() {
   });
 }
 
-
 function deleteProductButton() {
-
   const deleteButtonElements = document.getElementsByClassName("delete-button");
   for (const e of deleteButtonElements) {
     const productId = e.dataset.productid;
@@ -18,7 +16,7 @@ function deleteProductButton() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
       });
-  
+
       const productboksediv = e.parentElement.parentElement;
       productboksediv.remove();
     });
@@ -26,21 +24,20 @@ function deleteProductButton() {
 }
 
 function deleteVanButton() {
-
   if (document.getElementById("delete-van")) {
     // på forsiden er der ikke noget der hedder delete-van,
     // så der fejler den, hvis ikke der lige et et tjek på
     // om der findes en "delete-van" på den side man er på.
     const deleteVanButtonElement = document.getElementById("delete-van");
-  
+
     deleteVanButtonElement.addEventListener("click", async () => {
       const selectElement = document.querySelector("#dropdown-select-van");
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       let licensePlate = selectedOption.value;
       console.log("hey", licensePlate);
-  
+
       // licensePlate = await selectedOption.value;
-  
+
       const response = await fetch(`/deleteVan/${licensePlate}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -51,22 +48,21 @@ function deleteVanButton() {
 }
 
 function deleteElectricianButton() {
+  if (document.getElementById("delete-user")) {
+    const deleteUserButtonElement = document.getElementById("delete-user");
 
-if (document.getElementById("delete-user")) {
-  const deleteUserButtonElement = document.getElementById("delete-user");
+    deleteUserButtonElement.addEventListener("click", async () => {
+      const selectElement = document.querySelector("#dropdown-select-user");
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      let employeeId = selectedOption.value;
 
-  deleteUserButtonElement.addEventListener("click", async () => {
-    const selectElement = document.querySelector("#dropdown-select-user");
-    const selectedOption = selectElement.options[selectElement.selectedIndex];
-    let employeeId = selectedOption.value;
-
-    const response = await fetch(`/deleteUser/${employeeId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      const response = await fetch(`/deleteUser/${employeeId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+      });
+      location.reload();
     });
-    location.reload()
-  })
-}
+  }
 }
 
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
@@ -95,26 +91,30 @@ antal products
 
 */
 function plusMinButtons() {
+  const plusminButtonElements =
+    document.getElementsByClassName("button-plusmin");
 
-  const plusminButtonElements = document.getElementsByClassName("button-plusmin");
-  
   if (plusminButtonElements) {
     for (const e of plusminButtonElements) {
       const productId = e.dataset.productid;
       const btnAction = e.dataset.action;
-  
+
       e.addEventListener("click", async () => {
+        if (btnAction === "edit") {
+          const newAmount = prompt("Enter amount:");
+        }
+
         const response = await fetch(`/products/${productId}/amount`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action: btnAction }),
         });
-  
+
         const json = await response.json();
-  
+
         const amount = json.amount;
         const unit = json.unit;
-  
+
         const storagePElement = Array.from(
           document.getElementsByClassName("storage-p")
         ).filter((e) => e.dataset.productid === productId)[0];
@@ -127,38 +127,36 @@ function plusMinButtons() {
 //------------------------------- SELECT VAN-----------------------------------------------
 
 function selectVanDropdown() {
+  const selectVanDropdownElement = document.getElementById(
+    "dropdown-select-van"
+  );
 
-  const selectVanDropdownElement = document.getElementById("dropdown-select-van");
-  
   if (selectVanDropdownElement) {
     selectVanDropdownElement.addEventListener("change", async () => {
       const selectedIndex = selectVanDropdownElement.selectedIndex;
-      const selectedLicensePlateId = selectVanDropdownElement.options[selectedIndex].id
-      if (selectedLicensePlateId === 'option-show-all') {
-        updateHtmlProducts(data.products)
-
+      const selectedLicensePlateId =
+        selectVanDropdownElement.options[selectedIndex].id;
+      if (selectedLicensePlateId === "option-show-all") {
+        updateHtmlProducts(data.products);
       } else {
-        
-        const selectedLicensePlate = selectedLicensePlateId.split('-')[1]
-  
-  
-        let response  = await fetch(`/van/${selectedLicensePlate}/products`, {
+        const selectedLicensePlate = selectedLicensePlateId.split("-")[1];
+
+        let response = await fetch(`/van/${selectedLicensePlate}/products`, {
           method: "POST",
         });
         const vanProducts = await response.json();
-        updateHtmlProducts(vanProducts)
+        updateHtmlProducts(vanProducts);
       }
     });
   }
 }
 
 function updateHtmlProducts(products) {
-  const productContainerElement = document.getElementById('container-products');
+  const productContainerElement = document.getElementById("container-products");
 
-  productContainerElement.innerHTML = '';
+  productContainerElement.innerHTML = "";
   for (const product of products) {
-    productContainerElement.innerHTML 
-      += `  
+    productContainerElement.innerHTML += `  
         <div class="product-container">
           <p>${product.name}</p>
           <p class="storage-p" data-productid="${product.productId}">På lager: ${product.amount} ${product.unit}</p>
@@ -176,35 +174,34 @@ function updateHtmlProducts(products) {
             </div>
           </div>
         </div>
-        `
+        `;
   }
   deleteElectricianButton();
   plusMinButtons();
 }
 
 function lockVans() {
-    const user = data.user;
-    const userVans = user.vans;
-  
-    if (userVans.length > 0 && !(user.role === 'admin')) {
-      const dropDownElement = document.getElementById('dropdown-select-van');
-      const options = dropDownElement.options
+  const user = data.user;
+  const userVans = user.vans;
 
-      for(const o of options) {
-        let id = o.id.split('-')[1];
-        console.log(o)
-        if (!(id === userVans[0])) {
-          o.disabled = "true"
-          o.selected = "false"
-        } else {
-          o.selected = "true"
-        }
+  if (userVans.length > 0 && !(user.role === "admin")) {
+    const dropDownElement = document.getElementById("dropdown-select-van");
+    const options = dropDownElement.options;
+
+    for (const o of options) {
+      let id = o.id.split("-")[1];
+      console.log(o);
+      if (!(id === userVans[0])) {
+        o.disabled = "true";
+        o.selected = "false";
+      } else {
+        o.selected = "true";
       }
+    }
   }
 }
 
 function initFunctions() {
-
   lockVans();
   deleteProductButton();
   deleteVanButton();
@@ -214,4 +211,4 @@ function initFunctions() {
   selectVanDropdown();
 }
 
-initFunctions()
+initFunctions();

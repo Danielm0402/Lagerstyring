@@ -223,6 +223,11 @@ app.put("/products/:productid/amount", async (req, res) => {
   } else if (action === "decrease") {
     await updateAmountToProduct(-1, productId);
   }
+
+  // else if (action === "edit") {
+  //   const newAmount = prompt("Enter the new amount:"); // Using prompt() function
+  // }
+
   const product = await getProductFromDb(productId);
   res.send(product);
 });
