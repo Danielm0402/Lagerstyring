@@ -136,10 +136,13 @@ export async function getVansFromDb() {
 }
 
 export async function getUserVan(employeeId) {
+  console.log("jordbærtærte", employeeId)
   const userDocRef = doc(db, "Users", employeeId);
   const user = (await getDoc(userDocRef)).data();
-  if(user.vans.length > 0){
-    const vanLicensePlate = user.vans[0];
+  console.log("drømmekage", user)
+  if(user.van){
+    console.log("kajkage", user.van)
+    const vanLicensePlate = user.van;
     const vanDocRef = doc(db, "Vans", vanLicensePlate);
     const van = (await getDoc(vanDocRef)).data();
     return van

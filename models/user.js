@@ -7,20 +7,19 @@ export default class User {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.vans = [];
+        this.van = van;
     }
 
-    addVan(van) {
-        if (!this.vans.includes(van.toJSON())) {
-            this.vans.push(van)
+    addVan(newVan) {
+        if(!van){
+            this.van = newVan
         }
     }
 
     removeVan(van) {
-        const index = this.vans.findIndex(van);
-
-        if(index > -1)
-            this.vans.splice(index, 1);
+        if(van){
+            this.van = null
+        }
     }
 
 
@@ -31,7 +30,7 @@ export default class User {
             username: this.username,
             password: this.password,
             role: this.role,
-            vans: this.vans.map(van => van.licensePlate)
+            van: this.van
         }
         return json;
     }

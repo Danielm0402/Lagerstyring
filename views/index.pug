@@ -21,7 +21,7 @@ body
                 option(value='' disabled selected) Vælg vogn
                 option(value='', id='option-show-all') Vis alle varer
                 each van in vans
-                    option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate + ' - ' + van.owner
+                    option(value=van.licensePlate, id=`option-${van.licensePlate}`)=van.number + ' - ' + van.user + ' - ' + van.licensePlate
 
 
         a(href="/createProduct")

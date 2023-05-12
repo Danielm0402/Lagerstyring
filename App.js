@@ -69,6 +69,8 @@ app.get("/", async (req, res) => {
   }
   const vans = await getVansFromDb();
 
+  console.log(vans)
+
   res.render("index", {
     products: products,
     user: user,

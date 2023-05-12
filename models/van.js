@@ -9,22 +9,21 @@
 export default class Van {
 
     constructor(licensePlate) {
+        // this.number = number
         this.licensePlate = licensePlate;
-        this.users = []
         this.products = []
     }
 
-    addUser(user) {
-        if(!this.user.includes(user)) {
-            this.user.push(user);
+    addUser(newUser) {
+        if(!user){
+          this.user = newUser
         }
     }
 
     removeUser(user) {
-        const index = this.users.findIndex(user);
-
-        if (index > -1)
-            this.users.splice(index, 1);
+        if(user){
+          this.user = null;
+        }
     }
 
   addProduct(productId) {
@@ -49,7 +48,7 @@ export default class Van {
     toJSON() {
         const json = {
             licensePlate: this.licensePlate,
-            users: this.users.map(e => e.employeeId),
+            user: this.user,
             products: this.products.map(p => p.name)
         }
         return json;
