@@ -184,16 +184,16 @@ function updateHtmlProducts(products) {
 
 function lockVans() {
     const user = data.user;
-    const userVans = user.vans;
+    const userVan = user.van;
   
-    if (userVans.length > 0 && !(user.role === 'admin')) {
+    if ((userVan) && !(user.role === 'admin')) {
       const dropDownElement = document.getElementById('dropdown-select-van');
       const options = dropDownElement.options
 
       for(const o of options) {
         let id = o.id.split('-')[1];
         console.log(o)
-        if (!(id === userVans[0])) {
+        if (!(id === userVan)) {
           o.disabled = "true"
           o.selected = "false"
         } else {
