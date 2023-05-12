@@ -15,7 +15,7 @@ body
             label(for="input-name") Produkt navn:
             input.inputtag(type="text" name="input-name")
 
-            label(for="input-produkt-id") Vare ID: 
+            label(for="input-produkt-id") Varenummer: 
             input.inputtag(type="text" name="input-produkt-id")
 
             label(for="input-amount") Mængde: 
@@ -23,7 +23,7 @@ body
 
             label(for="dropdown-unit") Enhed: 
             select(name="dropdown-unit")
-                each option in ['stk', 'm', 'cm', 'mm', 'kg', 'g']
+                each option in ['stk', 'm']
                     option(value = option)= option
 
 
