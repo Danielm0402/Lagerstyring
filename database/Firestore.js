@@ -78,26 +78,24 @@ export async function addCompanyToDb(company) {
 }
 
 export async function deleteProductFromDb(productId) {
-  console.log("4444");
-
   // delete product from database where products productID === productId
   const productRef = doc(productCollectionRef, productId);
   await deleteDoc(productRef);
-  console.log("deleted procuctasf");
+  console.log("Deleted product: ", productId);
 }
 
 export async function deleteVanFromDb(licensePlate) {
-  console.log("yay deleteVanFromDb virker", licensePlate);
-
+  // delete van from database where van.licensePlate === licensePlate
   const vanRef = doc(vanCollectionRef, licensePlate);
   await deleteDoc(vanRef);
-  console.log("van deleted");
+  console.log("Van deleted: ", licensePlate);
 }
 
 export async function deleteUserFromDb(employeeId){
+  // delete user from database where user.employeeId === employeeId
   const userRef = doc(userCollectionRef, employeeId);
   await deleteDoc(userRef);
-  console.log("user deleted")
+  console.log("user deleted: ", employeeId)
 }
 
 export async function getProductFromDb(productId) {
@@ -109,13 +107,21 @@ export async function getProductFromDb(productId) {
   return products[0];
 }
 
+export async function getProductAmount(productId) {
+  const docRef = doc(db, "Products", productId);
+  const document = await getDoc(docRef);
+  const data = document.data();
+  return data.amount;
+}
+
+export async function setProductAmount(productId, amount) {
+  const docRef = doc(db, "Products", productId);
+  await updateDoc(docRef, {amount: amount});
+}
+
 export async function updateAmountToProduct(amount, productId) {
   const docRef = doc(db, "Products", productId);
-  const productDoc = await getDoc(docRef);
-  const productData = productDoc.data();
-  const newAmount = productData.amount + amount;
-  await updateDoc(docRef, { amount: newAmount });
-  return newAmount;
+  await updateDoc(docRef, { amount: amount });
 }
 
 export async function getVanFromDb(licensePlate) {
@@ -169,11 +175,17 @@ export async function getUsersFromDb() {
   return users;
 }
 
-async function test() {
-  let productsQueryDocs = await getDocs(productCollectionRef);
-  let products = productsQueryDocs.docs.map((doc) => {
-    let data = doc.data();
-    data.productId = doc.id;
-    console.log(data);
-  });
+export async function getUser(employeeId) {
+  const userDocRef = doc(db, "Users", employeeId);
+  const userDoc = await getDoc(userDocRef);
+  return userDoc.data();
 }
+
+async function test() {
+  const products = await getProductsFromDb();
+  const prod = products[0];
+  console.log(prod.productId)
+  await setProductAmount(prod.productId, 100);
+}
+
+// test();

@@ -1,24 +1,9 @@
-import {
-  getProductsFromDb,
-  getProductFromDb,
-  deleteProductFromDb,
-  updateAmountToProduct,
-  addVanToDb,
-  getVansFromDb,
-  deleteVanFromDb,
-  getUsersFromDb,
-  getVanProducts,
-  deleteUserFromDb,
-  getUserVan
-} from "./database/Firestore.js";
-
 import Controller from "./controllers/controller.js";
-
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
-import { collectionGroup } from "firebase/firestore";
-import { async } from "@firebase/util";
+
+
 const app = express();
 
 const controller = new Controller();
@@ -40,28 +25,26 @@ app.set("view engine", "pug");
 
 app.get("/", async (req, res) => {
   let isLoggedIn = false;
-
   if (req.session.isLoggedIn) {
     isLoggedIn = true;
   }
-  
   const user = req.session.user;
   let role = '';
 
   let products = [];
 
   if (user && user.role === 'electrician') {
-    const van = await getUserVan(user.employeeId);
+    const van = await controller.getUserVan(user.employeeId);
     role = user.role;
     if(van){
-      products = await getVanProducts(van.licensePlate);
+      products = await controller.getVanProducts(van.licensePlate);
     }
     
   } else if (user && user.role === 'admin'){
     role = user.role;
-    products = await getProductsFromDb();
+    products = await controller.getProducts();
   }
-  const vans = await getVansFromDb();
+  const vans = await controller.getVans();
 
   res.render("index", {
     products: products,
@@ -87,7 +70,7 @@ app.post("/", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const users = await getUsersFromDb();
+  const users = await controller.getUsers();
 
   const user = users.find((u) => u.username === username);
 
@@ -103,7 +86,7 @@ app.post("/", async (req, res) => {
 
 // opens /createProduct form to create a form
 app.get("/createProduct", async (req, res) => {
-  const vans = await getVansFromDb();
+  const vans = await controller.getVans();
 
   res.render("createProduct", { vans: vans });
 });
@@ -117,8 +100,8 @@ app.get("/createProduct", async (req, res) => {
 
 //3. step---------------------------------------
 app.get("/admin", async (req, res) => {
-  const vans = await getVansFromDb();
-  const users = await getUsersFromDb();
+  const vans = await controller.getVans();
+  const users = await controller.getUsers();
   res.render("admin", { vans: vans, users: users });
 });
 
@@ -171,7 +154,7 @@ app.put("/deleteProduct/:productid", async (req, res) => {
 
   console.log("afasdg ", productId);
 
-  const product = await deleteProductFromDb(productId);
+  const product = await controller.deleteProduct(productId);
   res.send(product);
 });
 
@@ -180,7 +163,7 @@ app.put("/deleteVan/:licensePlate", async (req, res) => {
   const licensePlate = req.params.licensePlate;
   console.log("afasdg ", licensePlate);
 
-  const van = await deleteVanFromDb(licensePlate);
+  const van = await controller.deleteVan(licensePlate);
   res.send(van);
 });
 
@@ -188,7 +171,7 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
   console.log("delete User", employeeId);
 
-  const user = await deleteUserFromDb(employeeId);
+  const user = await controller.deleteUser(employeeId);
   res.send(user);
 })
 
@@ -206,11 +189,11 @@ app.put("/products/:productid/amount", async (req, res) => {
   const action = req.body.action;
 
   if (action === "increase") {
-    await updateAmountToProduct(1, productId);
+    await controller.adjustProductAmount(productId, 1);
   } else if (action === "decrease") {
-    await updateAmountToProduct(-1, productId);
+    await controller.adjustProductAmount(productId, -1);
   }
-  const product = await getProductFromDb(productId);
+  const product = await controller.getProduct(productId);
   res.send(product);
 });
 

@@ -10,21 +10,16 @@ export default class Van {
 
     constructor(licensePlate) {
         this.licensePlate = licensePlate;
-        this.users = []
+        this.user = ""
         this.products = []
     }
 
-    addUser(user) {
-        if(!this.user.includes(user)) {
-            this.user.push(user);
-        }
+    setUser(user) {
+        this.user = user.employeeId
     }
 
-    removeUser(user) {
-        const index = this.users.findIndex(user);
-
-        if (index > -1)
-            this.users.splice(index, 1);
+    removeUser() {
+        this.user = ""
     }
 
   addProduct(productId) {
@@ -46,12 +41,12 @@ export default class Van {
     }
   }
 
-    toJSON() {
-        const json = {
-            licensePlate: this.licensePlate,
-            users: this.users.map(e => e.employeeId),
-            products: this.products.map(p => p.name)
-        }
-        return json;
+  toJSON() {
+    const json = {
+        licensePlate: this.licensePlate,
+        users: this.users.map(e => e.employeeId),
+        products: this.products.map(p => p.name)
+    }
+    return json;
     }
 }
