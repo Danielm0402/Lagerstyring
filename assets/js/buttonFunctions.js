@@ -1,3 +1,5 @@
+;
+
 document.getElementById("addButton");
 
 function x() {
@@ -180,29 +182,63 @@ function updateHtmlProducts(products) {
   plusMinButtons();
 }
 
-function lockVans() {
-    const user = data.user;
-    const userVan = user.van;
+// function lockVans() {
+//     const user = data.user;
+//     const userVan = user.van;
   
-    if ((userVan) && !(user.role === 'admin')) {
-      const dropDownElement = document.getElementById('dropdown-select-van');
-      const options = dropDownElement.options
+//     if ((userVan) && !(user.role === 'admin')) {
+//       const dropDownElement = document.getElementById('dropdown-select-van');
+//       const options = dropDownElement.options
 
-      for(const o of options) {
-        let id = o.id.split('-')[1];
-        console.log(o)
-        if (!(id === userVan)) {
-          o.disabled = "true"
-          o.selected = "false"
-        } else {
-          o.selected = "true"
-        }
-      }
+//       for(const o of options) {
+//         let id = o.id.split('-')[1];
+//         console.log(o)
+//         if (!(id === userVan)) {
+//           o.disabled = "true"
+//           o.selected = "false"
+//         } else {
+//           o.selected = "true"
+//         }
+//       }
+//   }
+// }
+
+function assignUserToVan(){
+  const assignButton = document.getElementsByClassName("assign")[0]
+
+  const selectVanDropdownElement = document.getElementById("dropdown-select-van");
+  const selectUserDropdownElement = document.getElementById("dropdown-select-user");
+
+  console.log(selectVanDropdownElement, selectUserDropdownElement);
+
+  if(selectUserDropdownElement && selectVanDropdownElement){
+    assignButton.addEventListener("click", async () =>{
+      const selectedVanIndex = selectVanDropdownElement.selectedIndex
+      const selectedVanLicensePlateId = selectVanDropdownElement.options[selectedVanIndex].id
+      const selectedVanLicensePlate = selectedVanLicensePlateId.split('-')[1]
+
+      const selectedUserIndex = selectUserDropdownElement.selectedIndex
+      const selectedUserEmployeeIdId = selectUserDropdownElement.options[selectedUserIndex].id
+      const selectedUserEmployeeId = selectedUserEmployeeIdId.split('-')[1]
+
+      await fetch(`/updateVan/${selectedVanLicensePlate}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({licensePlate: selectedVanLicensePlate, employeeId: selectedUserEmployeeId}),
+      })
+
+      console.log(selectedVanLicensePlate, selectedUserEmployeeId)
+
+      // updateVan(selectedVanLicensePlate, selectedUserEmployeeId)
+      // updateUser(selectedUserEmployeeId, selectedVanLicensePlate)
+      
+    })
   }
 }
 
 function initFunctions() {
-  lockVans();
+  assignUserToVan();
+  // lockVans();
   deleteProductButton();
   deleteVanButton();
   deleteElectricianButton();

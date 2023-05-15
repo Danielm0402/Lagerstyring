@@ -13,6 +13,7 @@ import {
 } from "../database/Firestore.js";
 import Company from "../models/company.js";
 import User from "../models/user.js";
+import { documentId } from "firebase/firestore";
 
 export default class Controller {
   async createVan(licensePlate) {
@@ -79,8 +80,17 @@ export default class Controller {
     console.log("productid:sasdf ", product.productId);
     await updateVan(van, product.productId);
   }
-}
 
-async function test() {}
+
+  async updateVan(documentPath, newUser){
+    await assignUserToVan(documentPath, newUser)
+  }
+
+  async updateUser(documentPath, newVan){
+    await assignVanToUser(documentPath, newVan)
+  }
+
+
+}
 
 // test();

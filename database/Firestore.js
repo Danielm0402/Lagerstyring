@@ -172,6 +172,23 @@ export async function getUsersFromDb() {
   return users;
 }
 
+export function updateAssignedUserToVan(documentId, newUser){
+  let docRef = db.firestore().collection("Vans").doc(documentId);
+
+  docRef.update({
+    [user]: newUser
+  })
+}
+
+export function updateAssignedVanToUser(documentId, newVan){
+  let docRef = db.firestore().collection("Users").doc(documentId)
+
+  docRef.update({
+    [van]: newVan
+  })
+}
+
+
 async function test() {
   let productsQueryDocs = await getDocs(productCollectionRef);
   let products = productsQueryDocs.docs.map((doc) => {

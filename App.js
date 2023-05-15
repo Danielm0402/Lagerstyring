@@ -10,6 +10,9 @@ import {
   getVanProducts,
   deleteUserFromDb,
   getUserVan,
+  updateAssignedUserToVan,
+  updateVan,
+  updateUser,
 } from "./database/Firestore.js";
 
 import Controller from "./controllers/controller.js";
@@ -17,7 +20,7 @@ import Controller from "./controllers/controller.js";
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
-import { collectionGroup } from "firebase/firestore";
+import { collectionGroup, documentId } from "firebase/firestore";
 import { async } from "@firebase/util";
 const app = express();
 
@@ -212,6 +215,22 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
   const user = await deleteUserFromDb(employeeId);
   res.send(user);
 });
+
+
+app.put("/updateVan/:licensePlate", async (req, res)=>{
+  const licensePlate = req.body.licensePlate;
+  const employeeId = req.body.employeeId;
+
+  const updatedVan = await updateAssignedUserToVan(licensePlate, employeeId)
+  const updatedUser = await updateAssignedVanToUser(employeeId, licensePlate)
+
+
+
+  console.log(licensePlate, employeeId);
+
+  
+
+})
 
 /*
   Når der kommer et put request to denne adresse
