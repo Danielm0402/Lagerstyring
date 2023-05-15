@@ -12,6 +12,7 @@ function deleteProductButton() {
   for (const e of deleteButtonElements) {
     const productId = e.dataset.productid;
     e.addEventListener("click", async () => {
+      console.log("delsnjg");
       const response = await fetch(`/deleteProduct/${productId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -100,16 +101,23 @@ function plusMinButtons() {
       const btnAction = e.dataset.action;
 
       e.addEventListener("click", async () => {
+        let response;
+
         if (btnAction === "edit") {
           const newAmount = prompt("Enter amount:");
+          console.log("ehsa", newAmount);
+          response = await fetch(`/products/${productId}/amount`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: btnAction, newAmount: newAmount }),
+          });
+        } else {
+          response = await fetch(`/products/${productId}/amount`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: btnAction }),
+          });
         }
-
-        const response = await fetch(`/products/${productId}/amount`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: btnAction }),
-        });
-
         const json = await response.json();
 
         const amount = json.amount;
@@ -168,6 +176,11 @@ function updateHtmlProducts(products) {
               <button class="button-plusmin" type="button" data-productid="${product.productId}" data-action="increase">
                 <ion-icon name="add-circle-outline" role="img" class="md hydrated"></ion-icon>
               </button>
+
+              <button class="button-plusmin" type="button" data-productid="${product.productId}" data-action="edit">
+              <ion-icon name="pencil-outline" role="img" class="md hydrated"></ion-icon>
+            </button>
+
               <button class="button-plusmin" type="button" data-productid="${product.productId}" data-action="decrease">
                 <ion-icon name="remove-circle-outline" role="img" class="md hydrated"></ion-icon>
               </button>
@@ -176,28 +189,28 @@ function updateHtmlProducts(products) {
         </div>
         `;
   }
-  deleteElectricianButton();
+  deleteProductButton();
   plusMinButtons();
 }
 
 function lockVans() {
-    const user = data.user;
-    const userVan = user.van;
-  
-    if ((userVan) && !(user.role === 'admin')) {
-      const dropDownElement = document.getElementById('dropdown-select-van');
-      const options = dropDownElement.options
+  const user = data.user;
+  const userVan = user.van;
 
-      for(const o of options) {
-        let id = o.id.split('-')[1];
-        console.log(o)
-        if (!(id === userVan)) {
-          o.disabled = "true"
-          o.selected = "false"
-        } else {
-          o.selected = "true"
-        }
+  if (userVan && !(user.role === "admin")) {
+    const dropDownElement = document.getElementById("dropdown-select-van");
+    const options = dropDownElement.options;
+
+    for (const o of options) {
+      let id = o.id.split("-")[1];
+      console.log(o);
+      if (!(id === userVan)) {
+        o.disabled = "true";
+        o.selected = "false";
+      } else {
+        o.selected = "true";
       }
+    }
   }
 }
 

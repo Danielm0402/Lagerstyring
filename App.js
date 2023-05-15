@@ -69,7 +69,7 @@ app.get("/", async (req, res) => {
   }
   const vans = await getVansFromDb();
 
-  console.log(vans)
+  console.log(vans);
 
   res.render("index", {
     products: products,
@@ -219,16 +219,16 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
 app.put("/products/:productid/amount", async (req, res) => {
   const productId = req.params.productid;
   const action = req.body.action;
+  const newAmount = req.body.newAmount;
+  console.log("hej", newAmount);
 
   if (action === "increase") {
     await updateAmountToProduct(1, productId);
   } else if (action === "decrease") {
     await updateAmountToProduct(-1, productId);
+  } else if (action === "edit") {
+    await updateAmountToProduct(parseInt(newAmount), productId);
   }
-
-  // else if (action === "edit") {
-  //   const newAmount = prompt("Enter the new amount:"); // Using prompt() function
-  // }
 
   const product = await getProductFromDb(productId);
   res.send(product);
