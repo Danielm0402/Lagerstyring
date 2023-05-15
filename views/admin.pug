@@ -1,30 +1,25 @@
 include includes/head
 
 body 
-    button
-        <i class="fa-sharp fa-solid fa-left-long"></i>
-        a.knap(href='/') Tilbage
+    a(href='/')
+        button
+            i.fa-sharp.fa-solid.fa-left-long
+            span.knap Tilbage
 
     h1 Adminside
 
-    button.admin
-        //- <i class="fa-solid fa-truck-front"></i>
-        i.fa-solid.fa-truck-front
-        a(href="/createVan") Opret Lagerbil
-    
-    button.admin
-        //- <i class="fa-solid fa-user"></i>
-        i.fa.solid.fa.user
-        a(href="/createUser") Opret Bruger
-
-    button.admin
-        //- <i class="fa-solid fa-user"></i>
-        i.fa.solid.fa.user
-        a(href="/assignUserToVan") Tilknyt Bruger til Vogn 
-
+    a(href="/createVan") 
+        button.admin
+            i.fa-solid.fa-truck-front
+            span.knap Opret vogn
+        
+    a(href="/createUser")
+        button.admin
+            i.fa-solid.fa-user
+            span.knap Opret bruger 
 
 div
-    h2 Varevogn:
+    h2 Vogne:
         select#dropdown-select-van(name='select-van')
             each van in vans 
                 option(value=option)=van.licensePlate
@@ -36,6 +31,7 @@ div
                 option(value=user.employeeId)=user.name 
         button(type='button' id="delete-user" class='delete-buttons-in-admin-page')
             ion-icon(name="trash-outline")
+
 
 
 
