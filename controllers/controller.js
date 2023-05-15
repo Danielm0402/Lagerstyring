@@ -25,8 +25,9 @@ import User from "../models/user.js";
 
 export default class Controller {
 
-  async createVan(licensePlate, owner) {
-    const van = new Van(licensePlate);
+  async createVan(licensePlate, user) {
+    const van = new Van(licensePlate, );
+    van.user = user;
 
     await addVanToDb(van);
     return van;
@@ -53,7 +54,7 @@ export default class Controller {
 
   async getVan(licensePlate) {
     const vanData = await getVanFromDb(licensePlate);
-    const v = new Van(vanData.licensePlate);
+    const v = new Van(vanData.licensePlate, vanData.user, vanData.products);
     return v;
   }
 
@@ -101,7 +102,6 @@ export default class Controller {
   }
 
   async addProductToVan(product, van) {
-    console.log("productid:sasdf ", product.productId);
     await updateVan(van, product.productId);
   }
 
@@ -146,4 +146,4 @@ async function test() {
   console.log(van);
 }
 
-test();
+// test();

@@ -1,17 +1,3 @@
-import {
-  getProductsFromDb,
-  getProductFromDb,
-  deleteProductFromDb,
-  updateAmountToProduct,
-  addVanToDb,
-  getVansFromDb,
-  deleteVanFromDb,
-  getUsersFromDb,
-  getVanProducts,
-  deleteUserFromDb,
-  getUserVan,
-} from "./database/Firestore.js";
-
 import Controller from "./controllers/controller.js";
 import express from "express";
 import session from "express-session";
@@ -39,36 +25,26 @@ app.set("view engine", "pug");
 
 app.get("/", async (req, res) => {
   let isLoggedIn = false;
-  let errorMessage = null;
 
   if (req.session.isLoggedIn) {
     isLoggedIn = true;
-  }
 
-  if (req.session.errorMessage) {
-    errorMessage = req.session.errorMessage;
-    console.log("haysi", errorMessage);
-    req.session.errorMessage = null; // Clear the error message after displaying it
-  }
+    const user = req.session.user;
+    let role = "";
+    let products = [];
 
-  const user = req.session.user;
-  let role = "";
+    if (user && user.role === 'electrician') {
+      const van = await controller.getUserVan(user.employeeId);
+      role = user.role;
+      if(van){
+        products = await controller.getVanProducts(van.licensePlate);
+      }
 
-  let products = [];
-
-  if (user && user.role === 'electrician') {
-    const van = await controller.getUserVan(user.employeeId);
-    role = user.role;
-    if(van){
-      products = await controller.getVanProducts(van.licensePlate);
-    }
   } else if (user && user.role === "admin") {
     role = user.role;
     products = await controller.getProducts();
   }
   const vans = await controller.getVans();
-
-  console.log(vans);
 
   res.render("index", {
     products: products,
@@ -76,8 +52,11 @@ app.get("/", async (req, res) => {
     vans: vans,
     knownUser: isLoggedIn,
     role: role,
-    errorMessage: errorMessage,
   });
+
+  } else {
+    res.redirect('/login')
+  }
 });
 
 app.get("/logout", (req, res) => {
@@ -87,7 +66,16 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.render("loginForm");
+  
+  let errorMessage = null; 
+  
+  if (req.session.errorMessage) {
+    errorMessage = req.session.errorMessage;
+    console.log("haysi", errorMessage);
+    req.session.errorMessage = null; // Clear the error message after displaying it
+  }
+
+  res.render("loginForm", {errorMessage: errorMessage});
 });
 
 app.post("/", async (req, res) => {
@@ -105,12 +93,6 @@ app.post("/", async (req, res) => {
   } else {
     req.session.isLoggedIn = false;
     req.session.errorMessage = "Wrong username or password.";
-    console.log("sdf", req.session.errorMessage);
-
-    // req.session.isLoggedIn = false;
-
-    // res.locals.errorMessage = "Wrong username or password.";
-    // console.log("dsf", res.locals.errorMessage);
   }
   res.redirect("/");
 });
@@ -219,7 +201,6 @@ app.put("/products/:productid/amount", async (req, res) => {
   const productId = req.params.productid;
   const action = req.body.action;
   const newAmount = req.body.newAmount;
-  console.log("hej", newAmount);
 
   if (action === "increase") {
     await controller.adjustProductAmount(productId, 1);
@@ -235,7 +216,7 @@ app.put("/products/:productid/amount", async (req, res) => {
 
 //----------POST REQUEST--------------------------------------------------------------------------
 
-app.post("/product/", async (req, res) => {
+app.post("/product", async (req, res) => {
   const productName = req.body["input-name"];
   const productId = req.body["input-produkt-id"];
   const amount = parseInt(req.body["input-amount"]);
@@ -253,9 +234,10 @@ app.post("/product/", async (req, res) => {
   await controller.addProductToVan(product, van);
 
   res.redirect("/createProduct");
-});
+}); 
 
 app.post("/van", async (req, res) => {
+  console.log(req.body);
   await controller.createVan(req.body.licensePlate, req.body.owner);
   res.redirect("/admin");
 });

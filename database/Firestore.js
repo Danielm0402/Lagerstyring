@@ -61,17 +61,21 @@ export async function updateVan(van, ID) {
 export async function addUserToDb(user) {
   const docRef = doc(db, "Users", user.employeeId);
   await setDoc(docRef, user.toJSON())
+  console.log("User created: ", user)
 }
 
 export async function addVanToDb(van) {
   const docRef = doc(db, "Vans", van.licensePlate);
   await setDoc(docRef, van.toJSON());
+  console.log("Van created: ", van)
 }
+
 export async function addProductToDb(product) {
   const docRef = doc(db, "Products", product.productId);
   await setDoc(docRef, product.toJSON());
   console.log("firestore log");
 }
+
 export async function addCompanyToDb(company) {
   const docRef = doc(db, "Companies", company.cvr);
   await setDoc(docRef, company.toJSON());
@@ -135,7 +139,7 @@ export async function getVansFromDb() {
   const vanQueryDocs = await getDocs(vanCollectionRef);
   let vans = vanQueryDocs.docs.map((doc) => {
     let data = doc.data();
-    data.vanKey = doc.id;
+    data.licensePlate = doc.id;
     return data;
   });
   return vans;

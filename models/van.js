@@ -8,11 +8,15 @@
 
 export default class Van {
 
-  constructor(licensePlate) {
+  constructor(licensePlate, user, products) {
     // this.number = number
     this.licensePlate = licensePlate;
     this.user = ""
     this.products = []
+    if (user)
+      this.user = user
+    if (products)
+      this.products = products
   }
 
   setUser(user) {
