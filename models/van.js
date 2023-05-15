@@ -8,24 +8,25 @@
 
 export default class Van {
 
-    constructor(licensePlate) {
-        this.licensePlate = licensePlate;
-        this.user = ""
-        this.products = []
-    }
+  constructor(licensePlate) {
+    // this.number = number
+    this.licensePlate = licensePlate;
+    this.user = ""
+    this.products = []
+  }
 
-    setUser(user) {
-        this.user = user.employeeId
-    }
+  setUser(user) {
+    this.user = user.employeeId
+  }
 
-    removeUser() {
-        this.user = ""
-    }
+  removeUser() {
+    this.user = ""
+  }
 
   addProduct(productId) {
     if (!this.products.includes(productId)) {
       this.products.push(productId);
-      console.log("this.products", this.products);
+      console.log("this.products: ", this.products);
     }
   }
 
@@ -42,11 +43,11 @@ export default class Van {
   }
 
   toJSON() {
-    const json = {
-        licensePlate: this.licensePlate,
-        users: this.users.map(e => e.employeeId),
-        products: this.products.map(p => p.name)
-    }
-    return json;
-    }
+      const json = {
+          licensePlate: this.licensePlate,
+          user: this.user,
+          products: this.products.map(p => p.name)
+      }
+      return json;
+  }
 }

@@ -1,44 +1,38 @@
-
-
 export default class User {
-    constructor(name, employeeId, username, password, role) {
-        this.name = name;
-        this.employeeId = employeeId;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.vans = [];
+  constructor(name, employeeId, username, password, role, van) {
+    this.name = name;
+    this.employeeId = employeeId;
+    this.username = username;
+    this.password = password;
+    this.role = role;
+    this.van = van ? van : null;
+  }
+
+  addVan(newVan) {
+    if (!van) {
+      this.van = newVan;
     }
+  }
 
-    addVan(van) {
-        if (!this.vans.includes(van.toJSON())) {
-            this.vans.push(van)
-        }
+  removeVan(van) {
+    if (van) {
+      this.van = null;
     }
+  }
 
-    removeVan(van) {
-        const index = this.vans.findIndex(van);
+  toJSON() {
+    const json = {
+      name: this.name,
+      employeeId: this.employeeId,
+      username: this.username,
+      password: this.password,
+      role: this.role,
+      van: this.van,
+    };
+    return json;
+  }
 
-        if(index > -1)
-            this.vans.splice(index, 1);
-    }
-
-
-    toJSON() {
-        const json = {
-            name: this.name, 
-            employeeId: this.employeeId, 
-            username: this.username,
-            password: this.password,
-            role: this.role,
-            vans: this.vans.map(van => van.licensePlate)
-        }
-        return json;
-    }
-
-
-    changeLicenseplate(newLicenseplate){
-        this.licenseplate = newLicenseplate
-    }
-    
+  changeLicenseplate(newLicenseplate) {
+    this.licenseplate = newLicenseplate;
+  }
 }

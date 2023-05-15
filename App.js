@@ -1,3 +1,17 @@
+import {
+  getProductsFromDb,
+  getProductFromDb,
+  deleteProductFromDb,
+  updateAmountToProduct,
+  addVanToDb,
+  getVansFromDb,
+  deleteVanFromDb,
+  getUsersFromDb,
+  getVanProducts,
+  deleteUserFromDb,
+  getUserVan,
+} from "./database/Firestore.js";
+
 import Controller from "./controllers/controller.js";
 import express from "express";
 import session from "express-session";
@@ -25,11 +39,20 @@ app.set("view engine", "pug");
 
 app.get("/", async (req, res) => {
   let isLoggedIn = false;
+  let errorMessage = null;
+
   if (req.session.isLoggedIn) {
     isLoggedIn = true;
   }
+
+  if (req.session.errorMessage) {
+    errorMessage = req.session.errorMessage;
+    console.log("haysi", errorMessage);
+    req.session.errorMessage = null; // Clear the error message after displaying it
+  }
+
   const user = req.session.user;
-  let role = '';
+  let role = "";
 
   let products = [];
 
@@ -39,12 +62,13 @@ app.get("/", async (req, res) => {
     if(van){
       products = await controller.getVanProducts(van.licensePlate);
     }
-    
-  } else if (user && user.role === 'admin'){
+  } else if (user && user.role === "admin") {
     role = user.role;
     products = await controller.getProducts();
   }
   const vans = await controller.getVans();
+
+  console.log(vans);
 
   res.render("index", {
     products: products,
@@ -52,11 +76,11 @@ app.get("/", async (req, res) => {
     vans: vans,
     knownUser: isLoggedIn,
     role: role,
+    errorMessage: errorMessage,
   });
 });
 
-
-app.get('/logout', (req, res) => {
+app.get("/logout", (req, res) => {
   req.session.isLoggedIn = false;
   console.log("logged out");
   res.redirect("/login");
@@ -79,7 +103,14 @@ app.post("/", async (req, res) => {
     req.session.isLoggedIn = true;
     req.session.user = user;
   } else {
-    console.log("Wrong username or password.");
+    req.session.isLoggedIn = false;
+    req.session.errorMessage = "Wrong username or password.";
+    console.log("sdf", req.session.errorMessage);
+
+    // req.session.isLoggedIn = false;
+
+    // res.locals.errorMessage = "Wrong username or password.";
+    // console.log("dsf", res.locals.errorMessage);
   }
   res.redirect("/");
 });
@@ -127,15 +158,15 @@ app.get("/createVan", (req, res) => {
 
 app.get("/createCompany", (req, res) => {
   res.render("createCompany");
-})
+});
 
-app.get("/createUser", (req, res) =>{
+app.get("/createUser", (req, res) => {
   res.render("createUser");
-})
+});
 
-app.get("/createUser", (req, res) =>{
+app.get("/createUser", (req, res) => {
   res.render("createUser");
-})
+});
 
 app.get("/test", (req, res) => {
   res.send("Dette var en god test");
@@ -173,7 +204,7 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
 
   const user = await controller.deleteUser(employeeId);
   res.send(user);
-})
+});
 
 /*
   Når der kommer et put request to denne adresse
@@ -187,12 +218,17 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
 app.put("/products/:productid/amount", async (req, res) => {
   const productId = req.params.productid;
   const action = req.body.action;
+  const newAmount = req.body.newAmount;
+  console.log("hej", newAmount);
 
   if (action === "increase") {
     await controller.adjustProductAmount(productId, 1);
   } else if (action === "decrease") {
     await controller.adjustProductAmount(productId, -1);
+  }else if (action === "edit") {
+    await controller.adjustProductAmount(productId, parseInt(newAmount));
   }
+
   const product = await controller.getProduct(productId);
   res.send(product);
 });
@@ -226,12 +262,12 @@ app.post("/van", async (req, res) => {
 
 //5. step kom tilbage her. Hvad skal den have af paramtre.
 app.post("/user", async (req, res) => {
-  const {name, employeeId, username, password} = req.body;
+  const { name, employeeId, username, password } = req.body;
   const role = req.body.admin || req.body.electrician;
   await controller.createUser(name, employeeId, username, password, role);
-  
-  res.redirect("/admin")
-})
+
+  res.redirect("/admin");
+});
 
 app.post("/company", async (req, res) => {
   await controller.createCompany(

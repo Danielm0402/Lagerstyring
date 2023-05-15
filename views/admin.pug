@@ -11,15 +11,15 @@ body
     a(href="/createVan") 
         button.admin
             i.fa-solid.fa-truck-front
-            span.knap Opret Lagerbil
+            span.knap Opret vogn
         
     a(href="/createUser")
         button.admin
             i.fa-solid.fa-user
-            span.knap Opret Bruger 
+            span.knap Opret bruger 
 
 div
-    h2 Varevogn:
+    h2 Vogne:
         select#dropdown-select-van(name='select-van')
             each van in vans 
                 option(value=option)=van.licensePlate
@@ -31,6 +31,7 @@ div
                 option(value=user.employeeId)=user.name 
         button(type='button' id="delete-user" class='delete-buttons-in-admin-page')
             ion-icon(name="trash-outline")
+
 
 
 

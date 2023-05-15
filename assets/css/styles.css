@@ -47,6 +47,40 @@ body {
 
   }
 
+  .centerText {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    flex-direction: row;
+  }
+
+  
+
+  .headline{
+    display: flex;
+    justify-content: center;
+    margin-top: 1vw;
+  }
+
+  .picture{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    /* margin-left: 100px; */
+  }
+
+  .login {
+    display: flex;
+    margin-top: 1vw;
+    justify-content: center;
+  }
+  
+  .opretfirma-knap {
+    display: flex;
+    justify-content: center;
+    margin-top: 1px;
+    flex-direction: row;
+  }
 
   #button-delete-product {
     
