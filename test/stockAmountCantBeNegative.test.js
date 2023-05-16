@@ -9,7 +9,7 @@ describe("When incrementing lagertal", () => {
   it("Should return correct result", async () => {
     //
 
-    const productID = "1017060812";
+    const productID = "1017059373";
 
     const current = await controller.adjustProductAmount(productID, 0); // ændrer med 0 for at få nuværende værdi
 
