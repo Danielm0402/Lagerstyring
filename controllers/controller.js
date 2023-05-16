@@ -19,18 +19,38 @@ import {
   getUsersFromDb,
   deleteUserFromDb,
   getUser,
+  updateAssignedUserToVan,
+  updateAssignedVanToUser,
+  getUserFromDb,
 } from "../database/Firestore.js";
 import Company from "../models/company.js";
 import User from "../models/user.js";
+import { documentId } from "firebase/firestore";
 
 export default class Controller {
+<<<<<<< HEAD
   async createVan(licensePlate, user) {
     const van = new Van(licensePlate);
     van.user = user;
 
     await addVanToDb(van);
     return van;
+=======
+  async createVan(vanNumber, licensePlate) {
+    const van = new Van(vanNumber, licensePlate);
+    console.log(van)
+    await addVanToDb(van)
+    return van
+>>>>>>> main
   }
+
+  // async createVan(licensePlate, user) {
+  //   const van = new Van(licensePlate, );
+  //   van.user = user;
+
+  //   await addVanToDb(van);
+  //   return van;
+  // }
 
   async createUser(name, employeeId, username, password, role) {
     const user = new User(name, employeeId, username, password, role);
@@ -53,7 +73,7 @@ export default class Controller {
 
   async getVan(licensePlate) {
     const vanData = await getVanFromDb(licensePlate);
-    const v = new Van(vanData.licensePlate, vanData.user, vanData.products);
+    const v = new Van(vanData.vanNumber, vanData.licensePlate);
     return v;
   }
 
@@ -140,6 +160,19 @@ export default class Controller {
     }
     return van;
   }
+
+
+  async updateVan(documentPath, employeeId){
+    const newUser = await getUserFromDb(employeeId)
+    console.log("safdsa updatevan controller", newUser)
+    await updateAssignedUserToVan(documentPath, newUser)
+  }
+
+  async updateUser(documentPath, newVan){
+    await updateAssignedVanToUser(documentPath, newVan)
+  }
+
+
 }
 
 async function test() {

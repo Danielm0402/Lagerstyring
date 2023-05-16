@@ -3,7 +3,8 @@ head
     script(type="module" src="js/indexFunctions.js" defer)
     script().
         const data = {
-            user: !{JSON.stringify(user)}
+            user: !{JSON.stringify(user)},
+            products: !{JSON.stringify(products)},
         }
 
 body    
@@ -23,7 +24,7 @@ body
             option(value='' disabled selected) Vælg vogn
             option(value='', id='option-show-all') Vis alle varer
             each van in vans
-                option(value=van.licensePlate, id=`option-${van.licensePlate}`)=van.number + ' - ' + van.user + ' - ' + van.licensePlate
+                option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.user + ' - ' + van.licensePlate
 
 
     a(href="/createProduct")

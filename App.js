@@ -146,6 +146,12 @@ app.get("/createUser", (req, res) => {
   res.render("createUser");
 });
 
+app.get("/assignUserToVan", async (reg, res) =>{
+  const vans = await controller.getVans();
+  const users = await controller.getUsers();
+  res.render("assignUserToVan", {users: users, vans: vans});
+})
+
 app.get("/test", (req, res) => {
   res.send("Dette var en god test");
   console.log("testestest");
@@ -183,6 +189,24 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
   const user = await controller.deleteUser(employeeId);
   res.send(user);
 });
+
+
+app.put("/updateVan/:licensePlate", async (req, res)=>{
+  const licensePlate = req.body.licensePlate;
+  const employeeId = req.body.employeeId;
+  console.log(licensePlate)
+  console.log(employeeId)
+
+  const updatedVan = await controller.updateVan(licensePlate, employeeId)
+  const updatedUser = await controller.updateUser(employeeId, licensePlate)
+
+
+
+  console.log(licensePlate, employeeId);
+
+  
+
+})
 
 /*
   Når der kommer et put request to denne adresse
@@ -230,14 +254,14 @@ app.post("/product", async (req, res) => {
     unit
   );
   const van = await controller.getVan(licensePlate);
+  console.log(van)
   await controller.addProductToVan(product, van);
 
   res.redirect("/createProduct");
 });
 
 app.post("/van", async (req, res) => {
-  console.log(req.body);
-  await controller.createVan(req.body.licensePlate, req.body.owner);
+  await controller.createVan(req.body.vanNumber ,req.body.licensePlate);
   res.redirect("/admin");
 });
 
@@ -259,8 +283,6 @@ app.post("/company", async (req, res) => {
   );
   res.redirect("/login");
 });
-
-app.post("/product", async (req, res) => {});
 
 app.listen(4000);
 console.log("listening on port 4000");
