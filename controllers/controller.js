@@ -30,9 +30,9 @@ import { documentId } from "firebase/firestore";
 export default class Controller {
   async createVan(vanNumber, licensePlate) {
     const van = new Van(vanNumber, licensePlate);
-    console.log(van)
-    await addVanToDb(van)
-    return van
+    console.log(van);
+    await addVanToDb(van);
+    return van;
   }
 
   // async createVan(licensePlate, user) {
@@ -117,8 +117,12 @@ export default class Controller {
 
   async adjustProductAmount(productId, amount) {
     let productAmount = await getProductAmount(productId);
-    productAmount += amount;
-    await setProductAmount(productId, productAmount)
+    if (productAmount + amount < 0) {
+      productAmount = 0;
+    } else {
+      productAmount += amount;
+    }
+    await setProductAmount(productId, productAmount);
     return productAmount;
   }
 
@@ -145,21 +149,18 @@ export default class Controller {
     if (user.van) {
       van = await getVanFromDb(user.van);
     }
-    return van
+    return van;
   }
 
-
-  async updateVan(documentPath, employeeId){
-    const newUser = await getUserFromDb(employeeId)
-    console.log("safdsa updatevan controller", newUser)
-    await updateAssignedUserToVan(documentPath, newUser)
+  async updateVan(documentPath, employeeId) {
+    const newUser = await getUserFromDb(employeeId);
+    console.log("safdsa updatevan controller", newUser);
+    await updateAssignedUserToVan(documentPath, newUser);
   }
 
-  async updateUser(documentPath, newVan){
-    await updateAssignedVanToUser(documentPath, newVan)
+  async updateUser(documentPath, newVan) {
+    await updateAssignedVanToUser(documentPath, newVan);
   }
-
-
 }
 
 async function test() {
@@ -167,7 +168,7 @@ async function test() {
 
   const users = await controller.getUsers();
   const user = users[1];
-  const van = await controller.getUserVan(user.employeeId)
+  const van = await controller.getUserVan(user.employeeId);
 
   console.log(van);
 }

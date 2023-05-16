@@ -13,11 +13,11 @@ describe("When incrementing lagertal", () => {
 
     const current = await controller.adjustProductAmount(productID, 0); // ændrer med 0 for at få nuværende værdi
 
-    console.log("CURRENT---------------------", current);
+    const amountToChange = -100000;
 
-    const amountToChange = 1;
+    const resultIsNegative = current + amountToChange < 0;
 
-    const expected = current + amountToChange;
+    const expected = resultIsNegative ? 0 : current + amountToChange;
 
     const actual = await controller.adjustProductAmount(
       productID,
