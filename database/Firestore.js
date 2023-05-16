@@ -133,7 +133,7 @@ export async function updateVan(van, ID) {
 
   await updateDoc(docRef, { products: arrayUnion(ID) });
 
-  console.log("van updateerered", van);
+  console.log("van updated", van);
 }
 
 export async function updateAssignedUserToVan(documentId, newUser){
