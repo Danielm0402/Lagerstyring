@@ -131,7 +131,10 @@ export default class Controller {
 
   async getUserVan(employeeId) {
     const user = await getUser(employeeId);
-    const van = await getVanFromDb(user.van);
+    let van = undefined
+    if (user.van.length > 0) {
+      van = await getVanFromDb(user.van);
+    }
     return van
   }
 }
