@@ -75,7 +75,7 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/", async (req, res) => {
-  const username = req.body.username;
+  const username = req.body.username.toLowerCase();
   const password = req.body.password;
 
   const users = await controller.getUsers();
