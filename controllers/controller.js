@@ -44,7 +44,7 @@ export default class Controller {
   // }
 
   async createUser(name, employeeId, username, password, role) {
-    const user = new User(name, employeeId, username, password, role);
+    const user = new User(name, employeeId, username.toLowerCase(), password, role);
     await addUserToDb(user);
     return user;
   }
@@ -142,7 +142,7 @@ export default class Controller {
   async getUserVan(employeeId) {
     const user = await getUser(employeeId);
     let van = undefined
-    if (user.van.length > 0) {
+    if (user.van) {
       van = await getVanFromDb(user.van);
     }
     return van
