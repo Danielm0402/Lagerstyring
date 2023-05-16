@@ -28,20 +28,11 @@ import User from "../models/user.js";
 import { documentId } from "firebase/firestore";
 
 export default class Controller {
-<<<<<<< HEAD
-  async createVan(licensePlate, user) {
-    const van = new Van(licensePlate);
-    van.user = user;
-
-    await addVanToDb(van);
-    return van;
-=======
   async createVan(vanNumber, licensePlate) {
     const van = new Van(vanNumber, licensePlate);
-    console.log(van)
-    await addVanToDb(van)
-    return van
->>>>>>> main
+    console.log(van);
+    await addVanToDb(van);
+    return van;
   }
 
   // async createVan(licensePlate, user) {
@@ -161,18 +152,15 @@ export default class Controller {
     return van;
   }
 
-
-  async updateVan(documentPath, employeeId){
-    const newUser = await getUserFromDb(employeeId)
-    console.log("safdsa updatevan controller", newUser)
-    await updateAssignedUserToVan(documentPath, newUser)
+  async updateVan(documentPath, employeeId) {
+    const newUser = await getUserFromDb(employeeId);
+    console.log("safdsa updatevan controller", newUser);
+    await updateAssignedUserToVan(documentPath, newUser);
   }
 
-  async updateUser(documentPath, newVan){
-    await updateAssignedVanToUser(documentPath, newVan)
+  async updateUser(documentPath, newVan) {
+    await updateAssignedVanToUser(documentPath, newVan);
   }
-
-
 }
 
 async function test() {
