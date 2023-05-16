@@ -8,15 +8,11 @@
 
 export default class Van {
 
-  constructor(vanNumber, licensePlate, user, products) {
+  constructor(vanNumber, licensePlate) {
     this.vanNumber = vanNumber
     this.licensePlate = licensePlate;
-    this.user = ""
+    // this.user = " "
     this.products = []
-    if (user)
-      this.user = user
-    if (products)
-      this.products = products
   }
 
   setUser(user) {
@@ -50,16 +46,9 @@ export default class Van {
         const json = {
             vanNumber: this.vanNumber,
             licensePlate: this.licensePlate,
+            // user: this.user,
             products: this.products.map(p => p.name)
         }
         return json;
     }
-  toJSON() {
-      const json = {
-          licensePlate: this.licensePlate,
-          user: this.user,
-          products: this.products.map(p => p.name)
-      }
-      return json;
   }
-}

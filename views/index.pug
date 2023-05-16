@@ -17,12 +17,12 @@ body
         button 
             span.knap Log ud
 
-        h1 Vogn:
-            select#dropdown-select-van(name='select-van')
-                option(value='' disabled selected) Vælg vogn
-                option(value='', id='option-show-all') Vis alle varer
-                each van in vans
-                    option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.user + ' - ' + van.licensePlate
+    h1 Vogn:
+        select#dropdown-select-van(name='select-van')
+            option(value='' disabled selected) Vælg vogn
+            option(value='', id='option-show-all') Vis alle varer
+            each van in vans
+                option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.user + ' - ' + van.licensePlate
 
 
     a(href="/createProduct")

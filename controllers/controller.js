@@ -31,14 +31,17 @@ export default class Controller {
   async createVan(vanNumber, licensePlate) {
     const van = new Van(vanNumber, licensePlate);
     console.log(van)
-
-  async createVan(licensePlate, user) {
-    const van = new Van(licensePlate, );
-    van.user = user;
-
-    await addVanToDb(van);
-    return van;
+    await addVanToDb(van)
+    return van
   }
+
+  // async createVan(licensePlate, user) {
+  //   const van = new Van(licensePlate, );
+  //   van.user = user;
+
+  //   await addVanToDb(van);
+  //   return van;
+  // }
 
   async createUser(name, employeeId, username, password, role) {
     const user = new User(name, employeeId, username, password, role);
@@ -61,7 +64,7 @@ export default class Controller {
 
   async getVan(licensePlate) {
     const vanData = await getVanFromDb(licensePlate);
-    const v = new Van(vanData.licensePlate, vanData.user, vanData.products);
+    const v = new Van(vanData.vanNumber, vanData.licensePlate);
     return v;
   }
 

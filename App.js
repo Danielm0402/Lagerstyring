@@ -151,8 +151,8 @@ app.get("/createUser", (req, res) => {
 });
 
 app.get("/assignUserToVan", async (reg, res) =>{
-  const vans = await getVansFromDb();
-  const users = await getUsersFromDb();
+  const vans = await controller.getVans();
+  const users = await controller.getUsers();
   res.render("assignUserToVan", {users: users, vans: vans});
 })
 
@@ -253,6 +253,7 @@ app.post("/product", async (req, res) => {
     unit
   );
   const van = await controller.getVan(licensePlate);
+  console.log(van)
   await controller.addProductToVan(product, van);
 
   res.redirect("/createProduct");
@@ -281,8 +282,6 @@ app.post("/company", async (req, res) => {
   );
   res.redirect("/login");
 });
-
-app.post("/product", async (req, res) => {});
 
 app.listen(4000);
 console.log("listening on port 4000");
