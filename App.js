@@ -3,7 +3,6 @@ import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 
-
 const app = express();
 
 const controller = new Controller();
@@ -33,29 +32,27 @@ app.get("/", async (req, res) => {
     let role = "";
     let products = [];
 
-    if (user && user.role === 'electrician') {
+    if (user && user.role === "electrician") {
       const van = await controller.getUserVan(user.employeeId);
       role = user.role;
-      if(van){
+      if (van) {
         products = await controller.getVanProducts(van.licensePlate);
       }
+    } else if (user && user.role === "admin") {
+      role = user.role;
+      products = await controller.getProducts();
+    }
+    const vans = await controller.getVans();
 
-  } else if (user && user.role === "admin") {
-    role = user.role;
-    products = await controller.getProducts();
-  }
-  const vans = await controller.getVans();
-
-  res.render("index", {
-    products: products,
-    user: user,
-    vans: vans,
-    knownUser: isLoggedIn,
-    role: role,
-  });
-
+    res.render("index", {
+      products: products,
+      user: user,
+      vans: vans,
+      knownUser: isLoggedIn,
+      role: role,
+    });
   } else {
-    res.redirect('/login')
+    res.redirect("/login");
   }
 });
 
@@ -66,16 +63,15 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  
-  let errorMessage = null; 
-  
+  let errorMessage = null;
+
   if (req.session.errorMessage) {
     errorMessage = req.session.errorMessage;
     console.log("haysi", errorMessage);
     req.session.errorMessage = null; // Clear the error message after displaying it
   }
 
-  res.render("loginForm", {errorMessage: errorMessage});
+  res.render("loginForm", { errorMessage: errorMessage });
 });
 
 app.post("/", async (req, res) => {
@@ -222,13 +218,16 @@ app.put("/updateVan/:licensePlate", async (req, res)=>{
 app.put("/products/:productid/amount", async (req, res) => {
   const productId = req.params.productid;
   const action = req.body.action;
-  const newAmount = req.body.newAmount;
+  // const newAmount = req.body.newAmount;
+
+  const newAmount = req.body.newAmount ? req.body.newAmount : 0;
+  console.log("hej", newAmount);
 
   if (action === "increase") {
     await controller.adjustProductAmount(productId, 1);
   } else if (action === "decrease") {
     await controller.adjustProductAmount(productId, -1);
-  }else if (action === "edit") {
+  } else if (action === "edit") {
     await controller.adjustProductAmount(productId, parseInt(newAmount));
   }
 
@@ -257,7 +256,7 @@ app.post("/product", async (req, res) => {
   await controller.addProductToVan(product, van);
 
   res.redirect("/createProduct");
-}); 
+});
 
 app.post("/van", async (req, res) => {
   await controller.createVan(req.body.vanNumber ,req.body.licensePlate);

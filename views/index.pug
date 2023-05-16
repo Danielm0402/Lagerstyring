@@ -1,9 +1,11 @@
-include includes/head
-script(type="module" src="js/indexFunctions.js" defer)
-script().
-    const data = {
-        user: !{JSON.stringify(user)}
-    }
+head
+    include includes/head
+    script(type="module" src="js/indexFunctions.js" defer)
+    script().
+        const data = {
+            user: !{JSON.stringify(user)},
+            products: !{JSON.stringify(products)},
+        }
 
 body    
 

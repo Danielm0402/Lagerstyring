@@ -50,7 +50,12 @@ body {
   .centerText {
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    flex-direction: row;
+  }
+
+  .centerTextText {
+    display: flex;
+    justify-content: center;
     flex-direction: row;
   }
 
@@ -66,7 +71,6 @@ body {
     display: flex;
     justify-content: center;
     align-self: center;
-    /* margin-left: 100px; */
   }
 
   .login {
