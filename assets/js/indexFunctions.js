@@ -17,7 +17,6 @@ function deleteProductButton() {
   for (const e of deleteButtonElements) {
     const productId = e.dataset.productid;
     e.addEventListener("click", async () => {
-      console.log("delsnjg");
       const response = await fetch(`/deleteProduct/${productId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
