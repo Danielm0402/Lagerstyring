@@ -219,7 +219,9 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
 app.put("/products/:productid/amount", async (req, res) => {
   const productId = req.params.productid;
   const action = req.body.action;
-  const newAmount = req.body.newAmount;
+  // const newAmount = req.body.newAmount;
+
+  const newAmount = req.body.newAmount ? req.body.newAmount : 0;
   console.log("hej", newAmount);
 
   if (action === "increase") {

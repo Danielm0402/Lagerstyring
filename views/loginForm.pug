@@ -14,9 +14,13 @@ body
             div.login
                 button(type="submit") Login
 
-                if errorMessage
-                    p= errorMessage
+    div.centerTextText
+        if errorMessage
+            p= errorMessage
+
+
     div.opretfirma-knap            
         a(href="/createCompany")
             button(id="create-company")
                 span.knap Opret Firma
+
