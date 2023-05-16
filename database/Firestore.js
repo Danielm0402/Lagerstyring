@@ -172,20 +172,35 @@ export async function getUsersFromDb() {
   return users;
 }
 
-export function updateAssignedUserToVan(documentId, newUser){
-  let docRef = db.firestore().collection("Vans").doc(documentId);
-
-  docRef.update({
-    [user]: newUser
-  })
+export async function getUserFromDb(employeeId){
+  console.log("sakfasg",employeeId)
+  const userDocRef = doc(db, "Users", employeeId);
+  const user = (await getDoc(userDocRef)).data();
+  console.log("æskfa getUser firestore", user)
+  return user.name;
 }
 
-export function updateAssignedVanToUser(documentId, newVan){
-  let docRef = db.firestore().collection("Users").doc(documentId)
+export async function updateAssignedUserToVan(documentId, newUser){
+  // let docRef = firebase.firestore().collection("Vans").doc(documentId);
+  const docRef = doc(db, "Vans", documentId)
+  const updateData = { user: newUser };
 
-  docRef.update({
-    [van]: newVan
-  })
+  await updateDoc(docRef, updateData);
+  // docRef.update({
+  //   "user": newUser
+  // })
+}
+
+export async function updateAssignedVanToUser(documentId, newVan){
+  // let docRef = firebase.firestore().collection("Users").doc(documentId)
+  const docRef = doc(db, "Users", documentId)
+
+  const updateData = { van: newVan };
+
+  await updateDoc(docRef, updateData);
+  // docRef.update({
+  //   "van": newVan
+  // })
 }
 
 

@@ -10,15 +10,18 @@ import {
   addUserToDb,
   updateUser,
   getProductsFromDb,
+  updateAssignedUserToVan,
+  updateAssignedVanToUser,
+  getUserFromDb,
 } from "../database/Firestore.js";
 import Company from "../models/company.js";
 import User from "../models/user.js";
 import { documentId } from "firebase/firestore";
 
 export default class Controller {
-  async createVan(licensePlate) {
-    const van = new Van(licensePlate);
-
+  async createVan(vanNumber, licensePlate) {
+    const van = new Van(vanNumber, licensePlate);
+    console.log(van)
     await addVanToDb(van);
     return van;
   }
@@ -82,12 +85,14 @@ export default class Controller {
   }
 
 
-  async updateVan(documentPath, newUser){
-    await assignUserToVan(documentPath, newUser)
+  async updateVan(documentPath, employeeId){
+    const newUser = await getUserFromDb(employeeId)
+    console.log("safdsa updatevan controller", newUser)
+    await updateAssignedUserToVan(documentPath, newUser)
   }
 
   async updateUser(documentPath, newVan){
-    await assignVanToUser(documentPath, newVan)
+    await updateAssignedVanToUser(documentPath, newVan)
   }
 
 

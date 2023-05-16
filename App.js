@@ -221,8 +221,8 @@ app.put("/updateVan/:licensePlate", async (req, res)=>{
   const licensePlate = req.body.licensePlate;
   const employeeId = req.body.employeeId;
 
-  const updatedVan = await updateAssignedUserToVan(licensePlate, employeeId)
-  const updatedUser = await updateAssignedVanToUser(employeeId, licensePlate)
+  const updatedVan = await controller.updateVan(licensePlate, employeeId)
+  const updatedUser = await controller.updateUser(employeeId, licensePlate)
 
 
 
@@ -282,7 +282,7 @@ app.post("/product/", async (req, res) => {
 });
 
 app.post("/van", async (req, res) => {
-  await controller.createVan(req.body.licensePlate, req.body.owner);
+  await controller.createVan(req.body.vanNumber ,req.body.licensePlate);
   res.redirect("/admin");
 });
 
