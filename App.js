@@ -20,7 +20,7 @@ app.set("view engine", "pug");
 
 //---------------ROUTES-----------------------------------------------------------------------------------------------------------------------------
 
-//---------------GET REQUESTS------------------------------------------------------------------------
+//---------------GET REQUESTS--------------------------------------------------------------------------------------------------------------------
 
 app.get("/", async (req, res) => {
   let isLoggedIn = false;
@@ -56,23 +56,58 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/logout", (req, res) => {
-  req.session.isLoggedIn = false;
-  console.log("logged out");
-  res.redirect("/login");
-});
-
 app.get("/login", (req, res) => {
   let errorMessage = null;
 
   if (req.session.errorMessage) {
     errorMessage = req.session.errorMessage;
-    console.log("haysi", errorMessage);
     req.session.errorMessage = null; // Clear the error message after displaying it
   }
 
   res.render("loginForm", { errorMessage: errorMessage });
 });
+
+app.get("/createCompany", (req, res) => {
+  res.render("createCompany");
+});
+
+app.get("/logout", (req, res) => {
+  req.session.isLoggedIn = false;
+  res.redirect("/login");
+});
+
+app.get("/van/:licenseplate/products", async (req, res) => {
+  const licenseplate = req.params.licenseplate;
+  const vanProducts = await controller.getVanProducts(licenseplate);
+});
+
+app.get("/admin", async (req, res) => {
+  const vans = await controller.getVans();
+  const users = await controller.getUsers();
+  res.render("admin", { vans: vans, users: users });
+});
+
+app.get("/createProduct", async (req, res) => {
+  const vans = await controller.getVans();
+
+  res.render("createProduct", { vans: vans });
+});
+
+app.get("/createVan", (req, res) => {
+  res.render("createVan");
+});
+
+app.get("/createUser", (req, res) => {
+  res.render("createUser");
+});
+
+app.get("/assignUserToVan", async (reg, res) =>{
+  const vans = await controller.getVans();
+  const users = await controller.getUsers();
+  res.render("assignUserToVan", {users: users, vans: vans});
+})
+
+//-------------POST REQUESTs-------------------------------------------------------------------------------------------------------------------
 
 app.post("/", async (req, res) => {
   const username = req.body.username;
@@ -93,25 +128,14 @@ app.post("/", async (req, res) => {
   res.redirect("/");
 });
 
-// opens /createProduct form to create a form
-app.get("/createProduct", async (req, res) => {
-  const vans = await controller.getVans();
-
-  res.render("createProduct", { vans: vans });
-});
-
-// app.get("/createProduct/:licenseplate", async (req, res) => {
-//   const licensePlate = req.params.licenseplate;
-//   console.log("lasfk", licensePlate);
-//   const van = await controller.getVan(licensePlate);
-//   res.render("createProduct", { van: van });
-// });
-
-//3. step---------------------------------------
-app.get("/admin", async (req, res) => {
-  const vans = await controller.getVans();
-  const users = await controller.getUsers();
-  res.render("admin", { vans: vans, users: users });
+app.post("/company", async (req, res) => {
+  await controller.createCompany(
+    req.body.companyName,
+    req.body.cvrNr,
+    req.body.contactPersonName,
+    req.body.contactPersonNumber
+  );
+  res.redirect("/login");
 });
 
 app.post("/van/:licensePlate/products", async (req, res) => {
@@ -120,63 +144,54 @@ app.post("/van/:licensePlate/products", async (req, res) => {
   res.send(vanProducts);
 });
 
+//hvor bruges denne?
 app.post("/products", async (req, res) => {
   const productIds = req.body.productIds;
-  console.log(req.body.productIds);
 });
 
-app.get("/van/:licenseplate/products", async (req, res) => {
-  const licenseplate = req.params.licenseplate;
-  const vanProducts = await controller.getVanProducts(licenseplate);
+app.post("/product", async (req, res) => {
+  const productName = req.body["input-name"];
+  const productId = req.body["input-produkt-id"];
+  const amount = parseInt(req.body["input-amount"]);
+  const unit = req.body["dropdown-unit"];
+  const licensePlate = req.body["select-van"];
+
+  const product = await controller.createProduct(
+    productName,
+    productId,
+    amount,
+    unit
+  );
+  const van = await controller.getVan(licensePlate);
+  await controller.addProductToVan(product, van);
+
+  res.redirect("/createProduct");
 });
 
-app.get("/createVan", (req, res) => {
-  res.render("createVan");
+app.post("/van", async (req, res) => {
+  await controller.createVan(req.body.vanNumber ,req.body.licensePlate);
+  res.redirect("/admin");
 });
 
-app.get("/createCompany", (req, res) => {
-  res.render("createCompany");
-});
+app.post("/user", async (req, res) => {
+  const { name, employeeId, username, password } = req.body;
+  const role = req.body.admin || req.body.electrician;
+  await controller.createUser(name, employeeId, username, password, role);
 
-app.get("/createUser", (req, res) => {
-  res.render("createUser");
-});
-
-app.get("/createUser", (req, res) => {
-  res.render("createUser");
-});
-
-app.get("/assignUserToVan", async (reg, res) =>{
-  const vans = await controller.getVans();
-  const users = await controller.getUsers();
-  res.render("assignUserToVan", {users: users, vans: vans});
-})
-
-app.get("/test", (req, res) => {
-  res.send("Dette var en god test");
-  console.log("testestest");
-});
-
-app.get("/deleteVan", (req, res) => {
-  res.render("deleteVan");
+  res.redirect("/admin");
 });
 
 //--------------PUT REQUESTS--------------------------------------------------------------------------------------------------
 
-// delete Product from database
 app.put("/deleteProduct/:productid", async (req, res) => {
   const productId = req.params.productid;
-
-  console.log("afasdg ", productId);
 
   const product = await controller.deleteProduct(productId);
   res.send(product);
 });
 
 app.put("/deleteVan/:licensePlate", async (req, res) => {
-  // const licensePlate = req.params.licensePlate;
   const licensePlate = req.params.licensePlate;
-  console.log("afasdg ", licensePlate);
 
   const van = await controller.deleteVan(licensePlate);
   res.send(van);
@@ -184,12 +199,10 @@ app.put("/deleteVan/:licensePlate", async (req, res) => {
 
 app.put("/deleteUser/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
-  console.log("delete User", employeeId);
 
   const user = await controller.deleteUser(employeeId);
   res.send(user);
 });
-
 
 app.put("/updateVan/:licensePlate", async (req, res)=>{
   const licensePlate = req.body.licensePlate;
@@ -197,13 +210,6 @@ app.put("/updateVan/:licensePlate", async (req, res)=>{
 
   const updatedVan = await controller.updateVan(licensePlate, employeeId)
   const updatedUser = await controller.updateUser(employeeId, licensePlate)
-
-
-
-  console.log(licensePlate, employeeId);
-
-  
-
 })
 
 /*
@@ -221,7 +227,6 @@ app.put("/products/:productid/amount", async (req, res) => {
   // const newAmount = req.body.newAmount;
 
   const newAmount = req.body.newAmount ? req.body.newAmount : 0;
-  console.log("hej", newAmount);
 
   if (action === "increase") {
     await controller.adjustProductAmount(productId, 1);
@@ -235,52 +240,7 @@ app.put("/products/:productid/amount", async (req, res) => {
   res.send(product);
 });
 
-//----------POST REQUEST--------------------------------------------------------------------------
-
-app.post("/product", async (req, res) => {
-  const productName = req.body["input-name"];
-  const productId = req.body["input-produkt-id"];
-  const amount = parseInt(req.body["input-amount"]);
-  const unit = req.body["dropdown-unit"];
-  const licensePlate = req.body["select-van"];
-  console.log("nummerplade: ", licensePlate);
-
-  const product = await controller.createProduct(
-    productName,
-    productId,
-    amount,
-    unit
-  );
-  const van = await controller.getVan(licensePlate);
-  console.log(van)
-  await controller.addProductToVan(product, van);
-
-  res.redirect("/createProduct");
-});
-
-app.post("/van", async (req, res) => {
-  await controller.createVan(req.body.vanNumber ,req.body.licensePlate);
-  res.redirect("/admin");
-});
-
-//5. step kom tilbage her. Hvad skal den have af paramtre.
-app.post("/user", async (req, res) => {
-  const { name, employeeId, username, password } = req.body;
-  const role = req.body.admin || req.body.electrician;
-  await controller.createUser(name, employeeId, username, password, role);
-
-  res.redirect("/admin");
-});
-
-app.post("/company", async (req, res) => {
-  await controller.createCompany(
-    req.body.companyName,
-    req.body.cvrNr,
-    req.body.contactPersonName,
-    req.body.contactPersonNumber
-  );
-  res.redirect("/login");
-});
+//-----------------------------------------------------------------------------------------------------------------------------------------
 
 app.listen(4000);
 console.log("listening on port 4000");

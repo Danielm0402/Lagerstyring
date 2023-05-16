@@ -25,41 +25,61 @@ import {
 } from "../database/Firestore.js";
 import Company from "../models/company.js";
 import User from "../models/user.js";
-import { documentId } from "firebase/firestore";
 
 export default class Controller {
-  async createVan(vanNumber, licensePlate) {
-    const van = new Van(vanNumber, licensePlate);
-    console.log(van)
-    await addVanToDb(van)
-    return van
+
+  //--------------------Company-------------------------------------------------------------------------------------------------------------------
+  async createCompany(name, cvr, contactpersonName, contactpersonNumber) {
+    const company = new Company(
+      name,
+      cvr,
+      contactpersonName,
+      contactpersonNumber
+    );
+
+    await addCompanyToDb(company);
+    return company;
   }
 
-  // async createVan(licensePlate, user) {
-  //   const van = new Van(licensePlate, );
-  //   van.user = user;
-
-  //   await addVanToDb(van);
-  //   return van;
-  // }
-
-  async createUser(name, employeeId, username, password, role) {
-    const user = new User(name, employeeId, username, password, role);
-    await addUserToDb(user);
-    return user;
-  }
-
-  async addUserToVan(user, van) {
-    van.addUser(user);
-    user.addVan(van);
-    await updateVan(van);
-    await updateUser(user);
-  }
+  //--------------------Products-----------------------------------------------------------------------------------------------------------------
 
   async createProduct(name, productID, amount, unit) {
     const product = new Product(name, productID, amount, unit);
     await addProductToDb(product);
     return product;
+  }
+
+  async getProduct(productId) {
+    const product = getProductFromDb(productId);
+    return product;
+  }
+
+  async getProducts() {
+    const products = await getProductsFromDb();
+    return products;
+  }
+
+  async getProductAmount(productId) {
+    return await getProductAmount(productId);
+  }
+
+  async adjustProductAmount(productId, amount) {
+    let productAmount = await getProductAmount(productId);
+    productAmount += amount;
+    await setProductAmount(productId, productAmount)
+    return productAmount;
+  }
+
+  async deleteProduct(productId) {
+    await deleteProductFromDb(productId);
+  }
+
+  //--------------------Vans-------------------------------------------------------------------------------------------------------------------------
+
+  async createVan(vanNumber, licensePlate) {
+    const van = new Van(vanNumber, licensePlate);
+    await addVanToDb(van)
+    return van
   }
 
   async getVan(licensePlate) {
@@ -73,30 +93,8 @@ export default class Controller {
     return vansData;
   }
 
-  async createCompany(name, cvr, contactpersonName, contactpersonNumber) {
-    const company = new Company(
-      name,
-      cvr,
-      contactpersonName,
-      contactpersonNumber
-    );
-
-    await addCompanyToDb(company);
-    return company;
-  }
-
-  async getProducts() {
-    const products = await getProductsFromDb();
-    return products;
-  }
-
-  async getProduct(productId) {
-    const product = getProductFromDb(productId);
-    return product;
-  }
-
-  async deleteProduct(productId) {
-    await deleteProductFromDb(productId);
+  async addProductToVan(product, van) {
+    await updateVan(van, product.productId);
   }
 
   async getVanProducts(licensePlate) {
@@ -111,32 +109,26 @@ export default class Controller {
     return vanProducts;
   }
 
-  async addProductToVan(product, van) {
-    await updateVan(van, product.productId);
-  }
-
-  async adjustProductAmount(productId, amount) {
-    let productAmount = await getProductAmount(productId);
-    productAmount += amount;
-    await setProductAmount(productId, productAmount)
-    return productAmount;
-  }
-
-  async getProductAmount(productId) {
-    return await getProductAmount(productId);
+  async updateVan(documentPath, employeeId){
+    const newUser = await getUserFromDb(employeeId)
+    await updateAssignedUserToVan(documentPath, newUser)
   }
 
   async deleteVan(licensePlate) {
     await deleteVanFromDb(licensePlate);
   }
 
+  //--------------------Users------------------------------------------------------------------------------------------------------------------------
+
+  async createUser(name, employeeId, username, password, role) {
+    const user = new User(name, employeeId, username, password, role);
+    await addUserToDb(user);
+    return user;
+  }
+
   async getUsers() {
     const usersData = await getUsersFromDb();
     return usersData;
-  }
-
-  async deleteUser(employeeId) {
-    await deleteUserFromDb(employeeId);
   }
 
   async getUserVan(employeeId) {
@@ -148,17 +140,13 @@ export default class Controller {
     return van
   }
 
-
-  async updateVan(documentPath, employeeId){
-    const newUser = await getUserFromDb(employeeId)
-    console.log("safdsa updatevan controller", newUser)
-    await updateAssignedUserToVan(documentPath, newUser)
-  }
-
   async updateUser(documentPath, newVan){
     await updateAssignedVanToUser(documentPath, newVan)
   }
 
+  async deleteUser(employeeId) {
+    await deleteUserFromDb(employeeId);
+  }
 
 }
 
