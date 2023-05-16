@@ -3,13 +3,15 @@ import { updateAmountToProduct } from "../database/Firestore.js";
 
 import { assert } from "chai";
 
-let x = () => {
+let x = async () => {
   describe("When incrementing lagertal", () => {
-    it("Should return correct result", () => {
+    it("Should return correct result", async () => {
       //
       const currentNumber = updateAmountToProduct(0, 50); // 0 is amount, 50 is productNumber
 
-      const result = updateAmountToProduct(1, 50);
+      // const result = await updateAmountToProduct(1, 50);
+
+      console.log("result ", currentNumber);
 
       const expected = currentNumber + 1;
 
