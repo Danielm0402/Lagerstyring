@@ -24,9 +24,8 @@ import Company from "../models/company.js";
 import User from "../models/user.js";
 
 export default class Controller {
-
   async createVan(licensePlate, user) {
-    const van = new Van(licensePlate, );
+    const van = new Van(licensePlate);
     van.user = user;
 
     await addVanToDb(van);
@@ -107,8 +106,12 @@ export default class Controller {
 
   async adjustProductAmount(productId, amount) {
     let productAmount = await getProductAmount(productId);
-    productAmount += amount;
-    await setProductAmount(productId, productAmount)
+    if (productAmount + amount < 0) {
+      productAmount = 0;
+    } else {
+      productAmount += amount;
+    }
+    await setProductAmount(productId, productAmount);
     return productAmount;
   }
 
@@ -131,11 +134,11 @@ export default class Controller {
 
   async getUserVan(employeeId) {
     const user = await getUser(employeeId);
-    let van = undefined
+    let van = undefined;
     if (user.van.length > 0) {
       van = await getVanFromDb(user.van);
     }
-    return van
+    return van;
   }
 }
 
@@ -144,7 +147,7 @@ async function test() {
 
   const users = await controller.getUsers();
   const user = users[1];
-  const van = await controller.getUserVan(user.employeeId)
+  const van = await controller.getUserVan(user.employeeId);
 
   console.log(van);
 }
