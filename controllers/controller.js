@@ -65,8 +65,12 @@ export default class Controller {
 
   async adjustProductAmount(productId, amount) {
     let productAmount = await getProductAmount(productId);
-    productAmount += amount;
-    await setProductAmount(productId, productAmount)
+    if (productAmount + amount < 0) {
+      productAmount = 0;
+    } else {
+      productAmount += amount;
+    }
+    await setProductAmount(productId, productAmount);
     return productAmount;
   }
 
