@@ -134,10 +134,10 @@ export default class Controller {
   async getUserVan(employeeId) {
     const user = await getUser(employeeId);
     let van = undefined
-    if (user.van.length > 0) {
+    if (user.van) {
       van = await getVanFromDb(user.van);
     }
-    return van
+    return van;
   }
 
   async updateUser(documentPath, newVan){
@@ -155,7 +155,7 @@ async function test() {
 
   const users = await controller.getUsers();
   const user = users[1];
-  const van = await controller.getUserVan(user.employeeId)
+  const van = await controller.getUserVan(user.employeeId);
 
   console.log(van);
 }
