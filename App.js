@@ -194,6 +194,8 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
 app.put("/updateVan/:licensePlate", async (req, res)=>{
   const licensePlate = req.body.licensePlate;
   const employeeId = req.body.employeeId;
+  console.log(licensePlate)
+  console.log(employeeId)
 
   const updatedVan = await controller.updateVan(licensePlate, employeeId)
   const updatedUser = await controller.updateUser(employeeId, licensePlate)
