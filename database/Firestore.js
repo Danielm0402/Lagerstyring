@@ -149,7 +149,8 @@ export async function updateVan(van, ID) {
 
 export async function updateAssignedUserToVan(documentId, newUserName, newUserEmployeeId){
   const docRef = doc(db, "Vans", documentId)
-  const updateData = { userName: newUserName, userEmployeeId: newUser};
+
+  const updateData = { userName: newUserName, userEmployeeId: newUserEmployeeId};
 
   await updateDoc(docRef, updateData);
 }
