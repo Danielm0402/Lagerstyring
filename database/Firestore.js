@@ -85,9 +85,25 @@ export async function updateAmountToProduct(amount, productId) {
   await updateDoc(docRef, { amount: amount });
 }
 
+<<<<<<< Updated upstream
 export async function deleteProductFromDb(productId) {
   // delete product from database where products productID === productId
+=======
+export async function deleteProductFromDb(productId, licensePlate) {
+>>>>>>> Stashed changes
   const productRef = doc(productCollectionRef, productId);
+  const vanRef = doc(vanCollectionRef, licensePlate)
+  const vanDoc = await getDoc(vanRef)
+  const vanData = vanDoc.data()
+  
+  const index = vanData.products.indexOf(productId)
+  
+  if(index !== -1){
+    vanData.products.splice(index, 1)
+
+    await updateDoc(vanRef, {products: vanData.products})
+  }
+
   await deleteDoc(productRef);
   console.log("Deleted product: ", productId);
 }
@@ -136,10 +152,14 @@ export async function updateVan(van, ID) {
   console.log("van updateerered", van);
 }
 
+<<<<<<< Updated upstream
 export async function updateAssignedUserToVan(documentId, newUser){
   // let docRef = firebase.firestore().collection("Vans").doc(documentId);
+=======
+export async function updateAssignedUserToVan(documentId, newUserName, newUserEmployeeId){
+>>>>>>> Stashed changes
   const docRef = doc(db, "Vans", documentId)
-  const updateData = { user: newUser };
+  const updateData = { userName: newUserName, userEmployeeId: newUser};
 
   await updateDoc(docRef, updateData);
   // docRef.update({
