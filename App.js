@@ -2,6 +2,7 @@ import Controller from "./controllers/controller.js";
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
+import { collectionGroup } from "firebase/firestore";
 
 const app = express();
 
@@ -165,8 +166,8 @@ app.post("/product", async (req, res) => {
 });
 
 app.post("/van", async (req, res) => {
-  await controller.createVan(req.body.vanNumber ,req.body.licensePlate);
-  res.redirect("/admin")
+  await controller.createVan(req.body.vanNumber, req.body.licensePlate);
+  res.redirect("/admin");
 });
 
 app.post("/user", async (req, res) => {
@@ -180,10 +181,9 @@ app.post("/user", async (req, res) => {
 
 app.put("/deleteProduct/:productid", async (req, res) => {
   const productId = req.params.productid;
-  const productObject = await controller.getProduct(productId)
-  const licensePlate = productObject.licensePlate
-  console.log(licensePlate)
-
+  const productObject = await controller.getProduct(productId);
+  const licensePlate = productObject.licensePlate;
+  console.log(licensePlate);
 
   const product = await controller.deleteProduct(productId, licensePlate);
   res.send(product);
@@ -191,20 +191,23 @@ app.put("/deleteProduct/:productid", async (req, res) => {
 
 app.put("/deleteVan/:licensePlate", async (req, res) => {
   const licensePlate = req.params.licensePlate;
-  const vanData = await controller.getVan(licensePlate)
-  const vanEmployeeId = vanData.userEmployeeId
-  const emptyVan = ""
-  await controller.updateUser(vanEmployeeId, emptyVan)
+  console.log("licenseplate", licensePlate);
+  const vanData = await controller.getVan(licensePlate);
+  if (vanData.userEmployeeId) {
+    const vanEmployeeId = vanData.userEmployeeId;
+    const emptyVan = "";
+    await controller.updateUser(vanEmployeeId, emptyVan);
+  }
   const van = await controller.deleteVan(licensePlate);
   res.send(van);
 });
 
 app.put("/deleteUser/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
-  const employeeVan = await controller.getUserVan(employeeId)
-  const vanLicensePlate = employeeVan.licensePlate
-  const emptyVan = ""
-  await controller.updateVan(vanLicensePlate, emptyVan)
+  const employeeVan = await controller.getUserVan(employeeId);
+  const vanLicensePlate = employeeVan.licensePlate;
+  const emptyVan = "";
+  await controller.updateVan(vanLicensePlate, emptyVan);
   const user = await controller.deleteUser(employeeId);
   res.send(user);
 });
@@ -212,8 +215,8 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
 app.put("/updateVan/:licensePlate", async (req, res) => {
   const licensePlate = req.body.licensePlate;
   const employeeId = req.body.employeeId;
-  console.log("licensePlate", licensePlate)
-  console.log("employeeId", employeeId)
+  console.log("licensePlate", licensePlate);
+  console.log("employeeId", employeeId);
 
   const updatedVan = await controller.updateVan(licensePlate, employeeId);
   const updatedUser = await controller.updateUser(employeeId, licensePlate);
