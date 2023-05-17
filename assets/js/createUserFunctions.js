@@ -25,7 +25,7 @@ function createUserButton() {
 
     const name = nameInputElement.value;
     const employeeId = employeeIdInputElement.value;
-    const username = usernameInputElement.value;
+    const username = usernameInputElement.value.toLowerCase();
     const password = passwordInputElement.value;
     const repeatPassword = repeatPasswordInputElement.value;
     const role = getSelectedRole();
@@ -95,8 +95,6 @@ function containsDigits(string) {
 }
 
 async function employeeIdInUse(employeeId) {
-
-  console.log("Checking employeeId...")
   let inUse = false;
 
   if (employeeId.length > 0) {
@@ -115,7 +113,6 @@ async function employeeIdInUse(employeeId) {
 }
 
 async function usernameInUse(username) {
-  console.log("Checking username...")
   let inUse = false;
 
   if (username.length > 0) {
