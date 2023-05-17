@@ -5,22 +5,24 @@ function createVanButton() {
   const errVanNrElement = document.getElementById("p-err-van-nr");
   const errLicensePlateElement = document.getElementById("p-err-licensePlate");
 
-  const errNotANr = "Forkert input: Vognnummer skal være et tal.";
+  const errNotANr = "Forkert input: Vognnummer må ikke indholde bogstaver";
   const errNot7Chars =
     "Forkert input: Registreringsnummer skal være 7 karakterer.";
   const errNotCorrectFormat =
     "Forkert input: Registreringsnummer er ikke i korrekt format.";
+  const errVanNumberInSystem = "Vognnummeret er allerede registreret i systemet";
+  const errLicensePlateInSystem = "Registreringsnummeret er allerede i systemet";
 
   createVanButtonElement.addEventListener("click", async () => {
     //.split().join() er for at fjerne alle mellemrum i inputtet
     let inputError = false;
-    const nrInputValue = parseInt(nrInputElement.value.trim());
-    const lpInputValue = lpInputElement.value.split(" ").join("").toLowerCase();
+    const nrInputValue = nrInputElement.value.trim();
+    const lpInputValue = lpInputElement.value.split(" ").join("").toUpperCase();
 
     errVanNrElement.innerText = "";
     errLicensePlateElement.innerText = "";
 
-    if (isNaN(nrInputValue)) {
+    if (containLetters(nrInputValue)) {
       errVanNrElement.innerText += errNotANr + "\n";
       inputError = true;
     }
@@ -30,6 +32,15 @@ function createVanButton() {
     }
     if (!checkLicensePlate(lpInputValue)) {
       errLicensePlateElement.innerText += errNotCorrectFormat + "\n";
+      inputError = true;
+    }
+
+    if (( await vanNumberInSystem(nrInputElement.value) )) {
+      errVanNrElement.innerText += errVanNumberInSystem + "\n";
+      inputError = true;
+    }
+    if (( await licensePlateInSystem( formatLicensePlate(lpInputValue) ) )) {
+      errLicensePlateElement.innerText += errLicensePlateInSystem + "\n";
       inputError = true;
     }
 
@@ -46,9 +57,52 @@ function createVanButton() {
   });
 }
 
+async function licensePlateInSystem(licensePlate) {
+  let inSystem = false;
+
+  console.log(licensePlate)
+
+  if (licensePlate.length > 0) {
+    const response = await fetch(`/vans/licenseplate/${licensePlate}`, {
+      method: "GET"
+    });
+
+    const json = await response.json();
+
+    if (json.van) {
+      inSystem = true;
+    }
+  }
+
+  return inSystem
+}
+
+async function vanNumberInSystem(vanNumber) {
+  let inSystem = false;
+
+  if (vanNumber.length > 0) {
+    const response = await fetch(`/vans/vanNumber/${vanNumber}`, {
+      method: "GET"
+    });
+
+    const json = await response.json();
+    console.log(json)
+
+    if (json.van) {
+      inSystem = true;
+    }
+  }
+
+  return inSystem;
+}
+
+function containLetters(string) {
+  return string.toLowerCase().match(/[a-å]/)
+}
+
 function checkLicensePlate(licensePlate) {
   const lpSplits = splitLicensePlate(licensePlate);
-  const regExLetters = /^[a-z]+$/;
+  const regExLetters = /^[A-Z]+$/;
   const regExDigits = /^[0-9]+$/;
   /*
     regular expression

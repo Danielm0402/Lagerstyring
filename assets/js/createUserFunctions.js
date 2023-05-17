@@ -153,6 +153,8 @@ function emptyFields() {
   return empty;
 }
 
+
+
 function radioIsSelected() {
   const radioButtons = document.getElementsByClassName('radio-user-role')
 

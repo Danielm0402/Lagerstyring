@@ -77,6 +77,22 @@ app.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
+app.get("/vans/licenseplate/:licensePlate", async (req, res) => {
+  const vans = await controller.getVans();
+  const licensePlate = req.params.licensePlate;
+
+  const van = vans.find((v) => v.licensePlate.toUpperCase() === licensePlate.toUpperCase());
+  res.send({van})
+})
+
+app.get("/vans/vannumber/:vanNumber", async (req, res) => {
+  const vans = await controller.getVans();
+  const vanNumber = req.params.vanNumber;
+
+  const van = vans.find((v) => v.vanNumber === vanNumber);
+  res.send({van})
+})
+
 app.get("/van/:licenseplate/products", async (req, res) => {
   const licenseplate = req.params.licenseplate;
   const vanProducts = await controller.getVanProducts(licenseplate);
@@ -182,7 +198,7 @@ app.post("/product", async (req, res) => {
 });
 
 app.post("/van", async (req, res) => {
-  await controller.createVan(req.body.vanNumber, req.body.licensePlate);
+  // await controller.createVan(req.body.vanNumber, req.body.licensePlate);
   res.redirect("/admin");
 });
 
