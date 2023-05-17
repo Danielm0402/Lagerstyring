@@ -6,31 +6,51 @@ body
             i.fa-sharp.fa-solid.fa-left-long
             span.knap Tilbage
 
-    form(action='/product', method='post')
+    form(id='product-form', action='/product', method='post')
 
         div#div-createProduct
-        div
-            h2 Opret produkt
-        div
-            label(for="input-name") Produkt navn:
-            input.inputtag(type="text" name="input-name")
+            div
+                h2 Opret produkt
+            div
+                label(for="input-name") Produkt navn:
+                input.inputtag(type="text" name="input-name")
 
-            label(for="input-produkt-id") Varenummer: 
-            input.inputtag(type="text" name="input-produkt-id")
+                label(for="input-produkt-id") Varenummer: 
+                input.inputtag(type="text" name="input-produkt-id")
 
-            label(for="input-amount") Mængde: 
-            input.inputtag(type="text" name="input-amount")
+                label(for="input-amount") Mængde: 
+                input.inputtag(type="text" name="input-amount")
 
-            label(for="dropdown-unit") Enhed: 
-            select(name="dropdown-unit")
-                each option in ['stk', 'm']
-                    option(value = option)= option
+                label(for="dropdown-unit") Enhed: 
+                select(name="dropdown-unit")
+                    each option in ['stk', 'm']
+                        option(value=option)= option
 
 
-            label(for='select-van') Vælg bil: 
-            select#dropdown-select-van(name='select-van')
-                each van in vans
-                    option(value=option, id=`option-${van.licensePlate}`)=van.licensePlate
+                label(for='select-van') Vælg bil: 
+                select#dropdown-select-van(name='select-van')
+                    each van in vans
+                        option(value=option, id=`option-${van.licensePlate}`)= van.licensePlate
 
-        button(id="create-product-btn" class="button-create" type="submit") 
-            <i class="fa-solid fa-box-open"></i>Opret vare
+            button#create-product-btn.button-create(type="submit") 
+                i.fa-solid.fa-box-open
+                | Opret vare
+
+    script.
+        const form = document.getElementById('product-form');
+        form.addEventListener('submit', validateForm);
+
+        function validateForm(event) {
+            event.preventDefault();
+
+            const productName = document.querySelector('input[name="input-name"]').value;
+            const productID = document.querySelector('input[name="input-produkt-id"]').value;
+            const amount = document.querySelector('input[name="input-amount"]').value;
+
+            if (productName.trim() === '' || productID.trim() === '' || amount.trim() === '') {
+                alert('Udfyld venligst alle felter.');
+                return;
+            }
+
+            form.submit();
+        }

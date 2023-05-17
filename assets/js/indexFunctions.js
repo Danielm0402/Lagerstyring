@@ -1,4 +1,4 @@
-let appData = ""
+let appData = "";
 if (data) {
   appData = data;
 }
@@ -17,7 +17,7 @@ function deleteProductButton() {
       productboksediv.remove();
     });
   }
-}  
+}
 
 // ----------- INCREASE/DECREASE PRODUCT AMOUNT -------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ function plusMinButtons() {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: btnAction }),
-          }); 
+          });
         }
         const json = await response.json();
 
@@ -115,6 +115,10 @@ function updateHtmlProducts(products) {
   const productContainerElement = document.getElementById("container-products");
 
   productContainerElement.innerHTML = "";
+  if (products.length === 0) {
+    productContainerElement.innerHTML +=
+      "<br><p> Der er ingen varer på denne vogn </p>";
+  }
   for (const product of products) {
     productContainerElement.innerHTML += `  
         <div class="product-container">
@@ -153,15 +157,14 @@ function lockVans() {
     const dropDownElement = document.getElementById("dropdown-select-van");
     const options = dropDownElement.options;
 
-    for(let i = 0; i < options.length; i++) {
+    for (let i = 0; i < options.length; i++) {
       let id = options[i].id.split("-")[1];
-      if(id === userVan) {
+      if (id === userVan) {
         dropDownElement.selectedIndex = i;
       } else {
-        options[i].disabled = "true"
+        options[i].disabled = "true";
       }
     }
-
 
     // for (const o of options) {
     //   let id = o.id.split("-")[1];
