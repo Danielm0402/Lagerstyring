@@ -28,7 +28,7 @@ body
             each van in vans
 
                 if (van.user)
-                    option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.user + ' - ' + van.licensePlate
+                    option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.userName + ' - ' + van.licensePlate
                 else 
                     option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.licensePlate
 
