@@ -1,31 +1,31 @@
-
-
 function createVanButton() {
-  const createVanButtonElement = document.getElementById('button-create-van');
-  const nrInputElement = document.getElementById('input-van-nr');
-  const lpInputElement = document.getElementById('input-licensePlate');
-  const errVanNrElement = document.getElementById('p-err-van-nr');
-  const errLicensePlateElement = document.getElementById('p-err-licensePlate')
+  const createVanButtonElement = document.getElementById("button-create-van");
+  const nrInputElement = document.getElementById("input-van-nr");
+  const lpInputElement = document.getElementById("input-licensePlate");
+  const errVanNrElement = document.getElementById("p-err-van-nr");
+  const errLicensePlateElement = document.getElementById("p-err-licensePlate");
 
-  const errNotANr = "Forkert input: Vognnummer skal være et tal."
-  const errNot7Chars = "Forkert input: Registreringsnummer skal være 7 karakterer."
-  const errNotCorrectFormat = "Forkert input: Registreringsnummer er ikke i korrekt format."
+  const errNotANr = "Forkert input: Vognnummer skal være et tal.";
+  const errNot7Chars =
+    "Forkert input: Registreringsnummer skal være 7 karakterer.";
+  const errNotCorrectFormat =
+    "Forkert input: Registreringsnummer er ikke i korrekt format.";
 
-  createVanButtonElement.addEventListener("click", () => {
+  createVanButtonElement.addEventListener("click", async () => {
     //.split().join() er for at fjerne alle mellemrum i inputtet
     let inputError = false;
     const nrInputValue = parseInt(nrInputElement.value.trim());
-    const lpInputValue = lpInputElement.value.split(' ').join('').toLowerCase();
+    const lpInputValue = lpInputElement.value.split(" ").join("").toLowerCase();
 
-    errVanNrElement.innerText = ""
-    errLicensePlateElement.innerText = ""
-    
+    errVanNrElement.innerText = "";
+    errLicensePlateElement.innerText = "";
+
     if (isNaN(nrInputValue)) {
-      errVanNrElement.innerText += errNotANr + "\n"
+      errVanNrElement.innerText += errNotANr + "\n";
       inputError = true;
     }
     if (lpInputValue.length !== 7) {
-      errLicensePlateElement.innerText += errNot7Chars + "\n"
+      errLicensePlateElement.innerText += errNot7Chars + "\n";
       inputError = true;
     }
     if (!checkLicensePlate(lpInputValue)) {
@@ -37,22 +37,19 @@ function createVanButton() {
       const licensePlate = formatLicensePlate(lpInputValue);
       const vanNr = nrInputValue;
 
-
-      fetch('/van', {
+      await fetch("/van", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({licensePlate: licensePlate, vanNumber: vanNr})
-      })
+        body: JSON.stringify({ licensePlate: licensePlate, vanNumber: vanNr }),
+      });
     }
-  })
-
+  });
 }
-
 
 function checkLicensePlate(licensePlate) {
   const lpSplits = splitLicensePlate(licensePlate);
-  const regExLetters = /^[a-z]+$/
-  const regExDigits = /^[0-9]+$/
+  const regExLetters = /^[a-z]+$/;
+  const regExDigits = /^[0-9]+$/;
   /*
     regular expression
     /^[a-z]+$/
@@ -63,10 +60,11 @@ function checkLicensePlate(licensePlate) {
     når ^ og $ bliver brugt sammen betyder det at hele strengen skal matche udtrykket
     + - betyder at strengen kan være længere end 1
   */
-  if (  !(regExLetters.test(lpSplits[0])) 
-        || !(regExDigits.test(lpSplits[1]))
-        || !(regExDigits.test(lpSplits[2])) ){
-
+  if (
+    !regExLetters.test(lpSplits[0]) ||
+    !regExDigits.test(lpSplits[1]) ||
+    !regExDigits.test(lpSplits[2])
+  ) {
     return false;
   }
 
@@ -74,7 +72,7 @@ function checkLicensePlate(licensePlate) {
 }
 
 function splitLicensePlate(licensePlate) {
-  let splits = []
+  let splits = [];
 
   const letters = licensePlate.substring(0, 2);
   const firstDigits = licensePlate.substring(2, 5);
@@ -90,7 +88,7 @@ function splitLicensePlate(licensePlate) {
 function formatLicensePlate(licensePlate) {
   const splits = splitLicensePlate(licensePlate);
 
-  const formattetLicensePlate = splits.join(' ')
+  const formattetLicensePlate = splits.join(" ");
   return formattetLicensePlate;
 }
 
@@ -98,4 +96,4 @@ function initFunctions() {
   createVanButton();
 }
 
-initFunctions()
+initFunctions();

@@ -43,8 +43,8 @@ export default class Controller {
 
   //--------------------Products-----------------------------------------------------------------------------------------------------------------
 
-  async createProduct(name, productID, amount, unit) {
-    const product = new Product(name, productID, amount, unit);
+  async createProduct(name, productID, amount, unit, licensePlate) {
+    const product = new Product(name, productID, amount, unit, licensePlate);
     await addProductToDb(product);
     return product;
   }
@@ -74,8 +74,8 @@ export default class Controller {
     return productAmount;
   }
 
-  async deleteProduct(productId) {
-    await deleteProductFromDb(productId);
+  async deleteProduct(productId, licensePlate) {
+    await deleteProductFromDb(productId, licensePlate);
   }
 
   //--------------------Vans-------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ export default class Controller {
   async getVan(licensePlate) {
     const vanData = await getVanFromDb(licensePlate);
     const v = new Van(vanData.vanNumber, vanData.licensePlate);
-    return v;
+    return vanData;
   }
 
   async getVans() {
@@ -114,8 +114,12 @@ export default class Controller {
   }
 
   async updateVan(documentPath, employeeId){
-    const newUser = await getUserFromDb(employeeId)
-    await updateAssignedUserToVan(documentPath, newUser)
+    let newUserName = employeeId
+    const newUserEmployeeId = employeeId
+    if(!employeeId == ""){
+      newUserName = await getUserFromDb(employeeId)
+    }
+    await updateAssignedUserToVan(documentPath, newUserName, newUserEmployeeId)
   }
 
   async deleteVan(licensePlate) {

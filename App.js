@@ -2,6 +2,7 @@ import Controller from "./controllers/controller.js";
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
+import { collectionGroup } from "firebase/firestore";
 
 const app = express();
 
@@ -117,11 +118,11 @@ app.get("/createUser", (req, res) => {
   res.render("createUser");
 });
 
-app.get("/assignUserToVan", async (reg, res) =>{
+app.get("/assignUserToVan", async (reg, res) => {
   const vans = await controller.getVans();
   const users = await controller.getUsers();
-  res.render("assignUserToVan", {users: users, vans: vans});
-})
+  res.render("assignUserToVan", { users: users, vans: vans });
+});
 
 //-------------POST REQUESTs-------------------------------------------------------------------------------------------------------------------
 
@@ -160,11 +161,6 @@ app.post("/van/:licensePlate/products", async (req, res) => {
   res.send(vanProducts);
 });
 
-//hvor bruges denne?
-app.post("/products", async (req, res) => {
-  const productIds = req.body.productIds;
-});
-
 app.post("/product", async (req, res) => {
   const productName = req.body["input-name"];
   const productId = req.body["input-produkt-id"];
@@ -176,7 +172,8 @@ app.post("/product", async (req, res) => {
     productName,
     productId,
     amount,
-    unit
+    unit,
+    licensePlate
   );
   const van = await controller.getVan(licensePlate);
   await controller.addProductToVan(product, van);
@@ -185,7 +182,7 @@ app.post("/product", async (req, res) => {
 });
 
 app.post("/van", async (req, res) => {
-  await controller.createVan(req.body.vanNumber ,req.body.licensePlate);
+  await controller.createVan(req.body.vanNumber, req.body.licensePlate);
   res.redirect("/admin");
 });
 
@@ -200,32 +197,46 @@ app.post("/user", async (req, res) => {
 
 app.put("/deleteProduct/:productid", async (req, res) => {
   const productId = req.params.productid;
+  const productObject = await controller.getProduct(productId);
+  const licensePlate = productObject.licensePlate;
+  console.log(licensePlate);
 
-  const product = await controller.deleteProduct(productId);
+  const product = await controller.deleteProduct(productId, licensePlate);
   res.send(product);
 });
 
 app.put("/deleteVan/:licensePlate", async (req, res) => {
   const licensePlate = req.params.licensePlate;
-
+  console.log("licenseplate", licensePlate);
+  const vanData = await controller.getVan(licensePlate);
+  if (vanData.userEmployeeId) {
+    const vanEmployeeId = vanData.userEmployeeId;
+    const emptyVan = "";
+    await controller.updateUser(vanEmployeeId, emptyVan);
+  }
   const van = await controller.deleteVan(licensePlate);
   res.send(van);
 });
 
 app.put("/deleteUser/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
-
+  const employeeVan = await controller.getUserVan(employeeId);
+  const vanLicensePlate = employeeVan.licensePlate;
+  const emptyVan = "";
+  await controller.updateVan(vanLicensePlate, emptyVan);
   const user = await controller.deleteUser(employeeId);
   res.send(user);
 });
 
-app.put("/updateVan/:licensePlate", async (req, res)=>{
+app.put("/updateVan/:licensePlate", async (req, res) => {
   const licensePlate = req.body.licensePlate;
   const employeeId = req.body.employeeId;
+  console.log("licensePlate", licensePlate);
+  console.log("employeeId", employeeId);
 
-  const updatedVan = await controller.updateVan(licensePlate, employeeId)
-  const updatedUser = await controller.updateUser(employeeId, licensePlate)
-})
+  const updatedVan = await controller.updateVan(licensePlate, employeeId);
+  const updatedUser = await controller.updateUser(employeeId, licensePlate);
+});
 
 /*
   Når der kommer et put request to denne adresse

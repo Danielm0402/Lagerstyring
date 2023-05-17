@@ -12,11 +12,13 @@ body
     if role == 'admin'
         a(href="/admin")
             button.admin
-                i.fa-solid.fa-lock
+                i.i.fa-solid.fa-screwdriver-wrench
                 span.knap Admin
 
     a(href="/logout")
         button 
+
+            i.fa-solid.fa-unlock
             span.knap Log ud
 
     h1 Vogn:
@@ -24,8 +26,11 @@ body
             option(value='' disabled selected) Vælg vogn
             option(value='', id='option-show-all') Vis alle varer
             each van in vans
-                option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.user + ' - ' + van.licensePlate
 
+                if (van.userName)
+                    option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.userName + ' - ' + van.licensePlate
+                else 
+                    option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.licensePlate
 
     a(href="/createProduct")
         button.addProduct
