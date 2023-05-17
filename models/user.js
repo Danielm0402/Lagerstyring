@@ -1,11 +1,11 @@
 export default class User {
-  constructor(name, employeeId, username, password, role, van) {
+  constructor(name, employeeId, username, password, role) {
     this.name = name;
     this.employeeId = employeeId;
     this.username = username;
     this.password = password;
     this.role = role;
-    this.van = van ? van : null;
+    // this.van = van ? van : null;
   }
 
   addVan(newVan) {
@@ -27,7 +27,7 @@ export default class User {
       username: this.username,
       password: this.password,
       role: this.role,
-      van: this.van,
+      // van: this.van,
     };
     return json;
   }

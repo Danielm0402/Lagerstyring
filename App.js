@@ -170,8 +170,7 @@ app.post("/van", async (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
-  const { name, employeeId, username, password } = req.body;
-  const role = req.body.admin || req.body.electrician;
+  const { name, employeeId, username, password, role } = req.body;
   await controller.createUser(name, employeeId, username, password, role);
 
   res.redirect("/admin");
