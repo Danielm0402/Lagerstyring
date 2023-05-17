@@ -101,11 +101,11 @@ app.get("/createUser", (req, res) => {
   res.render("createUser");
 });
 
-app.get("/assignUserToVan", async (reg, res) =>{
+app.get("/assignUserToVan", async (reg, res) => {
   const vans = await controller.getVans();
   const users = await controller.getUsers();
-  res.render("assignUserToVan", {users: users, vans: vans});
-})
+  res.render("assignUserToVan", { users: users, vans: vans });
+});
 
 //-------------POST REQUESTs-------------------------------------------------------------------------------------------------------------------
 
@@ -169,8 +169,9 @@ app.post("/product", async (req, res) => {
 });
 
 app.post("/van", async (req, res) => {
-  await controller.createVan(req.body.vanNumber ,req.body.licensePlate);
-  res.redirect("/admin");
+  await controller.createVan(req.body.vanNumber, req.body.licensePlate);
+
+  res.redirect("/createVan");
 });
 
 app.post("/user", async (req, res) => {
@@ -204,13 +205,13 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
   res.send(user);
 });
 
-app.put("/updateVan/:licensePlate", async (req, res)=>{
+app.put("/updateVan/:licensePlate", async (req, res) => {
   const licensePlate = req.body.licensePlate;
   const employeeId = req.body.employeeId;
 
-  const updatedVan = await controller.updateVan(licensePlate, employeeId)
-  const updatedUser = await controller.updateUser(employeeId, licensePlate)
-})
+  const updatedVan = await controller.updateVan(licensePlate, employeeId);
+  const updatedUser = await controller.updateUser(employeeId, licensePlate);
+});
 
 /*
   Når der kommer et put request to denne adresse

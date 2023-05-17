@@ -1,7 +1,4 @@
-let appData = ""
-=======
 let appData = "";
->>>>>>> Stashed changes
 if (data) {
   appData = data;
 }
