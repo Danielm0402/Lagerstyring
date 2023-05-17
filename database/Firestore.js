@@ -86,7 +86,6 @@ export async function updateAmountToProduct(amount, productId) {
 }
 
 export async function deleteProductFromDb(productId) {
-  // delete product from database where products productID === productId
   const productRef = doc(productCollectionRef, productId);
   await deleteDoc(productRef);
   console.log("Deleted product: ", productId);
@@ -137,18 +136,13 @@ export async function updateVan(van, ID) {
 }
 
 export async function updateAssignedUserToVan(documentId, newUser){
-  // let docRef = firebase.firestore().collection("Vans").doc(documentId);
   const docRef = doc(db, "Vans", documentId)
   const updateData = { user: newUser };
 
   await updateDoc(docRef, updateData);
-  // docRef.update({
-  //   "user": newUser
-  // })
 }
 
 export async function deleteVanFromDb(licensePlate) {
-  // delete van from database where van.licensePlate === licensePlate
   const vanRef = doc(vanCollectionRef, licensePlate);
   await deleteDoc(vanRef);
   console.log("Van deleted: ", licensePlate);
@@ -212,7 +206,6 @@ export async function getUserVan(employeeId) {
 }
 
 export async function deleteUserFromDb(employeeId){
-  // delete user from database where user.employeeId === employeeId
   const userRef = doc(userCollectionRef, employeeId);
   await deleteDoc(userRef);
   console.log("user deleted: ", employeeId)
