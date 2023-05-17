@@ -177,6 +177,8 @@ body {
   #radio-buttons label {
     display: inline-block;
     margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #radio-buttons input[type="radio"] {
@@ -185,5 +187,7 @@ body {
     margin-right: 5px;
 }
 
-
+.createCompany-knap{
+    margin-top: 10px;
+}
 

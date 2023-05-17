@@ -144,7 +144,7 @@ export async function updateVan(van, ID) {
 
   await updateDoc(docRef, { products: arrayUnion(ID) });
 
-  console.log("van updateerered", van);
+  console.log("van updated", van);
 }
 
 export async function updateAssignedUserToVan(documentId, newUserName, newUserEmployeeId){
@@ -218,7 +218,6 @@ export async function getUserVan(employeeId) {
 }
 
 export async function deleteUserFromDb(employeeId){
-  // delete user from database where user.employeeId === employeeId
   const userRef = doc(userCollectionRef, employeeId);
   await deleteDoc(userRef);
   console.log("user deleted: ", employeeId)
