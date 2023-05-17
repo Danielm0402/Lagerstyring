@@ -1,19 +1,9 @@
-<<<<<<< Updated upstream
-document.getElementById("addButton");
-
 let appData = ""
 =======
 let appData = "";
 >>>>>>> Stashed changes
 if (data) {
   appData = data;
-}
-
-function x() {
-  const addButton = document.getElementById("addButton");
-  addButton.addEventListener("click", () => {
-    console.log("Hej");
-  });
 }
 
 function deleteProductButton() {

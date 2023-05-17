@@ -28,78 +28,25 @@ const firebaseConfig = {
 const firebase_app = initializeApp(firebaseConfig);
 const db = getFirestore(firebase_app);
 
+//--------------------Collections------------------------------------------------------------------------------------------------------------------------
+
 const productCollectionRef = collection(db, "Products");
 const vanCollectionRef = collection(db, "Vans");
 const userCollectionRef = collection(db, "Users");
 const companiesCollectionRef = collection(db, "Companies");
-const adminCollectionRef = collection(db, "Admins");
 
-export async function getProductsFromDb() {
-  let productQueryDocs = await getDocs(productCollectionRef);
-  let products = productQueryDocs.docs.map((doc) => {
-    let data = doc.data();
-    data.productId = doc.id;
-    return data;
-  });
-  return products;
-} 
- 
-export async function updateUser(user) {
-  const docRef = doc(db, "Users", user.employeeId)
-
-  await updateDoc(docRef, user.toJSON())
-}
-
-export async function updateVan(van, ID) {
-  const docRef = doc(db, "Vans", van.licensePlate);
-
-  await updateDoc(docRef, { products: arrayUnion(ID) });
-
-  console.log("van updateerered", van);
-}
-
-export async function addUserToDb(user) {
-  const docRef = doc(db, "Users", user.employeeId);
-  await setDoc(docRef, user.toJSON())
-  console.log("User created: ", user)
-}
-
-export async function addVanToDb(van) {
-  const docRef = doc(db, "Vans", van.licensePlate);
-  await setDoc(docRef, van.toJSON());
-  console.log("Van created: ", van)
-}
-
-export async function addProductToDb(product) {
-  const docRef = doc(db, "Products", product.productId);
-  await setDoc(docRef, product.toJSON());
-  console.log("firestore log");
-}
+//--------------------Company------------------------------------------------------------------------------------------------------------------------
 
 export async function addCompanyToDb(company) {
   const docRef = doc(db, "Companies", company.cvr);
   await setDoc(docRef, company.toJSON());
 }
 
-export async function deleteProductFromDb(productId) {
-  // delete product from database where products productID === productId
-  const productRef = doc(productCollectionRef, productId);
-  await deleteDoc(productRef);
-  console.log("Deleted product: ", productId);
-}
+//--------------------Products------------------------------------------------------------------------------------------------------------------------
 
-export async function deleteVanFromDb(licensePlate) {
-  // delete van from database where van.licensePlate === licensePlate
-  const vanRef = doc(vanCollectionRef, licensePlate);
-  await deleteDoc(vanRef);
-  console.log("Van deleted: ", licensePlate);
-}
-
-export async function deleteUserFromDb(employeeId){
-  // delete user from database where user.employeeId === employeeId
-  const userRef = doc(userCollectionRef, employeeId);
-  await deleteDoc(userRef);
-  console.log("user deleted: ", employeeId)
+export async function addProductToDb(product) {
+  const docRef = doc(db, "Products", product.productId);
+  await setDoc(docRef, product.toJSON());
 }
 
 export async function getProductFromDb(productId) {
@@ -111,6 +58,21 @@ export async function getProductFromDb(productId) {
   return products[0];
 }
 
+export async function getProductsFromDb() {
+  let productQueryDocs = await getDocs(productCollectionRef);
+  let products = productQueryDocs.docs.map((doc) => {
+    let data = doc.data();
+    data.productId = doc.id;
+    return data;
+  });
+  return products;
+} 
+
+export async function setProductAmount(productId, amount) {
+  const docRef = doc(db, "Products", productId);
+  await updateDoc(docRef, {amount: amount});
+}
+
 export async function getProductAmount(productId) {
   const docRef = doc(db, "Products", productId);
   const document = await getDoc(docRef);
@@ -118,14 +80,23 @@ export async function getProductAmount(productId) {
   return data.amount;
 }
 
-export async function setProductAmount(productId, amount) {
-  const docRef = doc(db, "Products", productId);
-  await updateDoc(docRef, {amount: amount});
-}
-
 export async function updateAmountToProduct(amount, productId) {
   const docRef = doc(db, "Products", productId);
   await updateDoc(docRef, { amount: amount });
+}
+
+export async function deleteProductFromDb(productId) {
+  const productRef = doc(productCollectionRef, productId);
+  await deleteDoc(productRef);
+  console.log("Deleted product: ", productId);
+}
+
+//--------------------Vans------------------------------------------------------------------------------------------------------------------------
+
+export async function addVanToDb(van) {
+  const docRef = doc(db, "Vans", van.licensePlate);
+  await setDoc(docRef, van.toJSON());
+  console.log("Van created: ", van)
 }
 
 export async function getVanFromDb(licensePlate) {
@@ -145,31 +116,56 @@ export async function getVansFromDb() {
   return vans;
 }
 
-export async function getUserVan(employeeId) {
-  console.log("jordbærtærte", employeeId)
-  const userDocRef = doc(db, "Users", employeeId);
-  const user = (await getDoc(userDocRef)).data();
-  console.log("drømmekage", user)
-  if(user.van){
-    console.log("kajkage", user.van)
-    const vanLicensePlate = user.van;
-    const vanDocRef = doc(db, "Vans", vanLicensePlate);
-    const van = (await getDoc(vanDocRef)).data();
-    return van
-  }
-  
-  return false;
+export async function getVanProducts(licensePlate) {
+  const vanDocRef = doc(db, "Vans", licensePlate);
+  const van = (await getDoc(vanDocRef)).data();
+  const productIds = van.products;
+
+  const allProducts = await getProductsFromDb();
+  const vanProducts = allProducts.filter(p => productIds.includes(p.productId))
+
+return vanProducts;
 }
 
-export async function getVanProducts(licensePlate) {
-    const vanDocRef = doc(db, "Vans", licensePlate);
-    const van = (await getDoc(vanDocRef)).data();
-    const productIds = van.products;
+export async function updateVan(van, ID) {
+  const docRef = doc(db, "Vans", van.licensePlate);
 
-    const allProducts = await getProductsFromDb();
-    const vanProducts = allProducts.filter(p => productIds.includes(p.productId))
+  await updateDoc(docRef, { products: arrayUnion(ID) });
 
-  return vanProducts;
+  console.log("van updated", van);
+}
+
+export async function updateAssignedUserToVan(documentId, newUser){
+  const docRef = doc(db, "Vans", documentId)
+  const updateData = { user: newUser };
+
+  await updateDoc(docRef, updateData);
+}
+
+export async function deleteVanFromDb(licensePlate) {
+  const vanRef = doc(vanCollectionRef, licensePlate);
+  await deleteDoc(vanRef);
+  console.log("Van deleted: ", licensePlate);
+}
+
+//--------------------Users------------------------------------------------------------------------------------------------------------------------
+
+export async function addUserToDb(user) {
+  const docRef = doc(db, "Users", user.employeeId);
+  await setDoc(docRef, user.toJSON())
+  console.log("User created: ", user)
+}
+
+export async function getUser(employeeId) {
+  const userDocRef = doc(db, "Users", employeeId);
+  const userDoc = await getDoc(userDocRef);
+  return userDoc.data();
+}
+
+export async function getUserFromDb(employeeId){
+  const userDocRef = doc(db, "Users", employeeId);
+  const user = (await getDoc(userDocRef)).data();
+  return user.name;
 }
 
 export async function getUsersFromDb() {
@@ -181,44 +177,41 @@ export async function getUsersFromDb() {
   });
   return users;
 }
+ 
+export async function updateUser(user) {
+  const docRef = doc(db, "Users", user.employeeId)
 
-export async function getUserFromDb(employeeId){
-  console.log("sakfasg",employeeId)
-  const userDocRef = doc(db, "Users", employeeId);
-  const user = (await getDoc(userDocRef)).data();
-  console.log("æskfa getUser firestore", user)
-  return user.name;
-}
-
-export async function updateAssignedUserToVan(documentId, newUser){
-  // let docRef = firebase.firestore().collection("Vans").doc(documentId);
-  const docRef = doc(db, "Vans", documentId)
-  const updateData = { user: newUser };
-
-  await updateDoc(docRef, updateData);
-  // docRef.update({
-  //   "user": newUser
-  // })
+  await updateDoc(docRef, user.toJSON())
 }
 
 export async function updateAssignedVanToUser(documentId, newVan){
-  // let docRef = firebase.firestore().collection("Users").doc(documentId)
   const docRef = doc(db, "Users", documentId)
 
   const updateData = { van: newVan };
 
   await updateDoc(docRef, updateData);
-  // docRef.update({
-  //   "van": newVan
-  // })
 }
 
-
-export async function getUser(employeeId) {
+export async function getUserVan(employeeId) {
   const userDocRef = doc(db, "Users", employeeId);
-  const userDoc = await getDoc(userDocRef);
-  return userDoc.data();
+  const user = (await getDoc(userDocRef)).data();
+  if(user.van){
+    const vanLicensePlate = user.van;
+    const vanDocRef = doc(db, "Vans", vanLicensePlate);
+    const van = (await getDoc(vanDocRef)).data();
+    return van
+  }
+  
+  return false;
 }
+
+export async function deleteUserFromDb(employeeId){
+  const userRef = doc(userCollectionRef, employeeId);
+  await deleteDoc(userRef);
+  console.log("user deleted: ", employeeId)
+}
+
+//----------test
 
 async function test() {
   const products = await getProductsFromDb();
