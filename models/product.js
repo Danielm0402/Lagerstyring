@@ -4,11 +4,12 @@
 */
 
 export default class Product {
-    constructor(name, productId, amount, unit) {
+    constructor(name, productId, amount, unit, licensePlate) {
         this.name = name
         this.productId = productId
         this.amount = amount
         this.unit = unit
+        this.licensePlate = licensePlate
     }
 
     toJSON() {
@@ -17,6 +18,7 @@ export default class Product {
             productId: this.productId,
             amount: this.amount,
             unit: this.unit,
+            licensePlate: this.licensePlate,
         }
         return json;
     }

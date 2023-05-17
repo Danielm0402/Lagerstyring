@@ -144,11 +144,6 @@ app.post("/van/:licensePlate/products", async (req, res) => {
   res.send(vanProducts);
 });
 
-//hvor bruges denne?
-app.post("/products", async (req, res) => {
-  const productIds = req.body.productIds;
-});
-
 app.post("/product", async (req, res) => {
   const productName = req.body["input-name"];
   const productId = req.body["input-produkt-id"];
@@ -160,7 +155,8 @@ app.post("/product", async (req, res) => {
     productName,
     productId,
     amount,
-    unit
+    unit,
+    licensePlate
   );
   const van = await controller.getVan(licensePlate);
   await controller.addProductToVan(product, van);
@@ -174,8 +170,7 @@ app.post("/van", async (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
-  const { name, employeeId, username, password } = req.body;
-  const role = req.body.admin || req.body.electrician;
+  const { name, employeeId, username, password, role } = req.body;
   await controller.createUser(name, employeeId, username, password, role);
 
   res.redirect("/admin");
@@ -185,21 +180,31 @@ app.post("/user", async (req, res) => {
 
 app.put("/deleteProduct/:productid", async (req, res) => {
   const productId = req.params.productid;
+  const productObject = await controller.getProduct(productId)
+  const licensePlate = productObject.licensePlate
+  console.log(licensePlate)
 
-  const product = await controller.deleteProduct(productId);
+
+  const product = await controller.deleteProduct(productId, licensePlate);
   res.send(product);
 });
 
 app.put("/deleteVan/:licensePlate", async (req, res) => {
   const licensePlate = req.params.licensePlate;
-
+  const vanData = await controller.getVan(licensePlate)
+  const vanEmployeeId = vanData.userEmployeeId
+  const emptyVan = ""
+  await controller.updateUser(vanEmployeeId, emptyVan)
   const van = await controller.deleteVan(licensePlate);
   res.send(van);
 });
 
 app.put("/deleteUser/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
-
+  const employeeVan = await controller.getUserVan(employeeId)
+  const vanLicensePlate = employeeVan.licensePlate
+  const emptyVan = ""
+  await controller.updateVan(vanLicensePlate, emptyVan)
   const user = await controller.deleteUser(employeeId);
   res.send(user);
 });
