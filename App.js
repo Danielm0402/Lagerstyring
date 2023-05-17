@@ -81,6 +81,22 @@ app.get("/van/:licenseplate/products", async (req, res) => {
   const vanProducts = await controller.getVanProducts(licenseplate);
 });
 
+app.get("/users/employeeid/:employeeId", async (req, res) => {
+  const users = await controller.getUsers();
+  const employeeId = req.params.employeeId;
+
+  const user = users.find((u) => u.employeeId === employeeId);
+  res.send({user})
+})
+
+app.get("/users/username/:username", async (req, res) => {
+  const users = await controller.getUsers();
+  const username = req.params.username;
+
+  const user = users.find((u) => u.username === username);
+  res.send({user});
+})
+
 app.get("/admin", async (req, res) => {
   const vans = await controller.getVans();
   const users = await controller.getUsers();
@@ -174,10 +190,9 @@ app.post("/van", async (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
-  const { name, employeeId, username, password } = req.body;
-  const role = req.body.admin || req.body.electrician;
+  const { name, employeeId, username, password, role } = req.body;
+  
   await controller.createUser(name, employeeId, username, password, role);
-
   res.redirect("/admin");
 });
 

@@ -41,7 +41,7 @@ function createVanButton() {
       fetch('/van', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({"licensePlate": licensePlate, "vanNumber": vanNr})
+        body: JSON.stringify({licensePlate: licensePlate, vanNumber: vanNr})
       })
     }
   })
