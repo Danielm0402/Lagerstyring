@@ -12,10 +12,10 @@ body
         div
             h2 Opret vogn
         div 
+            label(for="input-vanNumber") Vogn nummer: 
+            input.input-vanOwner(type="text" name="vanNumber")
+
             label(for="input-licensePlate") Registreringsnummer:
             input.input-vanLicensePlate(type="text" name="licensePlate")
-
-            label(for="input-vanOwner") Bil ejer:
-            input.input-vanOwner(type="text" name="owner")
 
         button(id="create-van-btn" class="button-create" type="submit") Opret vogn

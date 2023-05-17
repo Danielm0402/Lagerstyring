@@ -12,14 +12,13 @@ body
             input(type="text", name="username")
 
             label(for="password") Adgangskode:
-            input(type="text", name="password")
+            input(type="password", name="password")
             div.login
                 button(type="submit") Login
 
     div.centerTextText
         if errorMessage
             p= errorMessage
-
 
     div.opretfirma-knap            
         a(href="/createCompany")

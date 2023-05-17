@@ -9,13 +9,15 @@ describe("When incrementing lagertal", () => {
   it("Should return correct result", async () => {
     //
 
-    const productID = "1017060812";
+    const productID = "1017059098";
 
     const current = await controller.adjustProductAmount(productID, 0); // ændrer med 0 for at få nuværende værdi
 
-    const amountToChange = 1;
+    const amountToChange = -1;
 
-    const expected = current + amountToChange;
+    const resultIsNegative = current + amountToChange < 0;
+
+    const expected = resultIsNegative ? 0 : current + amountToChange;
 
     const actual = await controller.adjustProductAmount(
       productID,

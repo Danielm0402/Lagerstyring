@@ -20,6 +20,10 @@ body
             i.fa-solid.fa-user
             span.knap Opret bruger 
 
+    a(href="/assignUserToVan")
+        button.admin 
+            span.knap Tilknyt medarbejder til vogn
+
 div
     h2 Vogne:
         select#dropdown-select-van(name='select-van')
@@ -33,7 +37,6 @@ div
                 option(value=user.employeeId)=user.name 
         button(type='button' id="delete-user" class='delete-buttons-in-admin-page')
             ion-icon(name="trash-outline")
-
 
 
 

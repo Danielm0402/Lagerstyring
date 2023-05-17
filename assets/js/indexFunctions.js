@@ -1,15 +1,6 @@
-document.getElementById("addButton");
-
 let appData = ""
 if (data) {
   appData = data;
-}
-
-function x() {
-  const addButton = document.getElementById("addButton");
-  addButton.addEventListener("click", () => {
-    console.log("Hej");
-  });
 }
 
 function deleteProductButton() {
@@ -17,7 +8,6 @@ function deleteProductButton() {
   for (const e of deleteButtonElements) {
     const productId = e.dataset.productid;
     e.addEventListener("click", async () => {
-      console.log("delsnjg");
       const response = await fetch(`/deleteProduct/${productId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -78,7 +68,7 @@ function plusMinButtons() {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: btnAction }),
-          });
+          }); 
         }
         const json = await response.json();
 
@@ -163,16 +153,24 @@ function lockVans() {
     const dropDownElement = document.getElementById("dropdown-select-van");
     const options = dropDownElement.options;
 
-    for (const o of options) {
-      let id = o.id.split("-")[1];
-      console.log(o);
-      if (!(id === userVan)) {
-        o.disabled = "true";
-        o.selected = "false";
+    for(let i = 0; i < options.length; i++) {
+      let id = options[i].id.split("-")[1];
+      if(id === userVan) {
+        dropDownElement.selectedIndex = i;
       } else {
-        o.selected = "true";
+        options[i].disabled = "true"
       }
     }
+
+
+    // for (const o of options) {
+    //   let id = o.id.split("-")[1];
+    //   if (id === userVan) {
+    //     o.selected = "true";
+    //   } else {
+    //     o.disabled = "true";
+    //   }
+    // }
   }
 }
 
