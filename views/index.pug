@@ -27,7 +27,7 @@ body
             option(value='', id='option-show-all') Vis alle varer
             each van in vans
 
-                if (van.user)
+                if (van.userName)
                     option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.userName + ' - ' + van.licensePlate
                 else 
                     option(value=van.licensePlate, id=`option-${van.licensePlate}`)='Vogn ' + van.vanNumber + ' - ' + van.licensePlate
