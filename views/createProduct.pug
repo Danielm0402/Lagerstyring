@@ -1,4 +1,10 @@
-include includes/head
+head
+    include includes/head
+    script(type="module" src="js/createProductFunctions.js" defer)
+    script().
+        const data = {
+            user: !{JSON.stringify(user)},
+        }
 
 body
     a.knap(href='/')
@@ -26,7 +32,6 @@ body
                     each option in ['stk', 'm']
                         option(value=option)= option
 
-
                 label(for='select-van') Vælg bil: 
                 select#dropdown-select-van(name='select-van')
                     each van in vans
@@ -35,22 +40,3 @@ body
             button#create-product-btn.button-create(type="submit") 
                 i.fa-solid.fa-box-open
                 | Opret vare
-
-    script.
-        const form = document.getElementById('product-form');
-        form.addEventListener('submit', validateForm);
-
-        function validateForm(event) {
-            event.preventDefault();
-
-            const productName = document.querySelector('input[name="input-name"]').value;
-            const productID = document.querySelector('input[name="input-produkt-id"]').value;
-            const amount = document.querySelector('input[name="input-amount"]').value;
-
-            if (productName.trim() === '' || productID.trim() === '' || amount.trim() === '') {
-                alert('Udfyld venligst alle felter.');
-                return;
-            }
-
-            form.submit();
-        }

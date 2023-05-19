@@ -81,17 +81,19 @@ app.get("/vans/licenseplate/:licensePlate", async (req, res) => {
   const vans = await controller.getVans();
   const licensePlate = req.params.licensePlate;
 
-  const van = vans.find((v) => v.licensePlate.toUpperCase() === licensePlate.toUpperCase());
-  res.send({van})
-})
+  const van = vans.find(
+    (v) => v.licensePlate.toUpperCase() === licensePlate.toUpperCase()
+  );
+  res.send({ van });
+});
 
 app.get("/vans/vannumber/:vanNumber", async (req, res) => {
   const vans = await controller.getVans();
   const vanNumber = req.params.vanNumber;
 
   const van = vans.find((v) => v.vanNumber === vanNumber);
-  res.send({van})
-})
+  res.send({ van });
+});
 
 app.get("/van/:licenseplate/products", async (req, res) => {
   const licenseplate = req.params.licenseplate;
@@ -103,16 +105,16 @@ app.get("/users/employeeid/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
 
   const user = users.find((u) => u.employeeId === employeeId);
-  res.send({user})
-})
+  res.send({ user });
+});
 
 app.get("/users/username/:username", async (req, res) => {
   const users = await controller.getUsers();
   const username = req.params.username;
 
   const user = users.find((u) => u.username === username);
-  res.send({user});
-})
+  res.send({ user });
+});
 
 app.get("/admin", async (req, res) => {
   const vans = await controller.getVans();
@@ -123,7 +125,15 @@ app.get("/admin", async (req, res) => {
 app.get("/createProduct", async (req, res) => {
   const vans = await controller.getVans();
 
-  res.render("createProduct", { vans: vans });
+  const user = req.session.user && req.session.user;
+
+  let userVan = null;
+  if (user) {
+    userVan = await controller.getUserVan(user.employeeId);
+  }
+  // const userVan = await controller.getUserVan(user.employeeId);
+
+  res.render("createProduct", { vans: vans, user: user, userVan: userVan });
 });
 
 app.get("/createVan", (req, res) => {
@@ -204,7 +214,7 @@ app.post("/van", async (req, res) => {
 
 app.post("/user", async (req, res) => {
   const { name, employeeId, username, password, role } = req.body;
-  
+
   await controller.createUser(name, employeeId, username, password, role);
   res.redirect("/admin");
 });
