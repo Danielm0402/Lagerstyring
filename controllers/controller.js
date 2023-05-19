@@ -116,6 +116,15 @@ export default class Controller {
   async updateVan(documentPath, employeeId){
     let newUserName = employeeId
     const newUserEmployeeId = employeeId
+
+    const van = await getVanFromDb(documentPath)
+    const currentVanEmployeeId = van.userEmployeeId
+
+    if(currentVanEmployeeId != newUserEmployeeId && currentVanEmployeeId != undefined){
+      const emptyVan = ""
+      await updateAssignedVanToUser(currentVanEmployeeId, emptyVan)
+    }
+
     if(!employeeId == ""){
       newUserName = await getUserFromDb(employeeId)
     }
@@ -149,6 +158,15 @@ export default class Controller {
   }
 
   async updateUser(documentPath, newVan){
+    const user = await getUser(documentPath)
+    const currentUserVan = user.van
+
+    if(currentUserVan != newVan && currentUserVan != undefined){
+      const emptyUser = ""
+      const emptyUserEmployeeId = ""
+      await updateAssignedUserToVan(currentUserVan, emptyUser, emptyUserEmployeeId)
+    }
+
     await updateAssignedVanToUser(documentPath, newVan)
   }
 
@@ -158,14 +176,3 @@ export default class Controller {
 
 }
 
-async function test() {
-  const controller = new Controller();
-
-  const users = await controller.getUsers();
-  const user = users[1];
-  const van = await controller.getUserVan(user.employeeId);
-
-  console.log(van);
-}
-
-// test();

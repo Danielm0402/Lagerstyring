@@ -198,7 +198,7 @@ app.post("/product", async (req, res) => {
 });
 
 app.post("/van", async (req, res) => {
-  // await controller.createVan(req.body.vanNumber, req.body.licensePlate);
+  await controller.createVan(req.body.vanNumber, req.body.licensePlate);
   res.redirect("/admin");
 });
 
@@ -238,8 +238,8 @@ app.put("/deleteUser/:employeeId", async (req, res) => {
   const employeeId = req.params.employeeId;
   const employeeVan = await controller.getUserVan(employeeId);
   const vanLicensePlate = employeeVan.licensePlate;
-  const emptyVan = "";
-  await controller.updateVan(vanLicensePlate, emptyVan);
+  const emptyUser = "";
+  await controller.updateVan(vanLicensePlate, emptyUser);
   const user = await controller.deleteUser(employeeId);
   res.send(user);
 });
@@ -250,8 +250,8 @@ app.put("/updateVan/:licensePlate", async (req, res) => {
   console.log("licensePlate", licensePlate);
   console.log("employeeId", employeeId);
 
-  const updatedVan = await controller.updateVan(licensePlate, employeeId);
-  const updatedUser = await controller.updateUser(employeeId, licensePlate);
+  await controller.updateVan(licensePlate, employeeId);
+  await controller.updateUser(employeeId, licensePlate);
 });
 
 /*
